@@ -1392,6 +1392,12 @@ iframe {
   object-fit: cover;
   border-radius: 16px;
   background: #000;
+  display: block;
+}
+
+.gallery__item video[poster] {
+  background-color: #000;
+  background-image: var(--poster-bg, none);
 }
 
 /* Fine-tune crop for Sahasrara: keep centered */
@@ -1409,10 +1415,9 @@ iframe {
   object-position: center center;
 }
 
-/* Hide native controls if any browser shows them */
-.gallery__item video::-webkit-media-controls-enclosure,
-.gallery__item video::-webkit-media-controls {
-  display: none !important;
+/* Show native controls for user interaction */
+.gallery__item video::-webkit-media-controls-enclosure {
+  border-radius: 0 0 16px 16px;
 }
 
 /* Optional label to show grouping (collection name) */
