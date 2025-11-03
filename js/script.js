@@ -34,6 +34,21 @@ spollerButtons.forEach((button) => {
   });
 });
 
+// Ensure all videos are muted
+document.addEventListener('DOMContentLoaded', function() {
+  const allVideos = document.querySelectorAll('video');
+  allVideos.forEach((video) => {
+    video.muted = true;
+    video.setAttribute('muted', '');
+    // Ensure muted state persists even if user tries to unmute
+    video.addEventListener('volumechange', function() {
+      if (!video.muted) {
+        video.muted = true;
+      }
+    });
+  });
+});
+
 // Video background handling
 document.addEventListener('DOMContentLoaded', function() {
     const video = document.getElementById('hero-video');
@@ -144,23 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
       row.scrollBy({ left: getStep(), behavior: 'smooth' });
     });
 
-    // Video autoplay reliability inside carousel
+    // Video fallback handling for carousel videos (user-controlled playback)
     const videos = row.querySelectorAll('video');
-    videos.forEach((v) => { try { v.controls = false; v.removeAttribute('controls'); } catch (e) {} });
-    const attemptPlay = (vid) => {
-      try {
-        vid.muted = true;
-        vid.setAttribute('playsinline', '');
-        const p = vid.play();
-        if (p && typeof p.then === 'function') {
-          p.catch(() => {
-            setTimeout(() => { vid.load(); vid.play().catch(() => {}); }, 400);
-          });
-        }
-      } catch (e) {}
-    };
-
-    // Install source fallback logic for videos that fail to play
+    
+    // Install source fallback logic for videos that fail to load
     const installFallback = (vid) => {
       try {
         // Build list: current src or first <source>, then data-alt-sources
@@ -204,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
           if (!s.parentNode) vid.appendChild(s);
           vid.src = nextSrc;
           vid.load();
-          attemptPlay(vid);
         };
 
         // On error, skip to the next candidate; also pre-skip if canPlayType says no
@@ -215,29 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
       } catch (e) {}
     };
 
-    // Ensure loop continuity even if some browsers fire 'ended' despite loop
+    // Install fallbacks but don't autoplay - users will click play
     videos.forEach((v) => {
       installFallback(v);
-      v.addEventListener('ended', () => { v.currentTime = 0; attemptPlay(v); });
-      if (v.readyState >= 2) attemptPlay(v);
-      else v.addEventListener('loadeddata', () => attemptPlay(v), { once: true });
+      // Ensure loop works when user plays video
+      v.addEventListener('ended', () => { 
+        if (!v.paused) {
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        }
+      });
     });
-
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const vid = entry.target;
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            attemptPlay(vid);
-          } else {
-            try { vid.pause(); } catch (e) {}
-          }
-        });
-      }, { root: row, threshold: [0, 0.5, 1] });
-      videos.forEach((v) => io.observe(v));
-    } else {
-      // Fallback already handled above with loadeddata listeners
-    }
   });
 });
 
