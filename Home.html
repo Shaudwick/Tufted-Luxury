@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Black Lobby - Luxury Tufted Rugs</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="home.html" class="header__logo logo">Black Lobby</a>
+        <div class="header__navigation">
+          <div class="header__menu menu">
+            <nav class="menu__body">
+              <ul class="menu__list">
+                <li class="menu__item"><a href="home.html" class="menu__link">Home</a></li>
+                <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
+                <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
+                <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+              </ul>
+              <a href="#" class="actions-header__button" id="cart-button">Cart (0)</a>
+            </nav>
+          </div>
+          <div class="header__actions actions-header">
+            <button type="button" class="menu__icon icon-menu"><span></span></button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="page">
+      <section class="main">
+        <div class="main__container">
+          <h3 class="main__caption">Handcrafted Excellence</h3>
+          <h1 class="main__title">Artisanal Tufted Masterpieces</h1>
+          <div class="main__text">
+            Where traditional craftsmanship meets contemporary design. Each piece is meticulously handcrafted by skilled artisans using time-honored techniques and the finest materials.
+          </div>
+          <a href="services.html" class="main__button">Discover Collections</a>
+        </div>
+      </section>
+
+      <div class="section-separator"></div>
+
+      <section class="about">
+        <div class="about__container">
+          <div class="about__content">
+            <h2 class="about__title">The Art of Tufting</h2>
+            <div class="about__video">
+              <video id="video1" muted playsinline>
+                <source src="Website Images/Home/Home-About-Video-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <video id="video2" muted playsinline style="display: none;">
+                <source src="Website Images/Home/Home-About-Video-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <a href="about.html" class="button">Our Process</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator"></div>
+
+      <section class="services" id="collections">
+        <div class="services__container">
+          <h2 class="services__title">Curated Collections</h2>
+          <div class="services__row">
+            <div class="services__column">
+              <div class="item-services">
+                <div class="item-services__image">
+                  <video id="heritagePreview" muted playsinline autoplay loop preload="auto" poster="Website Images/Home/Home-Service-1.png">
+                    <source src="Website Images/Home/Sahasrara.mov" />
+                  </video>
+                </div>
+                <h3 class="item-services__title">Chakra Collection</h3>
+                <div class="item-services__text">
+                  Timeless patterns inspired by traditional craftsmanship. Premium wool blend with natural dyes. From $1,200
+                </div>
+                <a href="services.html" class="button">Explore Collection</a>
+              </div>
+            </div>
+            <div class="services__column">
+              <div class="item-services">
+                <div class="item-services__image">
+                  <video id="contemporaryPreview" muted playsinline autoplay loop preload="auto" poster="Website Images/Home/Home-Service-2.png">
+                    <source src="Website Images/Home/Masterpiece1.mov" />
+                  </video>
+                </div>
+                <h3 class="item-services__title">Gods Collection</h3>
+                <div class="item-services__text">
+                  Modern interpretations of classic designs. Silk and wool blend with contemporary color palettes. From $1,800
+                </div>
+                <a href="services.html#gods-collection" class="button">Explore Collection</a>
+              </div>
+            </div>
+            <div class="services__column">
+              <div class="item-services">
+                <div class="item-services__image empty" aria-hidden="true"></div>
+                <h3 class="item-services__title">Coming Soon...</h3>
+                <div class="item-services__text">
+                  New limited series arriving soon. Be the first to experience the next evolution of our craft.
+                </div>
+                <a href="services.html" class="button">Explore Collection</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mission">
+        <div class="mission__container">
+          <h2 class="mission__title title">Our Mission</h2>
+          <div class="mission__text">
+            We create heirloom-quality textiles that honor tradition and embrace contemporary vision. Each piece is
+            crafted by hand, with patience and intention, to enrich the spaces where life’s most meaningful moments unfold.
+          </div>
+        </div>
+      </section>
+
+      <section class="outro">
+        <div class="outro__container">
+          <h2 class="outro__title">Begin Your Journey</h2>
+          <div class="outro__text">
+            Let our design experts guide you through the creation of your perfect custom tufted rug. Every piece is a collaboration between your vision and our artisans' expertise.
+          </div>
+          <a href="contact.html" class="button">Schedule Consultation</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <a href="#" class="footer__policy">Privacy Policy – Terms & Conditions</a>
+        <a href="" class="footer__logo logo">Black Lobby</a>
+        <div class="footer__copyright">Copyright © 2024 Black Lobby – All Rights Reserved</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Shopping Cart Modal -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        <h3>Total: $<span id="cart-total">0</span></h3>
+        <p>Deposit Required: $<span id="deposit-amount">0</span></p>
+      </div>
+      <button id="checkout-button" class="button">Proceed to Checkout</button>
+      <a href="#" id="continue-shopping" class="button" style="margin-top: 1rem; display: inline-block;">Continue Shopping</a>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    // Sequential video playback
+    document.addEventListener('DOMContentLoaded', function() {
+      const video1 = document.getElementById('video1');
+      const video2 = document.getElementById('video2');
+      let currentVideo = 1;
+      
+      function showVideo(videoNumber) {
+        if (videoNumber === 1) {
+          video1.style.display = 'block';
+          video2.style.display = 'none';
+        } else {
+          video1.style.display = 'none';
+          video2.style.display = 'block';
+        }
+      }
+      
+      function playNextVideo() {
+        if (currentVideo === 1) {
+          showVideo(2);
+          currentVideo = 2;
+          video2.play().catch(e => console.log('Video 2 play failed:', e));
+        } else {
+          showVideo(1);
+          currentVideo = 1;
+          video1.play().catch(e => console.log('Video 1 play failed:', e));
+        }
+      }
+      
+      // Set up video event listeners
+      if (video1 && video2) {
+        // Video 1 events
+        video1.addEventListener('ended', function() {
+          console.log('Video 1 ended, switching to video 2');
+          playNextVideo();
+        });
+        
+        video1.addEventListener('error', function(e) {
+          console.log('Video 1 error:', e);
+          // Try video 2 if video 1 fails
+          showVideo(2);
+          video2.play().catch(err => console.log('Video 2 also failed:', err));
+        });
+        
+        // Video 2 events
+        video2.addEventListener('ended', function() {
+          console.log('Video 2 ended, switching to video 1');
+          playNextVideo();
+        });
+        
+        video2.addEventListener('error', function(e) {
+          console.log('Video 2 error:', e);
+          // Try video 1 if video 2 fails
+          showVideo(1);
+          video1.play().catch(err => console.log('Video 1 also failed:', err));
+        });
+        
+        // Start with video 1
+        showVideo(1);
+        video1.play().catch(e => {
+          console.log('Initial video 1 play failed:', e);
+          // Try video 2 if video 1 fails to start
+          showVideo(2);
+          video2.play().catch(err => console.log('Video 2 also failed to start:', err));
+        });
+        
+        // Fallback: if both videos fail, show a message
+        setTimeout(() => {
+          if (video1.paused && video2.paused) {
+            console.log('Both videos failed to play');
+            const container = document.querySelector('.about__video');
+            container.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666; font-size: 1.2rem;">Videos not available</div>';
+          }
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+
+</html>
