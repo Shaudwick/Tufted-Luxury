@@ -248,7 +248,7 @@ body {
 }
 
 .outro_home {
-  background: url("../Website Images/Home/CTA.jpg") center / cover no-repeat;
+  background: url("../Website-Images/Home/CTA.jpg") center / cover no-repeat;
 }
 
 /* ************ABOUT**************** */
@@ -397,7 +397,7 @@ body {
 /* **************SERVICES**************** */
 
 .main_services {
-  background: url("../Website Images/Services/Services-Hero.jpg") center / cover no-repeat;
+  background: url("../Website-Images/Services/Services-Hero.jpg") center / cover no-repeat;
 }
 
 .services {
@@ -528,7 +528,7 @@ body {
 }
 
 .outro_services {
-  background: url("../Website Images/Services/CTA.jpg") center / cover no-repeat;
+  background: url("../Website-Images/Services/CTA.jpg") center / cover no-repeat;
 }
 
 /* ************TESTIMONIAL**************** */
@@ -744,8 +744,8 @@ body {
 
 .main_contact {
   background: 
-    url("../Website Images/Contact/BlackLobby-TuftedLuxury.jpg") center / cover no-repeat,
-    url("../Website Images/Contact/IMG_0044_1.jpeg") center / cover no-repeat;
+    url("../Website-Images/Contact/Blacklobby-TuftedLuxury.jpg") center / cover no-repeat,
+    url("../Website-Images/Contact/IMG_0044_1.jpeg") center / cover no-repeat;
   position: relative;
   min-height: 360px; /* smaller, refined hero height */
 }
