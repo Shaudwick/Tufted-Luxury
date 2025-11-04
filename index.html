@@ -11,6 +11,7 @@
   <title>Black Lobby - Luxury Tufted Rugs</title>
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://js.stripe.com/v3/"></script>
+  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 </head>
 
 <body>
@@ -45,6 +46,46 @@
             Where traditional craftsmanship meets contemporary design. Each piece is meticulously handcrafted by skilled artisans using time-honored techniques and the finest materials.
           </div>
           <a href="services.html" class="main__button">Discover Collections</a>
+        </div>
+      </section>
+
+      <div class="section-separator"></div>
+
+      <section class="event-signup">
+        <div class="event-signup__container">
+          <div class="event-signup__content">
+            <h2 class="event-signup__title title">Join Our Exclusive Event</h2>
+            <div class="event-signup__text">
+              Experience the artistry of handcrafted tufted rugs. Reserve your spot for an intimate gathering where craftsmanship meets luxury.
+            </div>
+            <div class="event-signup__price">
+              <span class="event-signup__price-label">Ticket Price</span>
+              <span class="event-signup__price-amount">$15</span>
+            </div>
+            <form class="event-signup__form" id="eventSignupForm">
+              <div class="event-signup__form-row">
+                <div class="event-signup__field">
+                  <label for="eventName">Full Name</label>
+                  <input type="text" id="eventName" name="name" placeholder="Enter your full name" required />
+                </div>
+                <div class="event-signup__field">
+                  <label for="eventEmail">Email</label>
+                  <input type="email" id="eventEmail" name="email" placeholder="your.email@example.com" required />
+                </div>
+              </div>
+              <div class="event-signup__field">
+                <label for="eventPhone">Phone Number</label>
+                <input type="tel" id="eventPhone" name="phone" placeholder="(555) 123-4567" required />
+              </div>
+              <div class="event-signup__stripe">
+                <stripe-buy-button
+                  buy-button-id="buy_btn_1SPseUJpWM3jphuaw0TXbVsi"
+                  publishable-key="pk_live_51SN0lqJpWM3jphuaTEzIQq378AzDIvcQrM35YYX1yuIvkBuoWUlU10rC25bgmcXYhrSNwtr2dpD1ttONFmhD5bkw0064AP3hCp"
+                >
+                </stripe-buy-button>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
 
