@@ -819,6 +819,24 @@ body {
   transform: translateY(0);
 }
 
+/* Stripe Buy Button Styling */
+stripe-buy-button {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Target the Stripe button iframe/content */
+stripe-buy-button iframe,
+stripe-buy-button > * {
+  width: 100% !important;
+}
+
+/* Style the merchandise info container to ensure button fits */
+.merchandise__info stripe-buy-button {
+  margin-top: 1rem;
+}
+
 .merchandise__carousel::before,
 .merchandise__carousel::after {
   content: "";
