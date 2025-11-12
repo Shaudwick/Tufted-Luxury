@@ -360,3 +360,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
   updateTotals();
 })();
+
+// =========================
+// Merchandise Shirt Toggle (Front/Back View)
+// =========================
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleItems = document.querySelectorAll('.merchandise__item--toggle');
+  
+  toggleItems.forEach(item => {
+    const imageContainer = item.querySelector('.merchandise__image--toggle');
+    const frontImage = item.querySelector('.merchandise__image-front');
+    const backImage = item.querySelector('.merchandise__image-back');
+    const viewText = item.querySelector('.merchandise__view-text');
+    
+    if (!imageContainer || !frontImage || !backImage) return;
+    
+    let isShowingFront = true;
+    
+    imageContainer.addEventListener('click', function(e) {
+      // Don't toggle if clicking the button
+      if (e.target.closest('.merchandise__button')) return;
+      
+      isShowingFront = !isShowingFront;
+      
+      // Smooth fade transition
+      if (isShowingFront) {
+        backImage.style.opacity = '0';
+        setTimeout(() => {
+          frontImage.style.display = 'block';
+          backImage.style.display = 'none';
+          frontImage.style.opacity = '1';
+        }, 200);
+        if (viewText) viewText.textContent = 'Front';
+      } else {
+        frontImage.style.opacity = '0';
+        setTimeout(() => {
+          backImage.style.display = 'block';
+          frontImage.style.display = 'none';
+          backImage.style.opacity = '1';
+        }, 200);
+        if (viewText) viewText.textContent = 'Back';
+      }
+    });
+  });
+});
