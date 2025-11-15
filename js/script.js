@@ -1,12 +1,17 @@
 // Mobile menu toggle - wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
-  const menuIcon = document.querySelector('.icon-menu');
+  // Try multiple selectors to find the menu icon
+  const menuIcon = document.querySelector('.icon-menu') || document.querySelector('.menu__icon') || document.querySelector('button[class*="icon-menu"]');
   const menuBody = document.querySelector('.menu__body');
   const menuLinks = document.querySelectorAll('.menu__link');
   
   // Toggle menu when hamburger icon is clicked
   if (menuIcon) {
-    menuIcon.addEventListener("click", function (event) {
+    // Remove any existing listeners by cloning
+    const newMenuIcon = menuIcon.cloneNode(true);
+    menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
+    
+    newMenuIcon.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
       document.body.classList.toggle("menu-open");
@@ -14,8 +19,29 @@ document.addEventListener('DOMContentLoaded', function() {
       // Prevent body scroll when menu is open
       if (document.body.classList.contains("menu-open")) {
         document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
       } else {
         document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
+      }
+    });
+    
+    // Also add touch event for better mobile support
+    newMenuIcon.addEventListener("touchend", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      document.body.classList.toggle("menu-open");
+      
+      if (document.body.classList.contains("menu-open")) {
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+      } else {
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
       }
     });
   }
