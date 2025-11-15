@@ -3,6 +3,19 @@ document.querySelector(".icon-menu").addEventListener("click", function (event) 
   document.body.classList.toggle("menu-open");
 });
 
+// Close mobile menu when clicking navigation links
+document.addEventListener('DOMContentLoaded', function() {
+  const menuLinks = document.querySelectorAll('.menu__link');
+  const menuIcon = document.querySelector('.icon-menu');
+  
+  menuLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      // Close the menu by removing the menu-open class
+      document.body.classList.remove('menu-open');
+    });
+  });
+});
+
 const spollerButtons = document.querySelectorAll("[data-spoller] .spollers-faq__button");
 
 spollerButtons.forEach((button) => {
