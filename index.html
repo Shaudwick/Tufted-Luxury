@@ -190,12 +190,12 @@
           <div class="about__content">
             <h2 class="about__title">The Art of Tufting</h2>
             <div class="about__video">
-              <video id="video1" muted playsinline webkit-playsinline preload="metadata" controls>
+              <video id="video1" muted playsinline webkit-playsinline preload="auto" controls loop>
                 <source src="Website-Images/Home/Home-About-Video-1.MP4" type="video/mp4">
                 <source src="Website-Images/Home/Home-About-Video-1.MP4" type="video/quicktime">
                 Your browser does not support the video tag.
               </video>
-              <video id="video2" muted playsinline webkit-playsinline preload="metadata" controls style="display: none;">
+              <video id="video2" muted playsinline webkit-playsinline preload="auto" controls loop style="display: none;">
                 <source src="Website-Images/Home/Home-About-Video-2.MP4" type="video/mp4">
                 <source src="Website-Images/Home/Home-About-Video-2.MP4" type="video/quicktime">
                 Your browser does not support the video tag.
@@ -288,79 +288,39 @@
 
   <script src="js/script.js"></script>
   <script>
-    // Sequential video playback
+    // Simplified video playback for mobile compatibility
     document.addEventListener('DOMContentLoaded', function() {
       const video1 = document.getElementById('video1');
       const video2 = document.getElementById('video2');
-      let currentVideo = 1;
       
-      function showVideo(videoNumber) {
-        if (videoNumber === 1) {
-          video1.style.display = 'block';
-          video2.style.display = 'none';
-        } else {
+      if (video1 && video2) {
+        // Show only video1 initially, let user control playback
+        video1.style.display = 'block';
+        video2.style.display = 'none';
+        
+        // Optional: Try to play video1 on load (may be blocked on mobile)
+        const tryPlay = () => {
+          if (video1) {
+            video1.play().catch(() => {
+              // Autoplay blocked - user can manually play with controls
+              console.log('Autoplay blocked - user can play manually');
+            });
+          }
+        };
+        
+        // Try play after a short delay
+        setTimeout(tryPlay, 500);
+        
+        // Handle video errors gracefully
+        video1.addEventListener('error', function() {
+          console.log('Video 1 error - trying video 2');
           video1.style.display = 'none';
           video2.style.display = 'block';
-        }
-      }
-      
-      function playNextVideo() {
-        if (currentVideo === 1) {
-          showVideo(2);
-          currentVideo = 2;
-          video2.play().catch(e => console.log('Video 2 play failed:', e));
-        } else {
-          showVideo(1);
-          currentVideo = 1;
-          video1.play().catch(e => console.log('Video 1 play failed:', e));
-        }
-      }
-      
-      // Set up video event listeners
-      if (video1 && video2) {
-        // Video 1 events
-        video1.addEventListener('ended', function() {
-          console.log('Video 1 ended, switching to video 2');
-          playNextVideo();
         });
         
-        video1.addEventListener('error', function(e) {
-          console.log('Video 1 error:', e);
-          // Try video 2 if video 1 fails
-          showVideo(2);
-          video2.play().catch(err => console.log('Video 2 also failed:', err));
+        video2.addEventListener('error', function() {
+          console.log('Video 2 also failed');
         });
-        
-        // Video 2 events
-        video2.addEventListener('ended', function() {
-          console.log('Video 2 ended, switching to video 1');
-          playNextVideo();
-        });
-        
-        video2.addEventListener('error', function(e) {
-          console.log('Video 2 error:', e);
-          // Try video 1 if video 2 fails
-          showVideo(1);
-          video1.play().catch(err => console.log('Video 1 also failed:', err));
-        });
-        
-        // Start with video 1
-        showVideo(1);
-        video1.play().catch(e => {
-          console.log('Initial video 1 play failed:', e);
-          // Try video 2 if video 1 fails to start
-          showVideo(2);
-          video2.play().catch(err => console.log('Video 2 also failed to start:', err));
-        });
-        
-        // Fallback: if both videos fail, show a message
-        setTimeout(() => {
-          if (video1.paused && video2.paused) {
-            console.log('Both videos failed to play');
-            const container = document.querySelector('.about__video');
-            container.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666; font-size: 1.2rem;">Videos not available</div>';
-          }
-        }, 3000);
       }
     });
   </script>

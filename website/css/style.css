@@ -2114,8 +2114,9 @@ iframe {
     transform: translateY(15px);
     transition: opacity 0.35s ease, transform 0.35s ease;
     transition-delay: 0s;
-    position: relative;
-    z-index: 1;
+    display: block;
+    margin: 0;
+    padding: 0;
   }
   
   body.menu-open .menu__item {
@@ -2135,6 +2136,7 @@ iframe {
     padding: 1.25rem 1.5rem;
     display: block;
     width: 100%;
+    box-sizing: border-box;
     color: #2c2c2c;
     text-decoration: none;
     letter-spacing: 0.08em;
@@ -2146,7 +2148,7 @@ iframe {
     cursor: pointer;
     position: relative;
     line-height: 1.4;
-    z-index: 1;
+    margin: 0;
   }
   
   .menu__link::after {
