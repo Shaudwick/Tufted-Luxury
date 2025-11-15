@@ -21,6 +21,19 @@ body {
   padding: 0 3rem;
 }
 
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .logo {
   font-family: 'Playfair Display', serif;
   font-weight: 300;
@@ -349,6 +362,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .about__video video {
@@ -359,6 +373,7 @@ body {
   border-radius: 0;
   border: 1px solid rgba(44, 44, 44, 0.1);
   transition: transform 0.3s ease;
+  max-width: 100%;
 }
 
 .about__video video:hover {
@@ -695,6 +710,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  max-width: 100%;
 }
 
 .merchandise__image-front,
@@ -904,13 +920,119 @@ stripe-buy-button > * {
   }
 }
 
+/* Small Mobile Phones */
 @media (max-width: 530px) {
+  [class*="__container"] {
+    padding: 0 1rem;
+  }
+  
+  .main__title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .main__text {
+    font-size: 0.95rem;
+  }
+  
+  .main__container {
+    padding: 2.5rem 1rem;
+  }
+  
+  .header__container {
+    padding: 0 1rem;
+    min-height: 4rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.85rem;
+  }
+  
   .merchandise__item {
-    flex-basis: 280px;
+    flex-basis: 260px;
   }
 
   .merchandise__image {
-    height: 340px;
+    height: 320px;
+  }
+  
+  .merchandise__title {
+    font-size: 1.75rem;
+  }
+  
+  .merchandise__row-title {
+    font-size: 1.25rem;
+  }
+  
+  .carousel .gallery__item {
+    flex: 0 0 90%;
+    min-height: 350px;
+  }
+  
+  .about__media {
+    height: 300px;
+  }
+  
+  .about__video {
+    height: 300px;
+  }
+  
+  .about__title {
+    font-size: 1.75rem;
+    margin-top: 2rem;
+  }
+  
+  .item-services__image {
+    height: 250px;
+  }
+  
+  .footer__container {
+    padding: 2.5rem 1rem;
+  }
+  
+  .contact-form__container {
+    padding: 2.5rem 1rem;
+  }
+  
+  .main__container_pages {
+    padding-top: 150px;
+  }
+  
+  .main_pages {
+    min-height: 400px !important;
+  }
+}
+
+/* Extra Small Phones */
+@media (max-width: 375px) {
+  .main__title {
+    font-size: 1.75rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .merchandise__item {
+    flex-basis: 240px;
+  }
+  
+  .merchandise__image {
+    height: 300px;
+  }
+  
+  .carousel .gallery__item {
+    flex: 0 0 95%;
+    min-height: 320px;
   }
 }
 
@@ -1856,6 +1978,8 @@ iframe {
   height: 100%;
   object-fit: cover;
   border-radius: 16px;
+  max-width: 100%;
+  display: block;
 }
 
 /* Support videos inside gallery items */
@@ -2040,34 +2164,271 @@ iframe {
 
 /* ****************ADAPTIVE**************** */
 
+/* Large Tablets and Small Desktops */
 @media (max-width: 1200px) {
+  [class*="__container"] {
+    padding: 0 2.5rem;
+  }
+  
   .services__row {
     grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  .main__title {
+    font-size: 4rem;
+  }
+  
+  .title {
+    font-size: 3rem;
   }
 }
 
+/* Tablets */
 @media (max-width: 992px) {
+  [class*="__container"] {
+    padding: 0 2rem;
+  }
+  
   .about__container {
     flex-direction: column;
+  }
+  
+  .about__row {
+    gap: 2.5rem;
+  }
+  
+  .about__media {
+    height: 450px;
   }
   
   .main__title {
     font-size: 3.5rem;
   }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .main__text {
+    font-size: 1.1rem;
+  }
+  
+  .header__container {
+    padding: 0 1.5rem;
+  }
+  
+  .logo {
+    font-size: 1.6rem;
+  }
+  
+  .button {
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+  }
+  
+  .about__video {
+    height: 450px;
+    margin: 1.5rem 0 3rem 0;
+  }
+  
+  .item-services__image {
+    height: 350px;
+  }
+  
+  .carousel .gallery__item {
+    flex: 0 0 70%;
+    height: 480px;
+  }
+  
+  .merchandise__image {
+    height: 420px;
+  }
 }
 
+/* Mobile and Small Tablets */
 @media (max-width: 768px) {
+  [class*="__container"] {
+    padding: 0 1.5rem;
+  }
+  
   .services__row {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
   
   .main__title {
     font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .main__text {
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .main__container {
+    padding: 3rem 1.5rem;
+  }
+  
+  .header__container {
+    padding: 0 1.5rem;
+    min-height: 4.5rem;
+  }
+  
+  .logo {
+    font-size: 1.4rem;
+  }
+  
+  .button {
+    padding: 0.85rem 1.75rem;
+    font-size: 0.9rem;
   }
   
   .footer__container {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 1.5rem;
+    padding: 3rem 1.5rem;
+  }
+  
+  .footer {
+    padding: 3rem 0;
+  }
+  
+  /* About page responsive */
+  .about__row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .about__media {
+    height: 400px;
+  }
+  
+  .about__textblock .about__text {
+    font-size: 1rem;
+  }
+  
+  /* Services/Collections responsive */
+  .gallery__item {
+    max-width: 100%;
+  }
+  
+  .carousel .gallery__item {
+    flex: 0 0 85%;
+    height: auto;
+    min-height: 400px;
+  }
+  
+  .item-services__image {
+    height: 300px;
+  }
+  
+  .item-services__image video {
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Merchandise responsive */
+  .merchandise {
+    padding: 4rem 0;
+  }
+  
+  .merchandise__container {
+    padding: 0 1rem;
+  }
+  
+  .merchandise__title {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .merchandise__row-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .merchandise__carousel {
+    padding: 0 1rem;
+  }
+  
+  .merchandise__item {
+    flex-basis: 280px;
+  }
+  
+  .merchandise__image {
+    height: 350px;
+  }
+  
+  /* Event signup responsive */
+  .event-signup {
+    padding: 5rem 0;
+  }
+  
+  .event-signup__title {
+    font-size: 2rem;
+  }
+  
+  .event-signup__text {
+    font-size: 1rem;
+  }
+  
+  /* Mission section responsive */
+  .mission {
+    padding: 4rem 0;
+  }
+  
+  .mission__title {
+    font-size: 2rem;
+  }
+  
+  .mission__text {
+    font-size: 1rem;
+  }
+  
+  /* Outro section responsive */
+  .outro {
+    padding: 4rem 0;
+  }
+  
+  .outro__title {
+    font-size: 2rem;
+  }
+  
+  .outro__text {
+    font-size: 1rem;
+  }
+  
+  /* Contact page responsive */
+  .contact__container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .contact-headline__title {
+    font-size: 2rem;
+  }
+  
+  .contact-form__container {
+    padding: 3rem 1.5rem;
+  }
+  
+  /* About page hero responsive */
+  .main__container_pages {
+    padding-top: 200px;
+  }
+  
+  .main_pages {
+    min-height: 500px !important;
+  }
+  
+  .main__text_pages {
+    font-size: 1rem;
   }
   
   .menu__body {
