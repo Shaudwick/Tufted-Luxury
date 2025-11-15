@@ -2114,6 +2114,8 @@ iframe {
     transform: translateY(15px);
     transition: opacity 0.35s ease, transform 0.35s ease;
     transition-delay: 0s;
+    position: relative;
+    z-index: 1;
   }
   
   body.menu-open .menu__item {
@@ -2144,6 +2146,7 @@ iframe {
     cursor: pointer;
     position: relative;
     line-height: 1.4;
+    z-index: 1;
   }
   
   .menu__link::after {
