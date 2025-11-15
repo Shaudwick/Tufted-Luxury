@@ -1003,6 +1003,15 @@ stripe-buy-button > * {
     padding: 2.5rem 1rem;
   }
   
+  .contact__image {
+    height: 240px;
+  }
+  
+  .contact__container {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  
   .main__container_pages {
     padding-top: 150px;
   }
@@ -1490,6 +1499,37 @@ stripe-buy-button > * {
 @media (max-width: 992px) {
   .contact__media-row { grid-template-columns: 1fr; }
   .contact__image { height: 320px; }
+}
+
+@media (max-width: 768px) {
+  .contact__image { 
+    height: 280px; 
+    max-width: 100%;
+  }
+  
+  .contact__media-row {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 530px) {
+  .contact__image { 
+    height: 240px; 
+  }
+  
+  .contact__media-row {
+    gap: 20px;
+  }
+  
+  .contact__media-row .contact__text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .contact__image { 
+    height: 200px; 
+  }
 }
 
 .contact__text {
@@ -2408,6 +2448,8 @@ iframe {
   .contact__container {
     flex-direction: column;
     gap: 2rem;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
   
   .contact-headline__title {
@@ -2416,6 +2458,14 @@ iframe {
   
   .contact-form__container {
     padding: 3rem 1.5rem;
+  }
+  
+  .contact__image {
+    height: 280px;
+  }
+  
+  .contact__media-row {
+    gap: 24px;
   }
   
   /* About page hero responsive */
