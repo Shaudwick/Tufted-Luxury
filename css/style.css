@@ -2087,6 +2087,14 @@ iframe {
     transition: transform 0.3s ease;
     z-index: 999;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent body scroll when menu is open */
+  body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
   
   .menu__list {
@@ -2100,6 +2108,13 @@ iframe {
     font-size: 1.2rem;
     padding: 1rem 0;
     display: block;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  
+  .menu__item {
     width: 100%;
   }
   
@@ -2116,6 +2131,10 @@ iframe {
     background: transparent;
     border: none;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    padding: 5px;
+    margin: -5px;
   }
   
   .icon-menu span {

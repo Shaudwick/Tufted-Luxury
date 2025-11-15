@@ -1,18 +1,53 @@
-document.querySelector(".icon-menu").addEventListener("click", function (event) {
-  event.preventDefault();
-  document.body.classList.toggle("menu-open");
-});
-
-// Close mobile menu when clicking navigation links
+// Mobile menu toggle - wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
-  const menuLinks = document.querySelectorAll('.menu__link');
   const menuIcon = document.querySelector('.icon-menu');
+  const menuBody = document.querySelector('.menu__body');
+  const menuLinks = document.querySelectorAll('.menu__link');
   
-  menuLinks.forEach(link => {
-    link.addEventListener('click', function() {
-      // Close the menu by removing the menu-open class
-      document.body.classList.remove('menu-open');
+  // Toggle menu when hamburger icon is clicked
+  if (menuIcon) {
+    menuIcon.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      document.body.classList.toggle("menu-open");
+      
+      // Prevent body scroll when menu is open
+      if (document.body.classList.contains("menu-open")) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
     });
+  }
+  
+  // Close menu when clicking navigation links
+  menuLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // Allow navigation to happen, but close menu
+      setTimeout(() => {
+        document.body.classList.remove('menu-open');
+        document.body.style.overflow = "";
+      }, 100);
+    });
+  });
+  
+  // Close menu when clicking outside (on overlay/background)
+  if (menuBody) {
+    menuBody.addEventListener('click', function(e) {
+      // Only close if clicking the menu body itself, not the links
+      if (e.target === menuBody || e.target.classList.contains('menu__body')) {
+        document.body.classList.remove('menu-open');
+        document.body.style.overflow = "";
+      }
+    });
+  }
+  
+  // Close menu on window resize (if resizing to desktop)
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = "";
+    }
   });
 });
 
