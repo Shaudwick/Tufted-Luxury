@@ -29,12 +29,14 @@ img {
   max-width: 100%;
   height: auto;
   display: block;
+  loading: lazy;
 }
 
 video {
   max-width: 100%;
   height: auto;
   display: block;
+  width: 100%;
 }
 
 .logo {
@@ -386,6 +388,7 @@ video {
   border: 1px solid rgba(44, 44, 44, 0.1);
   transition: transform 0.3s ease;
   max-width: 100%;
+  display: block;
 }
 
 .about__video video:hover {
@@ -1379,13 +1382,16 @@ stripe-buy-button > * {
 
 .main_contact {
   background: 
-    url("../Website-Images/Contact/Blacklobby-TuftedLuxury.jpg") center / cover no-repeat,
-    url("../Website-Images/Contact/IMG_0044_1.jpeg") center / cover no-repeat;
+    url("../Website-Images/Contact/Blacklobby-TuftedLuxury.jpg") center / contain no-repeat,
+    url("../Website-Images/Contact/IMG_0044_1.jpeg") center / contain no-repeat;
+  background-color: #fff1c9;
   position: relative;
   min-height: 360px; /* smaller, refined hero height */
   overflow: hidden;
   width: 100%;
   max-width: 100%;
+  background-size: contain;
+  background-position: center center;
 }
 
 /* Lux overlay + subtle frame */
@@ -1407,24 +1413,27 @@ stripe-buy-button > * {
 
 @media (max-width: 768px) {
   .main_contact { 
-    min-height: 240px; 
+    min-height: 300px; 
     overflow: hidden;
     width: 100%;
     max-width: 100%;
+    background-size: contain;
   }
   .main_contact::before { inset: 16px; }
 }
 
 @media (max-width: 530px) {
   .main_contact { 
-    min-height: 200px; 
+    min-height: 250px; 
+    background-size: contain;
   }
   .main_contact::before { inset: 12px; }
 }
 
 @media (max-width: 375px) {
   .main_contact { 
-    min-height: 180px; 
+    min-height: 220px; 
+    background-size: contain;
   }
   .main_contact::before { inset: 10px; }
 }
