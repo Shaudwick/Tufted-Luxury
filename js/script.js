@@ -1,3 +1,44 @@
+// Video loading and display optimization
+document.addEventListener('DOMContentLoaded', function() {
+  // Ensure all videos load and display properly, especially on mobile
+  const videos = document.querySelectorAll('video');
+  
+  videos.forEach(video => {
+    // Force video to load first frame immediately
+    if (video.preload !== 'none') {
+      video.load();
+    }
+    
+    // Handle video loading errors
+    video.addEventListener('error', function() {
+      console.log('Video error:', video.src);
+      // Try to reload if error occurs
+      setTimeout(() => {
+        video.load();
+      }, 1000);
+    });
+    
+    // Ensure video displays when loaded
+    video.addEventListener('loadeddata', function() {
+      video.style.opacity = '1';
+    });
+    
+    // For autoplay videos, ensure they play on mobile
+    if (video.hasAttribute('autoplay')) {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          // Autoplay was prevented, but video should still show
+          console.log('Autoplay prevented:', error);
+        });
+      }
+    }
+    
+    // Set initial opacity to ensure visibility
+    video.style.opacity = '1';
+  });
+});
+
 // Mobile menu toggle - wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
   // Try multiple selectors to find the menu icon
