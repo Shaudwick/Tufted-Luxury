@@ -46,6 +46,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const menuBody = document.querySelector('.menu__body');
   const menuLinks = document.querySelectorAll('.menu__link');
   
+  // Function to toggle menu
+  function toggleMenu() {
+    document.body.classList.toggle("menu-open");
+    
+    // Prevent body scroll when menu is open
+    if (document.body.classList.contains("menu-open")) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      if (menuBody) {
+        menuBody.style.transform = "translateX(0)";
+        menuBody.style.visibility = "visible";
+      }
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      if (menuBody) {
+        menuBody.style.transform = "translateX(-100%)";
+      }
+    }
+  }
+  
   // Toggle menu when hamburger icon is clicked
   if (menuIcon) {
     // Remove any existing listeners by cloning
@@ -55,35 +78,14 @@ document.addEventListener('DOMContentLoaded', function() {
     newMenuIcon.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
-      document.body.classList.toggle("menu-open");
-      
-      // Prevent body scroll when menu is open
-      if (document.body.classList.contains("menu-open")) {
-        document.body.style.overflow = "hidden";
-        document.body.style.position = "fixed";
-        document.body.style.width = "100%";
-      } else {
-        document.body.style.overflow = "";
-        document.body.style.position = "";
-        document.body.style.width = "";
-      }
+      toggleMenu();
     });
     
     // Also add touch event for better mobile support
     newMenuIcon.addEventListener("touchend", function (event) {
       event.preventDefault();
       event.stopPropagation();
-      document.body.classList.toggle("menu-open");
-      
-      if (document.body.classList.contains("menu-open")) {
-        document.body.style.overflow = "hidden";
-        document.body.style.position = "fixed";
-        document.body.style.width = "100%";
-      } else {
-        document.body.style.overflow = "";
-        document.body.style.position = "";
-        document.body.style.width = "";
-      }
+      toggleMenu();
     });
   }
   

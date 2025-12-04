@@ -2685,7 +2685,20 @@ iframe {
   }
   
   body.menu-open .menu__body {
-    transform: translateX(0);
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  /* Ensure menu is hidden by default on mobile */
+  .menu__body {
+    visibility: hidden;
+  }
+  
+  @media (max-width: 768px) {
+    .menu__body {
+      visibility: visible;
+    }
   }
   
   .icon-menu {
