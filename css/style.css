@@ -70,6 +70,30 @@ video {
   transform: translateY(-1px);
 }
 
+.button--primary {
+  background-color: #2c2c2c;
+  color: #fafafa;
+  border-color: #2c2c2c;
+}
+
+.button--primary:hover {
+  background-color: #1a1a1a;
+  color: #fafafa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button--secondary {
+  background-color: transparent;
+  color: #2c2c2c;
+  border-color: #2c2c2c;
+}
+
+.button--secondary:hover {
+  background-color: #2c2c2c;
+  color: #fafafa;
+}
+
 .title {
   font-family: 'Playfair Display', serif;
   font-size: 3.5rem;
@@ -246,12 +270,35 @@ video {
 
 .main__text {
   font-family: 'Cormorant Garamond', serif;
-  margin-bottom: 4rem;
-  max-width: 600px;
+  margin-bottom: 2.5rem;
+  max-width: 700px;
   line-height: 1.8;
   color: #666;
   font-size: 1.2rem;
   font-weight: 300;
+}
+
+.main__cta-group {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.main__cta-link {
+  font-family: 'Cormorant Garamond', serif;
+  color: #666;
+  text-decoration: none;
+  font-size: 1rem;
+  font-style: italic;
+  transition: color 0.3s ease;
+  display: inline-block;
+}
+
+.main__cta-link:hover {
+  color: #2c2c2c;
 }
 
 .main__button {
@@ -1193,6 +1240,14 @@ stripe-buy-button > * {
   font-style: italic;
 }
 
+.event-signup__cta-group {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+}
+
 .event-signup__form {
   display: flex;
   flex-direction: column;
@@ -1345,6 +1400,19 @@ stripe-buy-button > * {
   color: #666;
   font-size: 0.9rem;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.footer__brand-clarification {
+  font-size: 0.8rem;
+  color: #888;
+  font-style: italic;
+  text-align: right;
+  max-width: 400px;
+  line-height: 1.4;
 }
 
 /* ****************ABOUT PAGE**************** */
@@ -1678,10 +1746,80 @@ iframe {
   border-top: 1px solid rgba(44, 44, 44, 0.1);
 }
 
+.contact-form-section + .contact-form-section {
+  border-top: 1px solid rgba(44, 44, 44, 0.08);
+  padding-top: 5rem;
+}
+
 .contact-form__container {
-  max-width: 680px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 0 2rem;
+}
+
+.contact-form__intro {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 3rem;
+  max-width: 100%;
+}
+
+.contact-form__intro p {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form__intro p:last-child {
+  margin-bottom: 0;
+}
+
+.contact-form__intro strong {
+  color: #2c2c2c;
+  font-weight: 500;
+}
+
+.partnership-tiers {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(44, 44, 44, 0.1);
+}
+
+.partnership-tiers h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  color: #2c2c2c;
+}
+
+.partnership-tiers .tier {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(44, 44, 44, 0.08);
+}
+
+.partnership-tiers .tier:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.partnership-tiers .tier h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  color: #2c2c2c;
+}
+
+.partnership-tiers .tier p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
 }
 
 .contact-form__title {
@@ -1715,7 +1853,8 @@ iframe {
 }
 
 .contact-form__field input,
-.contact-form__field textarea {
+.contact-form__field textarea,
+.contact-form__field select {
   padding: 0.85rem 1rem;
   border: 1px solid rgba(44, 44, 44, 0.2);
   background: #fff1c9;
@@ -1724,10 +1863,22 @@ iframe {
   font-size: 1rem;
   letter-spacing: 0.02em;
   transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form__field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c2c2c' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
 }
 
 .contact-form__field input:focus,
-.contact-form__field textarea:focus {
+.contact-form__field textarea:focus,
+.contact-form__field select:focus {
   outline: none;
   border-color: #2c2c2c;
   background: #fff;
@@ -1741,6 +1892,30 @@ iframe {
 .contact-form__button {
   width: 100%;
   margin-top: 0.5rem;
+}
+
+.contact-form__confirmation {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(44, 44, 44, 0.1);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+.contact-form__confirmation p {
+  margin-bottom: 1rem;
+}
+
+.contact-form__confirmation p:last-child {
+  margin-bottom: 0;
+}
+
+.contact-form__confirmation strong {
+  color: #2c2c2c;
+  font-weight: 500;
 }
 
 @media (max-width: 600px) {
