@@ -2597,6 +2597,7 @@ iframe {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex !important;
   }
   
   .menu__item {
@@ -2608,9 +2609,12 @@ iframe {
     display: block !important;
     margin: 0;
     padding: 0;
+    margin-bottom: 0 !important;
     position: relative;
     z-index: 1;
     visibility: visible;
+    clear: both;
+    float: none;
   }
   
   body.menu-open .menu__item {
@@ -2654,11 +2658,15 @@ iframe {
     cursor: pointer;
     position: relative;
     line-height: 1.4;
-    margin: 0;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     z-index: 2;
     overflow: visible;
     visibility: visible !important;
     opacity: 1 !important;
+    clear: both;
+    float: none;
   }
   
   body.menu-open .menu__link {
@@ -2693,15 +2701,22 @@ iframe {
     border-bottom: none;
   }
   
-  /* Ensure menu items don't overlap */
+  /* Ensure menu items don't overlap and are properly separated */
   .menu__list {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+  }
+  
+  .menu__item {
+    flex-shrink: 0;
+    flex-grow: 0;
   }
   
   .menu__item + .menu__item {
-    margin-top: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
   
   body.menu-open .menu__body {
