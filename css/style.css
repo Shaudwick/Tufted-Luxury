@@ -2688,17 +2688,17 @@ iframe {
     transform: translateX(0) !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
   }
   
-  /* Ensure menu is hidden by default on mobile */
+  /* Ensure menu is properly positioned and visible when needed */
   .menu__body {
-    visibility: hidden;
+    visibility: visible;
+    pointer-events: none;
   }
   
-  @media (max-width: 768px) {
-    .menu__body {
-      visibility: visible;
-    }
+  body.menu-open .menu__body {
+    pointer-events: auto;
   }
   
   .icon-menu {
