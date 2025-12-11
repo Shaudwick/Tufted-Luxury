@@ -36,19 +36,22 @@ app.post('/create-checkout-session', async (req, res) => {
   try {
     const origin = req.headers.origin || `${req.protocol}://${req.get('host')}`;
     
-    // Create line items from cart
+    // Always use the deposit amount (30% of total, calculated on client side)
+    // Create a single line item for the deposit, with cart items listed in description
     const lineItems = cartItems && cartItems.length > 0
-      ? cartItems.map(item => ({
+      ? [{
           price_data: {
             currency: 'usd',
             product_data: {
-              name: `${item.collection.charAt(0).toUpperCase() + item.collection.slice(1)} Collection`,
-              description: `Quantity: ${item.quantity}`,
+              name: 'Order Deposit (30%)',
+              description: cartItems.map(item => 
+                `${item.collection.charAt(0).toUpperCase() + item.collection.slice(1)} Collection (Qty: ${item.quantity})`
+              ).join(', '),
             },
-            unit_amount: Math.round((item.price * item.quantity) * 100), // Convert to cents
+            unit_amount: Math.round(amount * 100), // Use deposit amount, not full price
           },
           quantity: 1,
-        }))
+        }]
       : [{
           price_data: {
             currency: 'usd',
