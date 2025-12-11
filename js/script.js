@@ -1,6 +1,123 @@
-document.querySelector(".icon-menu").addEventListener("click", function (event) {
-  event.preventDefault();
-  document.body.classList.toggle("menu-open");
+// Video loading and display optimization
+document.addEventListener('DOMContentLoaded', function() {
+  // Ensure all videos load and display properly, especially on mobile
+  const videos = document.querySelectorAll('video');
+  
+  videos.forEach(video => {
+    // Force video to load first frame immediately
+    if (video.preload !== 'none') {
+      video.load();
+    }
+    
+    // Handle video loading errors
+    video.addEventListener('error', function() {
+      console.log('Video error:', video.src);
+      // Try to reload if error occurs
+      setTimeout(() => {
+        video.load();
+      }, 1000);
+    });
+    
+    // Ensure video displays when loaded
+    video.addEventListener('loadeddata', function() {
+      video.style.opacity = '1';
+    });
+    
+    // For autoplay videos, ensure they play on mobile
+    if (video.hasAttribute('autoplay')) {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          // Autoplay was prevented, but video should still show
+          console.log('Autoplay prevented:', error);
+        });
+      }
+    }
+    
+    // Set initial opacity to ensure visibility
+    video.style.opacity = '1';
+  });
+});
+
+// Mobile menu toggle - wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Try multiple selectors to find the menu icon
+  const menuIcon = document.querySelector('.icon-menu') || document.querySelector('.menu__icon') || document.querySelector('button[class*="icon-menu"]');
+  const menuBody = document.querySelector('.menu__body');
+  const menuLinks = document.querySelectorAll('.menu__link');
+  
+  // Function to toggle menu
+  function toggleMenu() {
+    document.body.classList.toggle("menu-open");
+    
+    // Prevent body scroll when menu is open
+    if (document.body.classList.contains("menu-open")) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      if (menuBody) {
+        menuBody.style.transform = "translateX(0)";
+        menuBody.style.visibility = "visible";
+      }
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      if (menuBody) {
+        menuBody.style.transform = "translateX(-100%)";
+      }
+    }
+  }
+  
+  // Toggle menu when hamburger icon is clicked
+  if (menuIcon) {
+    // Remove any existing listeners by cloning
+    const newMenuIcon = menuIcon.cloneNode(true);
+    menuIcon.parentNode.replaceChild(newMenuIcon, menuIcon);
+    
+    newMenuIcon.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleMenu();
+    });
+    
+    // Also add touch event for better mobile support
+    newMenuIcon.addEventListener("touchend", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleMenu();
+    });
+  }
+  
+  // Close menu when clicking navigation links
+  menuLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      // Allow navigation to happen, but close menu
+      setTimeout(() => {
+        document.body.classList.remove('menu-open');
+        document.body.style.overflow = "";
+      }, 100);
+    });
+  });
+  
+  // Close menu when clicking outside (on overlay/background)
+  if (menuBody) {
+    menuBody.addEventListener('click', function(e) {
+      // Only close if clicking the menu body itself, not the links
+      if (e.target === menuBody || e.target.classList.contains('menu__body')) {
+        document.body.classList.remove('menu-open');
+        document.body.style.overflow = "";
+      }
+    });
+  }
+  
+  // Close menu on window resize (if resizing to desktop)
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = "";
+    }
+  });
 });
 
 const spollerButtons = document.querySelectorAll("[data-spoller] .spollers-faq__button");
@@ -360,3 +477,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
   updateTotals();
 })();
+
+// =========================
+// Merchandise Shirt Toggle (Front/Back View)
+// =========================
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleItems = document.querySelectorAll('.merchandise__item--toggle');
+  
+  toggleItems.forEach(item => {
+    const imageContainer = item.querySelector('.merchandise__image--toggle');
+    const frontImage = item.querySelector('.merchandise__image-front');
+    const backImage = item.querySelector('.merchandise__image-back');
+    const viewText = item.querySelector('.merchandise__view-text');
+    
+    if (!imageContainer || !frontImage || !backImage) return;
+    
+    let isShowingFront = true;
+    
+    imageContainer.addEventListener('click', function(e) {
+      // Don't toggle if clicking the button
+      if (e.target.closest('.merchandise__button')) return;
+      
+      isShowingFront = !isShowingFront;
+      
+      // Smooth fade transition
+      if (isShowingFront) {
+        backImage.style.opacity = '0';
+        setTimeout(() => {
+          frontImage.style.display = 'block';
+          backImage.style.display = 'none';
+          frontImage.style.opacity = '1';
+        }, 200);
+        if (viewText) viewText.textContent = 'Front';
+      } else {
+        frontImage.style.opacity = '0';
+        setTimeout(() => {
+          backImage.style.display = 'block';
+          frontImage.style.display = 'none';
+          backImage.style.opacity = '1';
+        }, 200);
+        if (viewText) viewText.textContent = 'Back';
+      }
+    });
+  });
+});

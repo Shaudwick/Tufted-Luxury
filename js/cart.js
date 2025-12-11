@@ -29,6 +29,16 @@ const prices = {
     luxury: 2500
 };
 
+// Merchandise items
+const merchandiseItems = {
+    'quarter-zip': { name: 'Quarter Zip Pullover', price: 65, type: 'apparel' },
+    'short-sleeve': { name: 'Short Sleeve T-Shirt', price: 45, type: 'apparel' },
+    'long-sleeve': { name: 'Long Sleeve T-Shirt', price: 55, type: 'apparel' },
+    'cap': { name: 'Baseball Cap', price: 35, type: 'accessory' },
+    'mousepad': { name: 'Mouse Pad', price: 25, type: 'accessory' },
+    'notebook': { name: 'Notebook', price: 20, type: 'accessory' }
+};
+
 // Deposit percentage
 const DEPOSIT_PERCENTAGE = 0.3; // 30% deposit
 
@@ -43,12 +53,23 @@ const depositAmount = document.getElementById('deposit-amount');
 const checkoutButton = document.getElementById('checkout-button');
 const continueShopping = document.getElementById('continue-shopping');
 
-// Add to cart buttons
+// Add to cart buttons for collections
 document.querySelectorAll('[data-collection]').forEach(button => {
     button.addEventListener('click', (e) => {
         e.preventDefault();
         const collection = button.dataset.collection;
         addToCart(collection);
+        updateCartDisplay();
+        openCartDrawer();
+    });
+});
+
+// Add to cart buttons for merchandise
+document.querySelectorAll('[data-add-to-cart]').forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const itemId = button.dataset.addToCart;
+        addMerchandiseToCart(itemId);
         updateCartDisplay();
         openCartDrawer();
     });
@@ -84,9 +105,9 @@ function persistCart() {
     try { localStorage.setItem('cart', JSON.stringify(cart)); } catch (e) { /* ignore */ }
 }
 
-// Add item to cart
+// Add item to cart (collections)
 function addToCart(collection) {
-    const existingItem = cart.items.find(item => item.collection === collection);
+    const existingItem = cart.items.find(item => item.collection === collection && !item.itemId);
     
     if (existingItem) {
         existingItem.quantity += 1;
@@ -94,6 +115,29 @@ function addToCart(collection) {
         cart.items.push({
             collection: collection,
             price: prices[collection],
+            quantity: 1
+        });
+    }
+    
+    updateCartTotal();
+    persistCart();
+}
+
+// Add merchandise item to cart
+function addMerchandiseToCart(itemId) {
+    const item = merchandiseItems[itemId];
+    if (!item) return;
+    
+    const existingItem = cart.items.find(cartItem => cartItem.itemId === itemId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.items.push({
+            itemId: itemId,
+            name: item.name,
+            price: item.price,
+            type: item.type,
             quantity: 1
         });
     }
@@ -117,14 +161,29 @@ function updateCartDisplay() {
     cartButton.textContent = `Cart (${totalItems})`;
 
     // Update cart items
-    cartItems.innerHTML = cart.items.map(item => `
-        <div class="cart-item">
-            <h4>${item.collection.charAt(0).toUpperCase() + item.collection.slice(1)} Collection</h4>
-            <p>Quantity: ${item.quantity}</p>
-            <p>Price: $${item.price}</p>
-            <button onclick="removeFromCart('${item.collection}')">Remove</button>
-        </div>
-    `).join('');
+    cartItems.innerHTML = cart.items.map(item => {
+        if (item.itemId) {
+            // Merchandise item
+            return `
+                <div class="cart-item">
+                    <h4>${item.name}</h4>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: $${item.price}</p>
+                    <button onclick="removeFromCart('${item.itemId}', true)">Remove</button>
+                </div>
+            `;
+        } else {
+            // Collection item
+            return `
+                <div class="cart-item">
+                    <h4>${item.collection.charAt(0).toUpperCase() + item.collection.slice(1)} Collection</h4>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: $${item.price}</p>
+                    <button onclick="removeFromCart('${item.collection}', false)">Remove</button>
+                </div>
+            `;
+        }
+    }).join('');
 
     // Update totals
     cartTotal.textContent = cart.total;
@@ -132,19 +191,25 @@ function updateCartDisplay() {
 }
 
 // Remove item from cart
-function removeFromCart(collection) {
-    cart.items = cart.items.filter(item => item.collection !== collection);
+function removeFromCart(identifier, isMerchandise) {
+    if (isMerchandise) {
+        cart.items = cart.items.filter(item => item.itemId !== identifier);
+    } else {
+        cart.items = cart.items.filter(item => item.collection !== identifier);
+    }
     updateCartTotal();
     updateCartDisplay();
     persistCart();
 }
 
 // Checkout process
-checkoutButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    persistCart();
-    window.location.href = 'Checkout.html';
-});
+if (checkoutButton) {
+    checkoutButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        persistCart();
+        window.location.href = 'Checkout.html';
+    });
+}
 
 // Initialize UI on load
 updateCartDisplay();
