@@ -69,14 +69,25 @@
     </footer>
   </div>
 
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="js/config.js"></script>
   <script>
     (function() {
-      const DEPOSIT_PERCENTAGE = 0.3;
-      const STRIPE_LINK = "https://book.stripe.com/test_8x26oI7IG7rOdfbdypcEw00"; // Stripe Payment Link
-      const PAYPAL_ME = "https://paypal.me/YourName"; // replace
-      const VENMO_USER = "YourVenmo"; // replace, no @
-      const CASHAPP_TAG = "YourCashTag"; // replace, no $
-      const ZELLE_EMAIL = "tickets@example.com"; // replace
+      // Load config
+      const config = typeof CONFIG !== 'undefined' ? CONFIG : {
+        STRIPE_PUBLISHABLE_KEY: 'pk_test_YOUR_PUBLISHABLE_KEY',
+        DEPOSIT_PERCENTAGE: 0.3,
+        PAYPAL_ME: 'https://paypal.me/YourName',
+        VENMO_USER: 'YourVenmo',
+        CASHAPP_TAG: 'YourCashTag',
+        ZELLE_EMAIL: 'your-email@example.com',
+        API_ENDPOINT: '/create-checkout-session',
+      };
+
+      const DEPOSIT_PERCENTAGE = config.DEPOSIT_PERCENTAGE;
+      
+      // Initialize Stripe
+      const stripe = Stripe(config.STRIPE_PUBLISHABLE_KEY);
 
       const itemsEl = document.getElementById('checkout-items');
       const subtotalEl = document.getElementById('summary-subtotal');
@@ -93,53 +104,185 @@
 
       function format(n) { return Number(n || 0).toFixed(2); }
 
+      // Load cart from localStorage
       let cart = { items: [], total: 0 };
       try {
         const persisted = localStorage.getItem('cart');
         if (persisted) cart = JSON.parse(persisted) || cart;
-      } catch(e) {}
+      } catch(e) {
+        console.error('Error loading cart:', e);
+      }
 
+      // Display cart items
       if (!cart.items || !cart.items.length) {
-        itemsEl.innerHTML = '<p>Your cart is empty.</p>';
+        itemsEl.innerHTML = '<p>Your cart is empty. <a href="home.html">Continue Shopping</a></p>';
       } else {
         itemsEl.innerHTML = cart.items.map(i => (
-          `<div class="cart-item">
+          `<div class="cart-item" style="border-bottom: 1px solid #eee; padding: 1rem 0;">
             <h4>${i.collection.charAt(0).toUpperCase() + i.collection.slice(1)} Collection</h4>
             <p>Quantity: ${i.quantity}</p>
-            <p>Price: $${format(i.price)}</p>
+            <p>Price: $${format(i.price)} each</p>
+            <p><strong>Subtotal: $${format(i.price * i.quantity)}</strong></p>
           </div>`
         )).join('');
       }
 
+      // Calculate amounts
       const subtotal = cart.total || 0;
       const deposit = subtotal * DEPOSIT_PERCENTAGE;
       const remaining = subtotal - deposit;
+      
       subtotalEl.textContent = format(subtotal);
       depositEl.textContent = format(deposit);
       remainingEl.textContent = format(remaining);
 
-      // Payment links
-      payCard.href = STRIPE_LINK;
-      payPayPal.href = `${PAYPAL_ME}/${format(subtotal)}`;
+      // Handle Stripe payment
+      async function handleStripePayment() {
+        if (deposit <= 0) {
+          alert('Please add items to your cart first.');
+          return;
+        }
+
+        const originalText = payCard.textContent;
+        payCard.disabled = true;
+        payCard.textContent = 'Processing...';
+
+        try {
+          const response = await fetch(config.API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: deposit,
+              cartItems: cart.items || [],
+              metadata: {
+                orderTotal: format(subtotal),
+                deposit: format(deposit),
+                remaining: format(remaining),
+                cartId: Date.now().toString(),
+                itemCount: cart.items.reduce((sum, item) => sum + item.quantity, 0)
+              },
+              customerEmail: undefined // Can add email input field later
+            })
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Payment request failed');
+          }
+
+          const { url } = await response.json();
+          
+          // Redirect to Stripe Checkout
+          window.location.href = url;
+        } catch (error) {
+          console.error('Payment error:', error);
+          alert('Unable to process payment. Please try again.\n\nError: ' + error.message);
+          payCard.disabled = false;
+          payCard.textContent = originalText;
+        }
+      }
+
+      // Payment button handlers
+      payCard.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await handleStripePayment();
+      });
+
+      // PayPal - use DEPOSIT amount
+      payPayPal.href = `${config.PAYPAL_ME}/${format(deposit)}`;
+      payPayPal.addEventListener('click', (e) => {
+        if (deposit <= 0) {
+          e.preventDefault();
+          alert('Please add items to your cart first.');
+        }
+      });
+
+      // Venmo - use DEPOSIT amount
       payVenmo.addEventListener('click', (e) => {
         e.preventDefault();
-        const amt = format(subtotal);
-        const note = encodeURIComponent('Black Lobby Order');
-        const deepLink = `venmo://paycharge?txn=pay&recipients=${encodeURIComponent(VENMO_USER)}&amount=${amt}&note=${note}`;
-        const webFallback = `https://venmo.com/u/${encodeURIComponent(VENMO_USER)}`;
+        if (deposit <= 0) {
+          alert('Please add items to your cart first.');
+          return;
+        }
+        const amt = format(deposit);
+        const note = encodeURIComponent('Black Lobby Deposit');
+        const deepLink = `venmo://paycharge?txn=pay&recipients=${encodeURIComponent(config.VENMO_USER)}&amount=${amt}&note=${note}`;
+        const webFallback = `https://venmo.com/u/${encodeURIComponent(config.VENMO_USER)}`;
         const timeout = setTimeout(() => window.open(webFallback, '_blank', 'noopener'), 800);
         window.location.href = deepLink;
-        document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(timeout); }, { once: true });
+        document.addEventListener('visibilitychange', () => { 
+          if (document.hidden) clearTimeout(timeout); 
+        }, { once: true });
       });
-      payCashApp.href = `https://cash.app/$${encodeURIComponent(CASHAPP_TAG)}/${format(subtotal)}`;
-      payZelle.addEventListener('click', () => {
-        zelleDst.textContent = ZELLE_EMAIL;
-        zelleAmt.textContent = `$${format(subtotal)}`;
+
+      // Cash App - use DEPOSIT amount
+      payCashApp.href = `https://cash.app/$${encodeURIComponent(config.CASHAPP_TAG)}/${format(deposit)}`;
+      payCashApp.addEventListener('click', (e) => {
+        if (deposit <= 0) {
+          e.preventDefault();
+          alert('Please add items to your cart first.');
+        }
+      });
+
+      // Zelle - use DEPOSIT amount
+      payZelle.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (deposit <= 0) {
+          alert('Please add items to your cart first.');
+          return;
+        }
+        zelleDst.textContent = config.ZELLE_EMAIL;
+        zelleAmt.textContent = `$${format(deposit)}`;
         zelleBox.style.display = 'block';
+        
+        // Scroll to Zelle details
+        zelleBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
+
+      // Handle payment success/cancel from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('success') === 'true') {
+        const sessionId = urlParams.get('session_id');
+        const successMessage = sessionId 
+          ? 'Payment successful! You will receive a confirmation email shortly.\n\nSession ID: ' + sessionId.substring(0, 20) + '...'
+          : 'Payment successful! You will receive a confirmation email shortly.';
+        
+        alert(successMessage);
+        
+        // Store order info
+        try {
+          const order = {
+            id: sessionId || Date.now().toString(),
+            cart: cart,
+            deposit: deposit,
+            total: subtotal,
+            remaining: remaining,
+            timestamp: new Date().toISOString(),
+            status: 'paid'
+          };
+          const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+          orders.push(order);
+          localStorage.setItem('orders', JSON.stringify(orders));
+          
+          // Clear cart after successful payment
+          localStorage.removeItem('cart');
+        } catch(e) {
+          console.error('Error saving order:', e);
+        }
+        
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Show success message on page
+        itemsEl.innerHTML = '<div style="padding: 2rem; text-align: center; background: #f0f9ff; border: 2px solid #0284c7; border-radius: 8px;"><h2 style="color: #0284c7;">Payment Successful!</h2><p>Thank you for your order. You will receive a confirmation email shortly.</p><a href="home.html" class="button" style="margin-top: 1rem; display: inline-block;">Continue Shopping</a></div>';
+      }
+      
+      if (urlParams.get('canceled') === 'true') {
+        alert('Payment was canceled. You can try again when ready.');
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
     })();
   </script>
 </body>
-
 </html>
 
