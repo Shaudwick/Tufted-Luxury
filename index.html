@@ -12,6 +12,80 @@
   <title>Black Lobby - Luxury Tufted Rugs & Artisanal Programming | Commission & Partnerships</title>
   <meta name="description" content="Black Lobby creates handcrafted luxury tufted rugs and offers institutional programming for colleges, hotels, and cultural venues. Commission custom rugs, book speaking engagements, and explore venue partnerships.">
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .art-reveal-ticket-button {
+      background: linear-gradient(135deg, #fff1c9 0%, #f5e8b8 100%);
+      color: #1a1a1a;
+      padding: 1.2rem 3.5rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 0;
+      display: inline-block;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(255, 241, 201, 0.4);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .art-reveal-ticket-button:hover {
+      background: linear-gradient(135deg, #f5e8b8 0%, #fff1c9 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 241, 201, 0.5);
+      color: #1a1a1a;
+    }
+    .ticket-option {
+      padding: 1.5rem;
+      background: rgba(255, 241, 201, 0.08);
+      border-left: 3px solid #fff1c9;
+      margin-bottom: 1.5rem;
+      transition: background 0.3s ease;
+    }
+    .ticket-option:hover {
+      background: rgba(255, 241, 201, 0.12);
+    }
+    .ticket-option:last-child {
+      margin-bottom: 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 241, 201, 0.3);
+    }
+    .ticket-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #fff1c9;
+      letter-spacing: 1px;
+    }
+    .ticket-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff1c9;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.5rem;
+    }
+    .ticket-description {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      color: #d0d0d0;
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .art-reveal-banner__container > div {
+        flex-direction: column !important;
+        gap: 2rem !important;
+      }
+      .art-reveal-banner__container > div > div:last-child {
+        text-align: center !important;
+      }
+      .ticket-price {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
   <script src="https://js.stripe.com/v3/"></script>
   <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 </head>
@@ -42,6 +116,64 @@
       </div>
     </header>
     <main class="page">
+      <!-- Arts After Dark Las Vegas Event Ticket Sales -->
+      <section class="art-reveal-banner" style="background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 50%, #1a1a1a 100%); padding: 5rem 2rem; text-align: center; border-bottom: 3px solid #fff1c9; position: relative; overflow: hidden;">
+        <div class="art-reveal-banner__container" style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 4rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 350px; max-width: 550px; position: relative;">
+              <img src="Website-Images/Home/ARTIST REVEAL.png" alt="Arts After Dark Las Vegas" style="width: 100%; height: auto; border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.6), 0 0 0 2px rgba(255, 241, 201, 0.2); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="flex: 1; min-width: 350px; color: #fff; text-align: left; padding: 1rem 0;">
+              <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; margin: 0 0 0.5rem 0; color: #fff1c9; text-transform: uppercase; letter-spacing: 2px;">
+                  JAN 10TH • 6PM-10PM
+                </h3>
+              </div>
+              <h2 style="font-family: 'Oswald', sans-serif; font-size: 3.5rem; font-weight: 700; margin: 0 0 1rem 0; color: #fff1c9; text-transform: uppercase; letter-spacing: 3px; line-height: 1.2;">
+                ARTS AFTER DARK<br /><span style="font-size: 0.85em; color: #fafafa; letter-spacing: 4px;">LAS VEGAS</span>
+              </h2>
+              <p style="font-family: 'Montserrat', sans-serif; font-size: 1.2rem; line-height: 1.8; margin: 0 0 0.5rem 0; color: #e8e8e8; font-weight: 400; text-transform: uppercase; letter-spacing: 1px;">
+                ART GALLERY EXHIBITION & NETWORKING EVENT
+              </p>
+              <p style="font-family: 'Montserrat', sans-serif; font-size: 1rem; line-height: 1.6; margin: 0 0 2rem 0; color: #d0d0d0; font-weight: 300; font-style: italic;">
+                A CURATED EXPERIENCE • ARTISTS OF ALL MEDIUMS WELCOMED
+              </p>
+              
+              <!-- Ticket Options -->
+              <div style="margin: 2rem 0;">
+                <div class="ticket-option">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                    <div style="flex: 1;">
+                      <div class="ticket-title">General Tickets</div>
+                      <div class="ticket-description">Networking & Art Exhibition</div>
+                    </div>
+                    <div class="ticket-price">$12</div>
+                  </div>
+                </div>
+                <div class="ticket-option" style="margin-bottom: 0;">
+                  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem;">
+                    <div style="flex: 1;">
+                      <div class="ticket-title">Refreshments Lounge</div>
+                      <div class="ticket-description">Access to 21+ beverages & Food, Networking & Art Exhibition</div>
+                    </div>
+                    <div class="ticket-price">$18</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="margin-top: 2.5rem;">
+                <a href="https://buy.stripe.com/7sY4gAcYFfUA05s41pafS02" target="_blank" rel="noopener" class="art-reveal-ticket-button">
+                  Purchase Admission Ticket
+                </a>
+              </div>
+              <p style="font-family: 'Montserrat', sans-serif; font-size: 0.95rem; margin-top: 1.5rem; color: #b8b8b8; font-style: italic; letter-spacing: 0.5px;">
+                ✨ Limited availability • Secure your spot today
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="main">
         <div class="main__container">
           <h3 class="main__caption">Handcrafted Excellence</h3>

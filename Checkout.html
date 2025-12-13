@@ -137,14 +137,22 @@
       remainingEl.textContent = format(remaining);
 
       // Handle Stripe payment
+      let isProcessing = false; // Prevent multiple simultaneous payment requests
       async function handleStripePayment() {
         if (deposit <= 0) {
           alert('Please add items to your cart first.');
           return;
         }
 
+        // Prevent multiple clicks
+        if (isProcessing) {
+          return;
+        }
+
+        isProcessing = true;
         const originalText = payCard.textContent;
-        payCard.disabled = true;
+        payCard.style.pointerEvents = 'none'; // Disable clicks on anchor tag
+        payCard.style.opacity = '0.6'; // Visual feedback
         payCard.textContent = 'Processing...';
 
         try {
@@ -159,7 +167,7 @@
                 deposit: format(deposit),
                 remaining: format(remaining),
                 cartId: Date.now().toString(),
-                itemCount: cart.items.reduce((sum, item) => sum + item.quantity, 0)
+                itemCount: (cart.items || []).reduce((sum, item) => sum + item.quantity, 0)
               },
               customerEmail: undefined // Can add email input field later
             })
@@ -177,7 +185,9 @@
         } catch (error) {
           console.error('Payment error:', error);
           alert('Unable to process payment. Please try again.\n\nError: ' + error.message);
-          payCard.disabled = false;
+          isProcessing = false;
+          payCard.style.pointerEvents = ''; // Re-enable clicks
+          payCard.style.opacity = ''; // Restore opacity
           payCard.textContent = originalText;
         }
       }
