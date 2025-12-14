@@ -7,6 +7,7 @@ const Stripe = require("stripe");
 const nodemailer = require("nodemailer");
 const twilio = require("twilio");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -73,18 +74,10 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         }];
 
-    // Determine ticket tier based on amount or metadata
-    // $12 = networking, $18 = charcuterie/refreshments lounge
-    let ticketTier = metadata?.ticketTier;
-    if (!ticketTier) {
-      if (amount === 12) {
-        ticketTier = "networking";
-      } else if (amount === 18) {
-        ticketTier = "charcuterie";
-      } else {
-        ticketTier = "networking"; // default
-      }
-    }
+    // Determine ticket tier from metadata only
+    // Note: amount is a deposit (30% of total), so don't infer tier from amount
+    // Ticket tier should be explicitly set in metadata by the client for ticket purchases
+    const ticketTier = metadata?.ticketTier || null;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -94,7 +87,7 @@ app.post('/create-checkout-session', async (req, res) => {
       cancel_url: `${origin}/Checkout.html?canceled=true`,
       metadata: {
         ...metadata,
-        ticketTier: ticketTier, // Add ticketTier to metadata
+        ...(ticketTier && { ticketTier: ticketTier }), // Only add ticketTier if provided
         timestamp: new Date().toISOString(),
       },
       customer_email: customerEmail || undefined,
@@ -154,9 +147,8 @@ app.post(
       const email = session.customer_details?.email;
       const name = session.customer_details?.name || "Guest";
 
-      // You decide where to store these in Stripe Checkout:
-      // e.g. metadata.ticketTier = "networking" or "charcuterie"
-      const ticketTier = session.metadata?.ticketTier || "networking";
+      // Get ticket tier from metadata (only set for ticket purchases, not rug deposits)
+      const ticketTier = session.metadata?.ticketTier || null;
 
       // Phone can come from Stripe customer details or your own metadata
       const phone =
@@ -167,7 +159,13 @@ app.post(
       // Respond to Stripe quickly
       res.json({ received: true });
 
-      // Delay 1 minute, then send email + optional SMS
+      // Only send ticket confirmation emails/SMS if this is actually a ticket purchase
+      if (!ticketTier) {
+        console.log("ℹ️ Payment completed but not a ticket purchase (no ticketTier in metadata) - skipping ticket notifications");
+        return;
+      }
+
+      // Delay 1 minute, then send email + optional SMS (only for ticket purchases)
       setTimeout(async () => {
         try {
           if (email) {
@@ -330,14 +328,20 @@ async function sendTicketEmail({ to, name, ticketTier, orderId }) {
     to,
     subject: "Your Arts After Dark Ticket Confirmation",
     html,
-    attachments: [
-      {
-        filename: "arts-after-dark-header.jpg",
-        path: path.join(__dirname, "assets", "arts-after-dark-header.jpg"),
-        cid: "rugheader", // must match the img src in buildEmailHtml
-      },
-    ],
+    attachments: [],
   };
+
+  // Only attach image if file exists (optional attachment)
+  const imagePath = path.join(__dirname, "assets", "arts-after-dark-header.jpg");
+  if (fs.existsSync(imagePath)) {
+    mailOptions.attachments.push({
+      filename: "arts-after-dark-header.jpg",
+      path: imagePath,
+      cid: "rugheader", // must match the img src in buildEmailHtml
+    });
+  } else {
+    console.warn("⚠️ Email header image not found at:", imagePath, "- sending email without image attachment");
+  }
 
   try {
     await transporter.sendMail(mailOptions);
