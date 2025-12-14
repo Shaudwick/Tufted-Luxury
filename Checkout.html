@@ -251,45 +251,82 @@
 
       // Handle payment success/cancel from URL parameters
       const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('success') === 'true') {
-        const sessionId = urlParams.get('session_id');
-        const successMessage = sessionId 
-          ? 'Payment successful! You will receive a confirmation email shortly.\n\nSession ID: ' + sessionId.substring(0, 20) + '...'
-          : 'Payment successful! You will receive a confirmation email shortly.';
-        
-        alert(successMessage);
-        
-        // Store order info
-        try {
-          const order = {
-            id: sessionId || Date.now().toString(),
-            cart: cart,
-            deposit: deposit,
-            total: subtotal,
-            remaining: remaining,
-            timestamp: new Date().toISOString(),
-            status: 'paid'
-          };
-          const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-          orders.push(order);
-          localStorage.setItem('orders', JSON.stringify(orders));
-          
-          // Clear cart after successful payment
-          localStorage.removeItem('cart');
-        } catch(e) {
-          console.error('Error saving order:', e);
-        }
-        
-        // Clean URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-        
-        // Show success message on page
-        itemsEl.innerHTML = '<div style="padding: 2rem; text-align: center; background: #f0f9ff; border: 2px solid #0284c7; border-radius: 8px;"><h2 style="color: #0284c7;">Payment Successful!</h2><p>Thank you for your order. You will receive a confirmation email shortly.</p><a href="home.html" class="button" style="margin-top: 1rem; display: inline-block;">Continue Shopping</a></div>';
-      }
       
+      // Handle canceled payments (safe to trust - no action taken)
       if (urlParams.get('canceled') === 'true') {
         alert('Payment was canceled. You can try again when ready.');
         window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      
+      // Handle success - MUST verify with server to prevent fake success URLs
+      if (urlParams.get('success') === 'true') {
+        (async () => {
+          const sessionId = urlParams.get('session_id');
+          
+          if (!sessionId) {
+            console.error('No session ID provided in success URL');
+            alert('Payment verification failed: No session ID found. Please contact support if you completed a payment.');
+            window.history.replaceState({}, document.title, window.location.pathname);
+            return;
+          }
+          
+          // Verify session with server before showing success
+          try {
+            const verifyResponse = await fetch(`/verify-session/${sessionId}`);
+            
+            if (!verifyResponse.ok) {
+              throw new Error('Session verification failed');
+            }
+            
+            const sessionData = await verifyResponse.json();
+            
+            // Only proceed if payment_status is 'paid'
+            if (sessionData.payment_status !== 'paid') {
+              console.error('Payment not completed:', sessionData.payment_status);
+              alert('Payment verification failed: Payment was not completed. Please contact support if you believe this is an error.');
+              window.history.replaceState({}, document.title, window.location.pathname);
+              return;
+            }
+            
+            // Payment verified - safe to show success and clear cart
+            const successMessage = 'Payment successful! You will receive a confirmation email shortly.\n\nSession ID: ' + sessionId.substring(0, 20) + '...';
+            alert(successMessage);
+            
+            // Store order info
+            try {
+              const order = {
+                id: sessionId,
+                cart: cart,
+                deposit: deposit,
+                total: subtotal,
+                remaining: remaining,
+                timestamp: new Date().toISOString(),
+                status: 'paid',
+                verified: true,
+                customerEmail: sessionData.customer_email,
+                amountPaid: sessionData.amount_total
+              };
+              const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+              orders.push(order);
+              localStorage.setItem('orders', JSON.stringify(orders));
+              
+              // Clear cart after verified successful payment
+              localStorage.removeItem('cart');
+            } catch(e) {
+              console.error('Error saving order:', e);
+            }
+            
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Show success message on page
+            itemsEl.innerHTML = '<div style="padding: 2rem; text-align: center; background: #f0f9ff; border: 2px solid #0284c7; border-radius: 8px;"><h2 style="color: #0284c7;">Payment Successful!</h2><p>Thank you for your order. You will receive a confirmation email shortly.</p><a href="home.html" class="button" style="margin-top: 1rem; display: inline-block;">Continue Shopping</a></div>';
+          } catch (error) {
+            console.error('Error verifying payment session:', error);
+            alert('Unable to verify payment. Please contact support with your session ID if you completed a payment.\n\nSession ID: ' + (sessionId ? sessionId.substring(0, 20) + '...' : 'N/A'));
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        })();
       }
     })();
   </script>
