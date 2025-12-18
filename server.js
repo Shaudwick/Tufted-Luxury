@@ -148,7 +148,22 @@ app.post(
       const name = session.customer_details?.name || "Guest";
 
       // Get ticket tier from metadata (only set for ticket purchases, not rug deposits)
-      const ticketTier = session.metadata?.ticketTier || null;
+      // If not in metadata, try to infer from payment amount for direct Stripe payment links
+      let ticketTier = session.metadata?.ticketTier || null;
+
+      // Check if this is an artist submission payment (by amount: $35, $50, or $75)
+      const amountTotal = session.amount_total || 0; // in cents
+      const isArtistSubmission = amountTotal === 3500 || amountTotal === 5000 || amountTotal === 7500;
+
+      // Check if this is a ticket purchase by amount ($12 = 1200 cents, $18 = 1800 cents)
+      // If ticketTier is not in metadata, infer it from the amount for direct payment links
+      if (!ticketTier && !isArtistSubmission) {
+        if (amountTotal === 1200) {
+          ticketTier = "networking"; // $12 General ticket
+        } else if (amountTotal === 1800) {
+          ticketTier = "charcuterie"; // $18 Refreshments Lounge ticket
+        }
+      }
 
       // Phone can come from Stripe customer details or your own metadata
       const phone =
@@ -159,26 +174,41 @@ app.post(
       // Respond to Stripe quickly
       res.json({ received: true });
 
-      // Only send ticket confirmation emails/SMS if this is actually a ticket purchase
-      if (!ticketTier) {
-        console.log("ℹ️ Payment completed but not a ticket purchase (no ticketTier in metadata) - skipping ticket notifications");
+      // Handle artist submission payments
+      if (isArtistSubmission && email) {
+        const submissionAmount = amountTotal / 100; // Convert cents to dollars
+        setTimeout(async () => {
+          try {
+            await sendArtistSubmissionEmail({ to: email, name, amount: submissionAmount, orderId });
+            console.log("✅ Artist submission confirmation email sent to", email);
+          } catch (err) {
+            console.error("❌ Error sending artist submission email:", err);
+          }
+        }, 60 * 1000);
+        return; // Don't process as ticket purchase
+      }
+
+      // Send ticket confirmation emails/SMS if this is a ticket purchase
+      if (ticketTier && email) {
+        // Delay 1 minute, then send email + optional SMS
+        setTimeout(async () => {
+          try {
+            await sendTicketEmail({ to: email, name, ticketTier, orderId });
+            console.log("✅ Ticket confirmation email sent to", email, "for", ticketTier, "tier");
+
+            if (phone) {
+              await sendTicketSms({ to: phone, ticketTier });
+            }
+          } catch (err) {
+            console.error("❌ Error sending ticket notifications:", err);
+          }
+        }, 60 * 1000);
         return;
       }
 
-      // Delay 1 minute, then send email + optional SMS (only for ticket purchases)
-      setTimeout(async () => {
-        try {
-          if (email) {
-            await sendTicketEmail({ to: email, name, ticketTier, orderId });
-          }
+      // If we get here, it's not a ticket or artist submission
+      console.log("ℹ️ Payment completed but not a ticket purchase or artist submission - skipping notifications");
 
-          if (phone) {
-            await sendTicketSms({ to: phone, ticketTier });
-          }
-        } catch (err) {
-          console.error("❌ Error sending notifications:", err);
-        }
-      }, 60 * 1000);
     } else {
       // For other events, just acknowledge
       res.json({ received: true });
@@ -240,13 +270,17 @@ function buildEmailHtml({ name, ticketTier, orderId }) {
       and immersive artistic storytelling.
     </p>
 
-    <h2>📍 Event Location</h2>
-    <p>
-      <strong>Arts After Dark</strong><br/>
-      1551 S Commerce St<br/>
-      Las Vegas, NV<br/>
-      Doors open at <strong>5:00 PM</strong>.
-    </p>
+    <h2>📍 Event Details</h2>
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #0284c7; margin: 20px 0;">
+      <p style="margin: 0 0 10px 0; font-size: 1.1em;">
+        <strong>📅 Date & Time:</strong><br/>
+        <span style="font-size: 1.2em; color: #0284c7;">January 10th, 2025 • 6:00 PM - 10:00 PM</span>
+      </p>
+      <p style="margin: 10px 0 0 0; font-size: 1.1em;">
+        <strong>📍 Location:</strong><br/>
+        <span style="font-size: 1.1em;">1551 S Commerce St<br/>Las Vegas, NV 89121</span>
+      </p>
+    </div>
 
     <h2>👗 Dress Code — Black &amp; White Only</h2>
     <p>
@@ -387,6 +421,68 @@ async function sendTicketSms({ to, ticketTier }) {
   } catch (err) {
     console.error("❌ Error sending SMS:", err);
     // Don't throw - we don't want to fail the webhook if SMS fails
+  }
+}
+
+// ---------- ARTIST SUBMISSION EMAIL ----------
+
+function buildArtistSubmissionEmailHtml({ name, amount, orderId }) {
+  return `
+    <div style="font-family: 'Playfair Display', serif; color: #111; background: #ffffff; padding: 20px;">
+      <h1 style="text-align: center; font-weight: 700; letter-spacing: 1px; margin-bottom: 24px;">
+        Artist Submission Fee — Payment Confirmed
+      </h1>
+      
+      <p>Hello <strong>${name}</strong>,</p>
+
+      <p>
+        Thank you for submitting your artist application to <strong>Arts After Dark</strong>, 
+        hosted by <strong>Black Lobby Collective</strong>. Your submission fee payment has been 
+        successfully processed.
+      </p>
+
+      <h2>📋 Payment Details</h2>
+      <p>
+        <strong>Submission Fee Paid:</strong> $${amount.toFixed(2)}<br/>
+        <strong>Order ID:</strong> ${orderId}<br/>
+        <strong>Payment Status:</strong> Confirmed
+      </p>
+
+      <h2>✨ What's Next?</h2>
+      <p>
+        Our team will review your submission and reach out to you shortly with next steps. 
+        Please ensure you have also completed the artist information form if you haven't already.
+      </p>
+
+      <p style="margin-top: 32px;">
+        For any questions about your submission or the event, please contact us at
+        <a href="mailto:contact@blacklobby.co">contact@blacklobby.co</a>.
+      </p>
+      
+      <p>
+        We look forward to the possibility of featuring your work.<br/>
+        <strong>— Black Lobby Collective</strong>
+      </p>
+    </div>
+  `;
+}
+
+async function sendArtistSubmissionEmail({ to, name, amount, orderId }) {
+  const html = buildArtistSubmissionEmailHtml({ name, amount, orderId });
+
+  const mailOptions = {
+    from: '"Black Lobby Collective" <no-reply@blacklobby.co>',
+    to,
+    subject: "Artist Submission Fee — Payment Confirmed",
+    html,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("✅ Artist submission email sent to", to);
+  } catch (err) {
+    console.error("❌ Error sending artist submission email:", err);
+    // Don't throw - we don't want to fail the webhook if email fails
   }
 }
 
