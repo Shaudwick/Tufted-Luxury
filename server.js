@@ -146,22 +146,47 @@ app.post(
 
       const email = session.customer_details?.email;
       const name = session.customer_details?.name || "Guest";
+      const amountTotal = session.amount_total || 0; // in cents
+      const orderId = session.id;
+
+      // Log all webhook events for debugging
+      console.log("📦 Webhook received - checkout.session.completed");
+      console.log("   Session ID:", orderId);
+      console.log("   Amount (cents):", amountTotal);
+      console.log("   Amount (dollars):", amountTotal / 100);
+      console.log("   Email:", email || "NO EMAIL");
+      console.log("   Name:", name);
+      console.log("   Metadata:", JSON.stringify(session.metadata || {}));
+
+      // Respond to Stripe quickly
+      res.json({ received: true });
+
+      // Check if email is missing
+      if (!email) {
+        console.error("❌ No email address found in payment - cannot send confirmation");
+        return;
+      }
 
       // Get ticket tier from metadata (only set for ticket purchases, not rug deposits)
       // If not in metadata, try to infer from payment amount for direct Stripe payment links
       let ticketTier = session.metadata?.ticketTier || null;
 
       // Check if this is an artist submission payment (by amount: $35, $50, or $75)
-      const amountTotal = session.amount_total || 0; // in cents
-      const isArtistSubmission = amountTotal === 3500 || amountTotal === 5000 || amountTotal === 7500;
+      // Allow small tolerance for potential fees (check within $1 range)
+      const isArtistSubmission = 
+        (amountTotal >= 3400 && amountTotal <= 3600) || // $35 ± $1
+        (amountTotal >= 4900 && amountTotal <= 5100) || // $50 ± $1
+        (amountTotal >= 7400 && amountTotal <= 7600);   // $75 ± $1
 
       // Check if this is a ticket purchase by amount ($12 = 1200 cents, $18 = 1800 cents)
-      // If ticketTier is not in metadata, infer it from the amount for direct payment links
+      // Allow small tolerance for potential fees (check within $1 range)
       if (!ticketTier && !isArtistSubmission) {
-        if (amountTotal === 1200) {
+        if (amountTotal >= 1100 && amountTotal <= 1300) {
           ticketTier = "networking"; // $12 General ticket
-        } else if (amountTotal === 1800) {
+          console.log("   Detected: $12 General Ticket");
+        } else if (amountTotal >= 1700 && amountTotal <= 1900) {
           ticketTier = "charcuterie"; // $18 Refreshments Lounge ticket
+          console.log("   Detected: $18 Refreshments Lounge Ticket");
         }
       }
 
@@ -169,27 +194,28 @@ app.post(
       const phone =
         session.customer_details?.phone || session.metadata?.phoneNumber || null;
 
-      const orderId = session.id;
-
-      // Respond to Stripe quickly
-      res.json({ received: true });
-
       // Handle artist submission payments
-      if (isArtistSubmission && email) {
+      if (isArtistSubmission) {
         const submissionAmount = amountTotal / 100; // Convert cents to dollars
+        console.log("📧 Scheduling artist submission email to:", email, "Amount: $", submissionAmount);
         setTimeout(async () => {
           try {
             await sendArtistSubmissionEmail({ to: email, name, amount: submissionAmount, orderId });
             console.log("✅ Artist submission confirmation email sent to", email);
           } catch (err) {
             console.error("❌ Error sending artist submission email:", err);
+            console.error("   Error details:", err.message);
+            if (err.response) {
+              console.error("   SMTP Response:", err.response);
+            }
           }
         }, 60 * 1000);
         return; // Don't process as ticket purchase
       }
 
       // Send ticket confirmation emails/SMS if this is a ticket purchase
-      if (ticketTier && email) {
+      if (ticketTier) {
+        console.log("🎟 Scheduling ticket confirmation email to:", email, "Tier:", ticketTier);
         // Delay 1 minute, then send email + optional SMS
         setTimeout(async () => {
           try {
@@ -201,13 +227,19 @@ app.post(
             }
           } catch (err) {
             console.error("❌ Error sending ticket notifications:", err);
+            console.error("   Error details:", err.message);
+            if (err.response) {
+              console.error("   SMTP Response:", err.response);
+            }
           }
         }, 60 * 1000);
         return;
       }
 
       // If we get here, it's not a ticket or artist submission
-      console.log("ℹ️ Payment completed but not a ticket purchase or artist submission - skipping notifications");
+      console.log("ℹ️ Payment completed but not a ticket purchase or artist submission");
+      console.log("   Amount:", amountTotal, "cents ($", amountTotal / 100, ")");
+      console.log("   This might be a rug deposit or other purchase - skipping notifications");
 
     } else {
       // For other events, just acknowledge
@@ -259,6 +291,16 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
+
+// Verify email configuration on startup
+if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+  console.warn("⚠️ WARNING: SMTP configuration is incomplete. Email notifications may not work.");
+  console.warn("   Required: SMTP_HOST, SMTP_USER, SMTP_PASS");
+} else {
+  console.log("✅ Email configuration loaded");
+  console.log("   SMTP Host:", process.env.SMTP_HOST);
+  console.log("   SMTP User:", process.env.SMTP_USER);
+}
 
 function buildEmailHtml({ name, ticketTier, orderId }) {
   const baseIntro = `
@@ -378,11 +420,18 @@ async function sendTicketEmail({ to, name, ticketTier, orderId }) {
   }
 
   try {
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
     console.log("✅ Ticket email sent to", to);
+    console.log("   Message ID:", info.messageId);
   } catch (err) {
-    console.error("❌ Error sending email:", err);
-    // Don't throw - we don't want to fail the webhook if email fails
+    console.error("❌ Error sending ticket email:", err);
+    console.error("   Error code:", err.code);
+    console.error("   Error message:", err.message);
+    if (err.response) {
+      console.error("   SMTP Response:", err.response);
+    }
+    // Re-throw so caller can log it too
+    throw err;
   }
 }
 
@@ -478,11 +527,18 @@ async function sendArtistSubmissionEmail({ to, name, amount, orderId }) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
     console.log("✅ Artist submission email sent to", to);
+    console.log("   Message ID:", info.messageId);
   } catch (err) {
     console.error("❌ Error sending artist submission email:", err);
-    // Don't throw - we don't want to fail the webhook if email fails
+    console.error("   Error code:", err.code);
+    console.error("   Error message:", err.message);
+    if (err.response) {
+      console.error("   SMTP Response:", err.response);
+    }
+    // Re-throw so caller can log it too
+    throw err;
   }
 }
 
