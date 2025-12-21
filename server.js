@@ -13,21 +13,82 @@ const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
-// Middleware
-app.use(express.json());
-app.use(express.static(__dirname)); // Serve static files
-app.use(express.urlencoded({ extended: true }));
+// ========== SECURITY MIDDLEWARE ==========
 
-// CORS headers (adjust for production)
+// Security Headers
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  // Prevent MIME type sniffing
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  // Prevent clickjacking
+  res.setHeader('X-Frame-Options', 'DENY');
+  // Enable XSS protection
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  // Force HTTPS (uncomment in production with HTTPS)
+  // res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  // Content Security Policy
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' https://js.stripe.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
+    "img-src 'self' data: https:; " +
+    "connect-src 'self' https://api.stripe.com https://checkout.stripe.com;"
+  );
+  next();
+});
+
+// Rate Limiting (basic implementation)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+const RATE_LIMIT_MAX = 100; // max requests per window
+
+app.use((req, res, next) => {
+  const clientIp = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  
+  if (!rateLimitMap.has(clientIp)) {
+    rateLimitMap.set(clientIp, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return next();
+  }
+  
+  const limit = rateLimitMap.get(clientIp);
+  
+  if (now > limit.resetTime) {
+    limit.count = 1;
+    limit.resetTime = now + RATE_LIMIT_WINDOW;
+    return next();
+  }
+  
+  if (limit.count >= RATE_LIMIT_MAX) {
+    return res.status(429).json({ error: 'Too many requests, please try again later' });
+  }
+  
+  limit.count++;
+  next();
+});
+
+// CORS headers (restrict in production - set ALLOWED_ORIGINS in .env)
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || ['*'];
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes('*') || (origin && allowedOrigins.includes(origin))) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+  }
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
   next();
 });
+
+// Middleware
+app.use(express.json({ limit: '10mb' })); // Limit JSON payload size
+app.use(express.static(__dirname)); // Serve static files
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
