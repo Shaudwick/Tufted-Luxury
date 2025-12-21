@@ -542,6 +542,56 @@ async function sendArtistSubmissionEmail({ to, name, amount, orderId }) {
   }
 }
 
+// ---------- TEST EMAIL ENDPOINT ----------
+
+// Test endpoint to send sample ticket emails
+app.get('/test-email', async (req, res) => {
+  const testEmail = req.query.email || 'shaud150@gmail.com';
+  const ticketType = req.query.type || 'both'; // 'networking', 'charcuterie', or 'both'
+  
+  try {
+    const results = [];
+    
+    if (ticketType === 'both' || ticketType === 'networking') {
+      const orderId = `test_${Date.now()}_general`;
+      await sendTicketEmail({ 
+        to: testEmail, 
+        name: 'Test Customer', 
+        ticketTier: 'networking', 
+        orderId 
+      });
+      results.push('✅ General Ticket ($12) email sent');
+    }
+    
+    if (ticketType === 'both' || ticketType === 'charcuterie') {
+      // Wait a moment between emails
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const orderId = `test_${Date.now()}_vip`;
+      await sendTicketEmail({ 
+        to: testEmail, 
+        name: 'Test Customer', 
+        ticketTier: 'charcuterie', 
+        orderId 
+      });
+      results.push('✅ VIP Ticket ($18) email sent');
+    }
+    
+    res.json({
+      success: true,
+      message: 'Test emails sent successfully',
+      sentTo: testEmail,
+      results: results
+    });
+  } catch (err) {
+    console.error('❌ Error sending test emails:', err);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+      details: err.code || 'Unknown error'
+    });
+  }
+});
+
 // ---------- START SERVER ----------
 
 const PORT = process.env.PORT || 4242;
@@ -549,4 +599,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Visit http://localhost:${PORT} to view your site`);
   console.log(`Stripe webhook endpoint: /api/stripe/webhook`);
+  console.log(`Test email endpoint: http://localhost:${PORT}/test-email?email=shaud150@gmail.com`);
 });
+
