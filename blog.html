@@ -304,10 +304,6 @@
                 <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
                 <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
                 <li class="menu__item"><a href="blog.html" class="menu__link">Blog</a></li>
-                <li class="menu__item"><a href="contact.html#commission" class="menu__link">Commission</a></li>
-                <li class="menu__item"><a href="contact.html#partnerships" class="menu__link">Partnerships</a></li>
-                <li class="menu__item"><a href="contact.html#workshops" class="menu__link">Workshops</a></li>
-                <li class="menu__item"><a href="contact.html#weddings" class="menu__link">Weddings</a></li>
                 <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
               </ul>
             </nav>
@@ -362,20 +358,40 @@
 
   <script src="js/script.js"></script>
   <script>
-    // Load blog posts from API
+    // Load blog posts from API or JSON file
     async function loadBlogPosts() {
       try {
+        // Try API first
         const response = await fetch('/api/blog/posts');
-        const posts = await response.json();
-        displayBlogPosts(posts);
+        if (response.ok) {
+          const posts = await response.json();
+          displayBlogPosts(posts);
+          return;
+        }
+      } catch (error) {
+        console.log('API not available, trying JSON file directly...');
+      }
+      
+      // Fallback: Load directly from JSON file
+      try {
+        const jsonResponse = await fetch('blog-posts.json');
+        if (jsonResponse.ok) {
+          const allPosts = await jsonResponse.json();
+          const posts = allPosts.filter(post => post.published !== false);
+          posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+          displayBlogPosts(posts);
+          return;
+        }
       } catch (error) {
         console.error('Error loading blog posts:', error);
-        document.getElementById('blogGrid').innerHTML = `
-          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #dc3545;">
-            <p>Failed to load blog posts. Please try again later.</p>
-          </div>
-        `;
       }
+      
+      // Final fallback: Show error message
+      document.getElementById('blogGrid').innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #dc3545;">
+          <p>Failed to load blog posts. Please ensure blog-posts.json exists.</p>
+        </div>
+      `;
     }
 
     function displayBlogPosts(posts) {

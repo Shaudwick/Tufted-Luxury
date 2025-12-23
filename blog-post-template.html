@@ -272,10 +272,6 @@
                 <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
                 <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
                 <li class="menu__item"><a href="blog.html" class="menu__link">Blog</a></li>
-                <li class="menu__item"><a href="contact.html#commission" class="menu__link">Commission</a></li>
-                <li class="menu__item"><a href="contact.html#partnerships" class="menu__link">Partnerships</a></li>
-                <li class="menu__item"><a href="contact.html#workshops" class="menu__link">Workshops</a></li>
-                <li class="menu__item"><a href="contact.html#weddings" class="menu__link">Weddings</a></li>
                 <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
               </ul>
             </nav>
@@ -401,23 +397,41 @@
       }
 
       try {
-        const response = await fetch(`/api/blog/post/${slug}`);
-        if (!response.ok) {
-          throw new Error('Post not found');
+        // Try API first
+        let response = await fetch(`/api/blog/post/${slug}`);
+        if (response.ok) {
+          const post = await response.json();
+          displayBlogPost(post);
+          return;
         }
-        
-        const post = await response.json();
-        displayBlogPost(post);
       } catch (error) {
-        console.error('Error loading blog post:', error);
-        document.querySelector('.blog-post-header').innerHTML = `
-          <div class="blog-post-content">
-            <h1 class="blog-post-header__title">Post Not Found</h1>
-            <p>The requested blog post could not be found.</p>
-            <p><a href="blog.html" style="color: #fff1c9; text-decoration: underline;">← Back to Blog</a></p>
-          </div>
-        `;
+        console.log('API not available, trying JSON file directly...');
       }
+      
+      // Fallback: Load from JSON file
+      try {
+        const jsonResponse = await fetch('blog-posts.json');
+        if (jsonResponse.ok) {
+          const allPosts = await jsonResponse.json();
+          const post = allPosts.find(p => p.slug === slug && p.published !== false);
+          
+          if (post) {
+            displayBlogPost(post);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Error loading from JSON file:', error);
+      }
+      
+      // Show error if post not found
+      document.querySelector('.blog-post-header').innerHTML = `
+        <div class="blog-post-content">
+          <h1 class="blog-post-header__title">Post Not Found</h1>
+          <p>The requested blog post could not be found.</p>
+          <p><a href="blog.html" style="color: #fff1c9; text-decoration: underline;">← Back to Blog</a></p>
+        </div>
+      `;
     }
 
     function displayBlogPost(post) {
