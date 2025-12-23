@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  
+  <!-- SEO Meta Tags -->
+  <title>Blog - Black Lobby Collective | Luxury Art, Design & Tufting Insights</title>
+  <meta name="description" content="Explore the Black Lobby blog for insights on luxury tufted rug design, artisanal craftsmanship, contemporary art, and creative programming. Discover stories from our collective and learn about the art of tufting.">
+  <meta name="keywords" content="luxury tufted rugs, tufting blog, contemporary art, artisanal design, handmade rugs, luxury home decor, art blog, Black Lobby Collective">
+  <meta name="author" content="Black Lobby Collective">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blacklobby.co/blog.html">
+  <meta property="og:title" content="Blog - Black Lobby Collective | Luxury Art & Design Insights">
+  <meta property="og:description" content="Explore the Black Lobby blog for insights on luxury tufted rug design, artisanal craftsmanship, and contemporary art.">
+  <meta property="og:image" content="https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://blacklobby.co/blog.html">
+  <meta property="twitter:title" content="Blog - Black Lobby Collective | Luxury Art & Design Insights">
+  <meta property="twitter:description" content="Explore the Black Lobby blog for insights on luxury tufted rug design, artisanal craftsmanship, and contemporary art.">
+  <meta property="twitter:image" content="https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://blacklobby.co/blog.html">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css" />
+  
+  <!-- Structured Data for Blog -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Black Lobby Collective Blog",
+    "description": "Luxury art, design, and tufting insights from Black Lobby Collective",
+    "url": "https://blacklobby.co/blog.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Black Lobby Collective",
+      "url": "https://blacklobby.co",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg"
+      }
+    }
+  }
+  </script>
+  
+  <style>
+    .blog-hero {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 50%, #1a1a1a 100%);
+      padding: 10rem 0 6rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .blog-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 241, 201, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    
+    .blog-hero h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin: 0 0 2rem 0;
+      color: #fff1c9;
+      position: relative;
+      text-shadow: 0 4px 20px rgba(255, 241, 201, 0.3);
+    }
+    
+    .blog-hero p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.25rem;
+      color: #e0e0e0;
+      max-width: 750px;
+      margin: 0 auto;
+      line-height: 1.9;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+    
+    .blog-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+    
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 2.5rem;
+      margin-top: 4rem;
+    }
+    
+    .blog-card {
+      background: #ffffff;
+      border: 1px solid rgba(255, 241, 201, 0.2);
+      border-radius: 0;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #fff1c9 0%, #f5e8b8 100%);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    
+    .blog-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 241, 201, 0.3);
+      border-color: #fff1c9;
+    }
+    
+    .blog-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .blog-card__image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #fff1c9 0%, #f5e8b8 100%);
+      transition: transform 0.4s ease;
+    }
+    
+    .blog-card:hover .blog-card__image {
+      transform: scale(1.05);
+    }
+    
+    .blog-card__content {
+      padding: 2rem;
+    }
+    
+    .blog-card__category {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: #1a1a1a;
+      background: linear-gradient(135deg, #fff1c9 0%, #f5e8b8 100%);
+      padding: 0.4rem 1.2rem;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      border: none;
+    }
+    
+    .blog-card__title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 1.25rem 0;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      transition: color 0.3s ease;
+    }
+    
+    .blog-card:hover .blog-card__title {
+      color: #2c2c2c;
+    }
+    
+    .blog-card__excerpt {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.75;
+      margin-bottom: 1.75rem;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+    
+    .blog-card__meta {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: #999;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .blog-card__date {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .blog-categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 4rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 2px solid rgba(255, 241, 201, 0.2);
+      justify-content: center;
+    }
+    
+    .category-filter {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.875rem;
+      padding: 0.65rem 1.75rem;
+      background: transparent;
+      border: 2px solid rgba(26, 26, 26, 0.3);
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .category-filter::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #fff1c9 0%, #f5e8b8 100%);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    .category-filter:hover,
+    .category-filter.active {
+      border-color: #1a1a1a;
+      color: #1a1a1a;
+    }
+    
+    .category-filter.active::before,
+    .category-filter:hover::before {
+      left: 0;
+    }
+    
+    @media (max-width: 768px) {
+      .blog-hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .blog-hero p {
+        font-size: 1rem;
+      }
+      
+      .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .blog-container {
+        padding: 3rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="index.html" class="header__logo logo">Black Lobby</a>
+        <div class="header__navigation">
+          <div class="header__menu menu">
+            <nav class="menu__body">
+              <ul class="menu__list">
+                <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
+                <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
+                <li class="menu__item"><a href="blog.html" class="menu__link">Blog</a></li>
+                <li class="menu__item"><a href="contact.html#commission" class="menu__link">Commission</a></li>
+                <li class="menu__item"><a href="contact.html#partnerships" class="menu__link">Partnerships</a></li>
+                <li class="menu__item"><a href="contact.html#workshops" class="menu__link">Workshops</a></li>
+                <li class="menu__item"><a href="contact.html#weddings" class="menu__link">Weddings</a></li>
+                <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="header__actions actions-header">
+            <button type="button" class="menu__icon icon-menu"><span></span></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <!-- Blog Hero Section -->
+      <section class="blog-hero">
+        <div class="blog-container">
+          <h1>Black Lobby Blog</h1>
+          <p>Explore insights on luxury tufted rug design, artisanal craftsmanship, contemporary art, and the intersection of creativity and culture. Join us as we share stories, techniques, and inspiration from our collective.</p>
+        </div>
+      </section>
+
+      <!-- Blog Content -->
+      <section style="background: #fafafa; padding: 4rem 0;">
+        <div class="blog-container">
+          <!-- Category Filters -->
+          <div class="blog-categories">
+            <button class="category-filter active" data-category="all">All Posts</button>
+            <button class="category-filter" data-category="tufting">Tufting & Craft</button>
+            <button class="category-filter" data-category="art">Art & Design</button>
+            <button class="category-filter" data-category="behind-scenes">Behind the Scenes</button>
+            <button class="category-filter" data-category="community">Community & Events</button>
+            <button class="category-filter" data-category="tutorials">Tutorials & Tips</button>
+          </div>
+
+          <!-- Blog Grid -->
+          <div class="blog-grid" id="blogGrid">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #999;">
+              <p>Loading blog posts...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <a href="#" class="footer__policy">Privacy Policy – Terms & Conditions</a>
+        <a href="index.html" class="footer__logo logo">Black Lobby</a>
+        <div class="footer__copyright">Copyright © 2024 Black Lobby – All Rights Reserved</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    // Load blog posts from API
+    async function loadBlogPosts() {
+      try {
+        const response = await fetch('/api/blog/posts');
+        const posts = await response.json();
+        displayBlogPosts(posts);
+      } catch (error) {
+        console.error('Error loading blog posts:', error);
+        document.getElementById('blogGrid').innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #dc3545;">
+            <p>Failed to load blog posts. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    function displayBlogPosts(posts) {
+      const grid = document.getElementById('blogGrid');
+      
+      if (posts.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #999;">
+            <p>No blog posts available yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = posts.map(post => `
+        <a href="blog-post-template.html?slug=${post.slug}" class="blog-card" data-category="${post.category}">
+          <img src="${post.image}" alt="${post.alt}" class="blog-card__image" onerror="this.src='Website-Images/Home/Masterpiece2.jpeg'">
+          <div class="blog-card__content">
+            <span class="blog-card__category">${post.categoryLabel}</span>
+            <h2 class="blog-card__title">${post.title}</h2>
+            <p class="blog-card__excerpt">${post.excerpt}</p>
+            <div class="blog-card__meta">
+              <span class="blog-card__date">📅 ${formatDate(post.date)}</span>
+              <span>⏱️ ${post.readTime} min read</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+
+      // Initialize category filtering after posts are loaded
+      initCategoryFiltering();
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    function initCategoryFiltering() {
+      const filters = document.querySelectorAll('.category-filter');
+      const cards = document.querySelectorAll('.blog-card');
+      
+      filters.forEach(filter => {
+        filter.addEventListener('click', function() {
+          // Update active state
+          filters.forEach(f => f.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Get category
+          const category = this.getAttribute('data-category');
+          
+          // Filter cards
+          cards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+              card.style.display = 'block';
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            } else {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(20px)';
+              setTimeout(() => {
+                card.style.display = 'none';
+              }, 300);
+            }
+          });
+        });
+      });
+    }
+
+    // Load posts when page loads
+    document.addEventListener('DOMContentLoaded', loadBlogPosts);
+  </script>
+</body>
+
+</html>
+

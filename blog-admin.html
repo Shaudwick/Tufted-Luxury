@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Admin - Black Lobby Collective</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid rgba(255, 241, 201, 0.3);
+    }
+    
+    .header h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 3rem;
+      color: #fff1c9;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .auth-section {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 3rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 241, 201, 0.2);
+      border-radius: 8px;
+    }
+    
+    .auth-section h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #fff1c9;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #e0e0e0;
+      font-weight: 500;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 241, 201, 0.3);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #fff1c9;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .btn {
+      padding: 0.75rem 2rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #fff1c9 0%, #f5e8b8 100%);
+      color: #1a1a1a;
+      width: 100%;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 241, 201, 0.4);
+    }
+    
+    .admin-panel {
+      display: none;
+    }
+    
+    .admin-panel.active {
+      display: block;
+    }
+    
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid #fff1c9;
+      color: #fff1c9;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 241, 201, 0.1);
+    }
+    
+    .btn-danger {
+      background: #dc3545;
+      color: #fff;
+    }
+    
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
+    .posts-list {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .post-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 241, 201, 0.2);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .post-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 241, 201, 0.4);
+    }
+    
+    .post-info h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      color: #fff1c9;
+      margin-bottom: 0.5rem;
+    }
+    
+    .post-info p {
+      color: #b0b0b0;
+      font-size: 0.9rem;
+    }
+    
+    .post-actions {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    
+    .modal.active {
+      display: block;
+    }
+    
+    .modal-content {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: #1a1a1a;
+      border: 2px solid #fff1c9;
+      border-radius: 8px;
+      padding: 3rem;
+      position: relative;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 241, 201, 0.3);
+    }
+    
+    .modal-header h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      color: #fff1c9;
+      text-transform: uppercase;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    .close-btn:hover {
+      background: rgba(255, 241, 201, 0.1);
+      color: #fff1c9;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 241, 201, 0.3);
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #fff1c9;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 241, 201, 0.3);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    
+    .alert.active {
+      display: block;
+    }
+    
+    .alert-success {
+      background: rgba(40, 167, 69, 0.2);
+      border: 1px solid #28a745;
+      color: #90ee90;
+    }
+    
+    .alert-error {
+      background: rgba(220, 53, 69, 0.2);
+      border: 1px solid #dc3545;
+      color: #ff9999;
+    }
+  </style>
+</head>
+<body>
+  <!-- Authentication Section -->
+  <div id="authSection" class="auth-section">
+    <h2>Blog Admin Login</h2>
+    <div id="authAlert" class="alert"></div>
+    <div class="form-group">
+      <label for="adminPassword">Admin Password</label>
+      <input type="password" id="adminPassword" placeholder="Enter admin password">
+    </div>
+    <button class="btn btn-primary" onclick="login()">Login</button>
+    <p style="margin-top: 1rem; font-size: 0.85rem; color: #999; text-align: center;">
+      Set BLOG_ADMIN_PASSWORD in .env file
+    </p>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="admin-panel">
+    <div class="container">
+      <div class="header">
+        <h1>Blog Management</h1>
+        <p style="color: #b0b0b0;">Create, edit, and manage your blog posts</p>
+      </div>
+
+      <div id="alertContainer"></div>
+
+      <div class="toolbar">
+        <button class="btn btn-primary" onclick="openNewPostModal()">+ New Post</button>
+        <button class="btn btn-secondary" onclick="logout()">Logout</button>
+      </div>
+
+      <div id="postsList" class="posts-list">
+        <!-- Posts will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit/Create Post Modal -->
+  <div id="postModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">New Blog Post</h2>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      
+      <form id="postForm" onsubmit="savePost(event)">
+        <input type="hidden" id="postId">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="postTitle">Title *</label>
+            <input type="text" id="postTitle" required>
+          </div>
+          <div class="form-group">
+            <label for="postCategory">Category *</label>
+            <select id="postCategory" required onchange="updateCategoryLabel()">
+              <option value="tufting">Tufting & Craft</option>
+              <option value="art">Art & Design</option>
+              <option value="behind-scenes">Behind the Scenes</option>
+              <option value="community">Community & Events</option>
+              <option value="tutorials">Tutorials & Tips</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="postExcerpt">Excerpt *</label>
+          <textarea id="postExcerpt" required rows="3"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="postImage">Image Path *</label>
+            <input type="text" id="postImage" placeholder="Website-Images/Home/example.jpg" required>
+          </div>
+          <div class="form-group">
+            <label for="postAlt">Image Alt Text *</label>
+            <input type="text" id="postAlt" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="postDate">Date *</label>
+            <input type="date" id="postDate" required>
+          </div>
+          <div class="form-group">
+            <label for="postReadTime">Read Time (minutes) *</label>
+            <input type="number" id="postReadTime" min="1" value="5" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="postSlug">URL Slug *</label>
+          <input type="text" id="postSlug" required pattern="[a-z0-9-]+" placeholder="url-friendly-slug">
+        </div>
+
+        <div class="form-group">
+          <label for="postContent">Content (HTML) *</label>
+          <textarea id="postContent" required rows="10"></textarea>
+          <small style="color: #999; display: block; margin-top: 0.5rem;">
+            You can use HTML tags like &lt;p&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;strong&gt;, &lt;em&gt;
+          </small>
+        </div>
+
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" id="postPublished" checked>
+            <label for="postPublished">Published (visible on website)</label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let authToken = localStorage.getItem('blogAdminToken');
+    const API_BASE = window.location.origin;
+
+    // Check if already authenticated
+    if (authToken) {
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('adminPanel').classList.add('active');
+      loadPosts();
+    }
+
+    async function login() {
+      const password = document.getElementById('adminPassword').value;
+      if (!password) {
+        showAlert('authAlert', 'Please enter a password', 'error');
+        return;
+      }
+
+      // Store token (in production, this would come from a proper login endpoint)
+      localStorage.setItem('blogAdminToken', password);
+      authToken = password;
+      
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('adminPanel').classList.add('active');
+      loadPosts();
+    }
+
+    function logout() {
+      localStorage.removeItem('blogAdminToken');
+      authToken = null;
+      document.getElementById('authSection').style.display = 'block';
+      document.getElementById('adminPanel').classList.remove('active');
+      document.getElementById('adminPassword').value = '';
+    }
+
+    async function loadPosts() {
+      try {
+        const response = await fetch(`${API_BASE}/api/blog/admin/posts`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+
+        if (response.status === 401) {
+          logout();
+          showAlert('authAlert', 'Authentication failed. Please login again.', 'error');
+          return;
+        }
+
+        const posts = await response.json();
+        displayPosts(posts);
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        showAlert('alertContainer', 'Failed to load posts', 'error');
+      }
+    }
+
+    function displayPosts(posts) {
+      const container = document.getElementById('postsList');
+      
+      if (posts.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #999; padding: 3rem;">No blog posts yet. Create your first post!</p>';
+        return;
+      }
+
+      container.innerHTML = posts.map(post => `
+        <div class="post-card">
+          <div class="post-info">
+            <h3>${post.title} ${!post.published ? '<span style="color: #999; font-size: 0.8em;">(Draft)</span>' : ''}</h3>
+            <p>${post.categoryLabel} • ${post.date} • ${post.readTime} min read</p>
+          </div>
+          <div class="post-actions">
+            <button class="btn btn-secondary" onclick="editPost('${post.id}')">Edit</button>
+            <button class="btn btn-danger" onclick="deletePost('${post.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openNewPostModal() {
+      document.getElementById('modalTitle').textContent = 'New Blog Post';
+      document.getElementById('postForm').reset();
+      document.getElementById('postId').value = '';
+      document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('postModal').classList.add('active');
+    }
+
+    async function editPost(id) {
+      try {
+        const response = await fetch(`${API_BASE}/api/blog/admin/posts`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+
+        if (response.status === 401) {
+          logout();
+          return;
+        }
+
+        const posts = await response.json();
+        const post = posts.find(p => p.id === id);
+        
+        if (!post) {
+          showAlert('alertContainer', 'Post not found', 'error');
+          return;
+        }
+
+        document.getElementById('modalTitle').textContent = 'Edit Blog Post';
+        document.getElementById('postId').value = post.id;
+        document.getElementById('postTitle').value = post.title;
+        document.getElementById('postCategory').value = post.category;
+        document.getElementById('postExcerpt').value = post.excerpt;
+        document.getElementById('postImage').value = post.image;
+        document.getElementById('postAlt').value = post.alt;
+        document.getElementById('postDate').value = post.date;
+        document.getElementById('postReadTime').value = post.readTime;
+        document.getElementById('postSlug').value = post.slug;
+        document.getElementById('postContent').value = post.content;
+        document.getElementById('postPublished').checked = post.published !== false;
+
+        document.getElementById('postModal').classList.add('active');
+      } catch (error) {
+        console.error('Error loading post:', error);
+        showAlert('alertContainer', 'Failed to load post', 'error');
+      }
+    }
+
+    async function savePost(event) {
+      event.preventDefault();
+      
+      const postId = document.getElementById('postId').value;
+      const categorySelect = document.getElementById('postCategory');
+      const categoryLabels = {
+        'tufting': 'Tufting & Craft',
+        'art': 'Art & Design',
+        'behind-scenes': 'Behind the Scenes',
+        'community': 'Community & Events',
+        'tutorials': 'Tutorials & Tips'
+      };
+
+      const postData = {
+        title: document.getElementById('postTitle').value,
+        category: categorySelect.value,
+        categoryLabel: categoryLabels[categorySelect.value],
+        excerpt: document.getElementById('postExcerpt').value,
+        image: document.getElementById('postImage').value,
+        alt: document.getElementById('postAlt').value,
+        date: document.getElementById('postDate').value,
+        readTime: document.getElementById('postReadTime').value,
+        slug: document.getElementById('postSlug').value,
+        content: document.getElementById('postContent').value,
+        published: document.getElementById('postPublished').checked
+      };
+
+      try {
+        let response;
+        if (postId) {
+          // Update existing post
+          response = await fetch(`${API_BASE}/api/blog/post/${postId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(postData)
+          });
+        } else {
+          // Create new post
+          postData.id = `post-${Date.now()}`;
+          response = await fetch(`${API_BASE}/api/blog/post`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(postData)
+          });
+        }
+
+        if (response.status === 401) {
+          logout();
+          return;
+        }
+
+        const result = await response.json();
+        
+        if (result.success) {
+          showAlert('alertContainer', `Post ${postId ? 'updated' : 'created'} successfully!`, 'success');
+          closeModal();
+          loadPosts();
+        } else {
+          showAlert('alertContainer', result.error || 'Failed to save post', 'error');
+        }
+      } catch (error) {
+        console.error('Error saving post:', error);
+        showAlert('alertContainer', 'Failed to save post', 'error');
+      }
+    }
+
+    async function deletePost(id) {
+      if (!confirm('Are you sure you want to delete this post?')) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/blog/post/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+
+        if (response.status === 401) {
+          logout();
+          return;
+        }
+
+        const result = await response.json();
+        
+        if (result.success) {
+          showAlert('alertContainer', 'Post deleted successfully!', 'success');
+          loadPosts();
+        } else {
+          showAlert('alertContainer', result.error || 'Failed to delete post', 'error');
+        }
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        showAlert('alertContainer', 'Failed to delete post', 'error');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('postModal').classList.remove('active');
+    }
+
+    function updateCategoryLabel() {
+      // Auto-generate slug from title if slug is empty
+      const title = document.getElementById('postTitle').value;
+      const slug = document.getElementById('postSlug');
+      
+      if (!slug.value && title) {
+        slug.value = title.toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+      }
+    }
+
+    // Auto-generate slug from title
+    document.getElementById('postTitle').addEventListener('input', updateCategoryLabel);
+
+    function showAlert(containerId, message, type) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = `<div class="alert alert-${type} active">${message}</div>`;
+      setTimeout(() => {
+        container.innerHTML = '';
+      }, 5000);
+    }
+
+    // Close modal on outside click
+    document.getElementById('postModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
+
