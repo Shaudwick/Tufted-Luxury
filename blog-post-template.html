@@ -418,45 +418,67 @@
           if (post) {
             displayBlogPost(post);
             return;
+          } else {
+            console.log('Post not found in JSON. Looking for slug:', slug);
+            console.log('Available slugs:', allPosts.map(p => p.slug));
           }
+        } else {
+          console.error('JSON file response not OK:', jsonResponse.status);
         }
       } catch (error) {
         console.error('Error loading from JSON file:', error);
       }
       
       // Show error if post not found
-      document.querySelector('.blog-post-header').innerHTML = `
-        <div class="blog-post-content">
-          <h1 class="blog-post-header__title">Post Not Found</h1>
-          <p>The requested blog post could not be found.</p>
-          <p><a href="blog.html" style="color: #fff1c9; text-decoration: underline;">← Back to Blog</a></p>
-        </div>
-      `;
+      const header = document.querySelector('.blog-post-header');
+      if (header) {
+        header.innerHTML = `
+          <div class="blog-post-content">
+            <h1 class="blog-post-header__title">Post Not Found</h1>
+            <p>The requested blog post could not be found.</p>
+            <p>Slug searched: ${slug}</p>
+            <p><a href="blog.html" style="color: #fff1c9; text-decoration: underline;">← Back to Blog</a></p>
+          </div>
+        `;
+      }
     }
 
     function displayBlogPost(post) {
+      console.log('Displaying post:', post.title);
+      
       // Update header
       const header = document.querySelector('.blog-post-header');
-      header.innerHTML = `
-        <div class="blog-post-content">
-          <div class="blog-post-header__category">${post.categoryLabel}</div>
-          <h1 class="blog-post-header__title">${post.title}</h1>
-          <div class="blog-post-header__meta">
-            <span>📅 ${formatDate(post.date)}</span>
-            <span>⏱️ ${post.readTime} min read</span>
-            <span>👁️ By Black Lobby Collective</span>
-          </div>
-        </div>
-      `;
+      if (header) {
+        const headerContent = header.querySelector('.blog-post-content');
+        if (headerContent) {
+          headerContent.innerHTML = `
+            <div class="blog-post-header__category">${post.categoryLabel || ''}</div>
+            <h1 class="blog-post-header__title">${post.title || 'Untitled'}</h1>
+            <div class="blog-post-header__meta">
+              <span>📅 ${formatDate(post.date)}</span>
+              <span>⏱️ ${post.readTime || '5'} min read</span>
+              <span>👁️ By Black Lobby Collective</span>
+            </div>
+          `;
+        }
+      }
 
-      // Update content
-      const contentDiv = document.querySelector('.blog-post-content');
-      const image = contentDiv.querySelector('.blog-post-image');
-      image.src = post.image;
-      image.alt = post.alt;
+      // Update content - select the article with class blog-post-content (not the div inside header)
+      const contentArticles = document.querySelectorAll('article.blog-post-content');
+      const contentSection = contentArticles.length > 1 ? contentArticles[1] : document.querySelector('article.blog-post-content');
+      
+      if (contentSection) {
+        const image = contentSection.querySelector('.blog-post-image');
+        if (image) {
+          image.src = post.image || '';
+          image.alt = post.alt || post.title || '';
+        }
 
-      const bodyDiv = contentDiv.querySelector('.blog-post-body');
-      bodyDiv.innerHTML = post.content;
+        const bodyDiv = contentSection.querySelector('.blog-post-body');
+        if (bodyDiv) {
+          bodyDiv.innerHTML = post.content || '<p>No content available.</p>';
+        }
+      }
 
       // Update page title and meta tags
       document.title = `${post.title} - Black Lobby Collective | Luxury Art & Design Blog`;
