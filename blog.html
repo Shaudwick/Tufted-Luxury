@@ -374,7 +374,9 @@
       
       // Fallback: Load directly from JSON file
       try {
-        const jsonResponse = await fetch('blog-posts.json');
+        // Add cache-busting parameter to ensure fresh data
+        const cacheBuster = new Date().getTime();
+        const jsonResponse = await fetch(`blog-posts.json?t=${cacheBuster}`);
         if (jsonResponse.ok) {
           const allPosts = await jsonResponse.json();
           const posts = allPosts.filter(post => post.published !== false);

@@ -186,6 +186,32 @@
       border-radius: 4px;
     }
     
+    .blog-post-body video {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      margin: 3rem 0;
+      background: #000;
+    }
+    
+    .blog-post-body img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      margin: 2rem 0;
+    }
+    
+    .blog-post-body div[style*="grid"] {
+      margin: 3rem 0;
+    }
+    
+    .blog-post-body div[style*="grid"] img {
+      margin: 0;
+    }
+    
     .blog-post-navigation {
       max-width: 1200px;
       margin: 4rem auto;
@@ -410,7 +436,9 @@
       
       // Fallback: Load from JSON file
       try {
-        const jsonResponse = await fetch('blog-posts.json');
+        // Add cache-busting parameter to ensure fresh data
+        const cacheBuster = new Date().getTime();
+        const jsonResponse = await fetch(`blog-posts.json?t=${cacheBuster}`);
         if (jsonResponse.ok) {
           const allPosts = await jsonResponse.json();
           const post = allPosts.find(p => p.slug === slug && p.published !== false);
