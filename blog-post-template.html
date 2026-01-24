@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  
+  <!-- SEO Meta Tags - UPDATE THESE FOR EACH POST -->
+  <title>Blog Post Title - Black Lobby Collective | Luxury Art & Design Blog</title>
+  <meta name="description" content="Blog post description - 155-160 characters for optimal SEO. Include keywords naturally.">
+  <meta name="keywords" content="luxury tufted rugs, tufting, contemporary art, artisanal design, handmade rugs, [add relevant keywords]">
+  <meta name="author" content="Black Lobby Collective">
+  
+  <!-- Article-specific meta tags -->
+  <meta property="article:published_time" content="2024-12-15T00:00:00+00:00">
+  <meta property="article:modified_time" content="2024-12-15T00:00:00+00:00">
+  <meta property="article:author" content="Black Lobby Collective">
+  <meta property="article:section" content="Tufting & Craft">
+  <meta property="article:tag" content="Tufting">
+  <meta property="article:tag" content="Craftsmanship">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://blacklobby.co/blog-post-template.html">
+  <meta property="og:title" content="Blog Post Title - Black Lobby Collective">
+  <meta property="og:description" content="Blog post description for social sharing">
+  <meta property="og:image" content="https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://blacklobby.co/blog-post-template.html">
+  <meta property="twitter:title" content="Blog Post Title - Black Lobby Collective">
+  <meta property="twitter:description" content="Blog post description for Twitter sharing">
+  <meta property="twitter:image" content="https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://blacklobby.co/blog-post-template.html">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css" />
+  
+  <!-- Structured Data for Article (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Blog Post Title",
+    "description": "Blog post description",
+    "image": "https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg",
+    "datePublished": "2024-12-15T00:00:00+00:00",
+    "dateModified": "2024-12-15T00:00:00+00:00",
+    "author": {
+      "@type": "Organization",
+      "name": "Black Lobby Collective",
+      "url": "https://blacklobby.co"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Black Lobby Collective",
+      "url": "https://blacklobby.co",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://blacklobby.co/Website-Images/Home/Masterpiece2.jpeg"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://blacklobby.co/blog-post-template.html"
+    }
+  }
+  </script>
+  
+  <style>
+    .blog-post-header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+      padding: 8rem 0 4rem;
+      color: #fff;
+      text-align: center;
+    }
+    
+    .blog-post-header__category {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #fff1c9;
+      margin-bottom: 1rem;
+    }
+    
+    .blog-post-header__title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0 0 1.5rem 0;
+      color: #fff;
+      line-height: 1.2;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .blog-post-header__meta {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      color: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .blog-post-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    
+    .blog-post-image {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 3rem 0;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .blog-post-body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: #2c2c2c;
+    }
+    
+    .blog-post-body h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 3rem 0 1.5rem 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .blog-post-body h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 2.5rem 0 1rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .blog-post-body p {
+      margin-bottom: 1.5rem;
+    }
+    
+    .blog-post-body ul,
+    .blog-post-body ol {
+      margin: 1.5rem 0;
+      padding-left: 2rem;
+    }
+    
+    .blog-post-body li {
+      margin-bottom: 0.75rem;
+    }
+    
+    .blog-post-body blockquote {
+      border-left: 4px solid #fff1c9;
+      padding-left: 2rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: #555;
+      font-size: 1.25rem;
+      background: #fafafa;
+      padding: 2rem;
+      border-radius: 4px;
+    }
+    
+    .blog-post-body video {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      margin: 3rem 0;
+      background: #000;
+    }
+    
+    .blog-post-body iframe {
+      border-radius: 8px;
+    }
+    
+    .blog-post-body img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      margin: 2rem 0;
+    }
+    
+    .blog-post-body div[style*="grid"] {
+      margin: 3rem 0;
+    }
+    
+    .blog-post-body div[style*="grid"] img {
+      margin: 0;
+    }
+    
+    .blog-post-navigation {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    
+    .blog-nav-link {
+      flex: 1;
+      padding: 2rem;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+    
+    .blog-nav-link:hover {
+      background: #1a1a1a;
+      color: #fff1c9;
+      border-color: #1a1a1a;
+    }
+    
+    .blog-nav-link__label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      margin-bottom: 0.5rem;
+    }
+    
+    .blog-nav-link:hover .blog-nav-link__label {
+      color: #fff1c9;
+    }
+    
+    .blog-nav-link__title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    
+    .blog-nav-link:hover .blog-nav-link__title {
+      color: #fff1c9;
+    }
+    
+    @media (max-width: 768px) {
+      .blog-post-header__title {
+        font-size: 2rem;
+      }
+      
+      .blog-post-content {
+        padding: 3rem 1rem;
+      }
+      
+      .blog-post-image {
+        height: 300px;
+      }
+      
+      .blog-post-body {
+        font-size: 1rem;
+      }
+      
+      .blog-post-navigation {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="index.html" class="header__logo logo">Black Lobby</a>
+        <div class="header__navigation">
+          <div class="header__menu menu">
+            <nav class="menu__body">
+              <ul class="menu__list">
+                <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
+                <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
+                <li class="menu__item"><a href="blog.html" class="menu__link">Blog</a></li>
+                <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="header__actions actions-header">
+            <button type="button" class="menu__icon icon-menu"><span></span></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <!-- Blog Post Header -->
+      <article class="blog-post-header">
+        <div class="blog-post-content">
+          <div class="blog-post-header__category">Tufting & Craft</div>
+          <h1 class="blog-post-header__title">The Art of Tufting: From Yarn to Luxury Rug</h1>
+          <div class="blog-post-header__meta">
+            <span>📅 December 15, 2024</span>
+            <span>⏱️ 5 min read</span>
+            <span>👁️ By Black Lobby Collective</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Blog Post Content -->
+      <article class="blog-post-content">
+        <img src="Website-Images/Home/Masterpiece2.jpeg" alt="Luxury tufted rug in progress" class="blog-post-image">
+        
+        <div class="blog-post-body">
+          <p>Welcome to the intricate world of tufting, where premium yarns transform into timeless luxury art pieces. At Black Lobby Collective, we've dedicated ourselves to mastering this ancient craft, blending traditional techniques with contemporary artistic vision.</p>
+          
+          <h2>The Foundation: Understanding Tufting</h2>
+          
+          <p>Tufting is more than a craft—it's a form of artistic expression that dates back centuries. Unlike machine-made rugs, hand-tufted pieces carry the unique imprint of the artist, creating one-of-a-kind works that tell stories through texture, color, and design.</p>
+          
+          <p>Our process begins with careful material selection. We source only the finest natural and synthetic fibers, ensuring each piece meets our exacting standards for quality and durability. The choice of yarn directly impacts the final product's feel, appearance, and longevity.</p>
+          
+          <h3>Material Selection: The First Step</h3>
+          
+          <p>Premium materials are the cornerstone of luxury tufted rugs. We work with:</p>
+          
+          <ul>
+            <li><strong>Wool:</strong> Natural, durable, and luxurious. Perfect for high-traffic areas while maintaining softness.</li>
+            <li><strong>Silk:</strong> Adds shimmer and elegance, often used as an accent for visual interest.</li>
+            <li><strong>Blended Fibers:</strong> Combining materials for optimal performance and aesthetic appeal.</li>
+          </ul>
+          
+          <h2>The Design Process</h2>
+          
+          <p>Every rug begins with a vision. Our artists collaborate closely with clients to understand their aesthetic preferences, functional needs, and the story they want their piece to tell. This collaborative approach ensures that each creation is not just a rug, but a meaningful addition to your space.</p>
+          
+          <blockquote>
+            "Tufting is where art meets function, where tradition meets innovation, and where yarn becomes luxury."
+          </blockquote>
+          
+          <h3>From Concept to Canvas</h3>
+          
+          <p>Once the design is finalized, it's transferred to the tufting frame. This canvas becomes the foundation where hours, sometimes weeks, of meticulous work will transform a simple outline into a three-dimensional masterpiece.</p>
+          
+          <h2>The Tufting Technique</h2>
+          
+          <p>The actual tufting process requires precision, patience, and artistic skill. Our craftspeople use specialized tufting guns to insert yarn into the canvas, following the design pattern with exacting accuracy. Each pass of the gun contributes to the rug's texture and depth.</p>
+          
+          <p>This is where the magic happens—where individual yarn loops combine to create patterns, textures, and visual effects that make each piece unique. The density of tufting, the height of the pile, and the direction of the loops all contribute to the final aesthetic.</p>
+          
+          <h2>Finishing Touches</h2>
+          
+          <p>After tufting is complete, the piece undergoes careful finishing. This includes:</p>
+          
+          <ol>
+            <li>Securing the backing for durability</li>
+            <li>Trimming and sculpting the pile for texture</li>
+            <li>Quality inspection for consistency</li>
+            <li>Final touches that elevate the piece to art</li>
+          </ol>
+          
+          <h2>Creating Your Own Luxury Piece</h2>
+          
+          <p>Whether you're looking for a statement piece for your home, a custom design for a commercial space, or a unique work of art, our team is ready to bring your vision to life. Each commission is an opportunity to create something truly special—a piece that reflects your style and stands as a testament to artisanal excellence.</p>
+          
+          <p>Ready to explore the possibilities? <a href="contact.html#commission" style="color: #1a1a1a; text-decoration: underline; font-weight: 600;">Contact us</a> to begin your custom tufted rug journey.</p>
+        </div>
+      </article>
+
+      <!-- Navigation to Other Posts -->
+      <nav class="blog-post-navigation">
+        <a href="blog.html" class="blog-nav-link">
+          <div class="blog-nav-link__label">← Previous Post</div>
+          <div class="blog-nav-link__title">Contemporary Art Meets Traditional Craftsmanship</div>
+        </a>
+        <a href="blog.html" class="blog-nav-link" style="text-align: right;">
+          <div class="blog-nav-link__label">Next Post →</div>
+          <div class="blog-nav-link__title">Inside the Studio: A Day with Black Lobby Artists</div>
+        </a>
+      </nav>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <a href="#" class="footer__policy">Privacy Policy – Terms & Conditions</a>
+        <a href="index.html" class="footer__logo logo">Black Lobby</a>
+        <div class="footer__copyright">Copyright © 2024 Black Lobby – All Rights Reserved</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    // Load blog post from API based on slug
+    async function loadBlogPost() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const slug = urlParams.get('slug');
+      
+      if (!slug) {
+        document.querySelector('.blog-post-header').innerHTML = `
+          <div class="blog-post-content">
+            <h1 class="blog-post-header__title">Post Not Found</h1>
+            <p>Please select a post from the <a href="blog.html" style="color: #fff1c9;">blog page</a>.</p>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        // Try API first
+        let response = await fetch(`/api/blog/post/${slug}`);
+        if (response.ok) {
+          const post = await response.json();
+          displayBlogPost(post);
+          return;
+        }
+      } catch (error) {
+        console.log('API not available, trying JSON file directly...');
+      }
+      
+      // Fallback: Load from JSON file
+      try {
+        // Add cache-busting parameter to ensure fresh data
+        const cacheBuster = new Date().getTime();
+        const jsonResponse = await fetch(`blog-posts.json?t=${cacheBuster}`);
+        if (jsonResponse.ok) {
+          const allPosts = await jsonResponse.json();
+          const post = allPosts.find(p => p.slug === slug && p.published !== false);
+          
+          if (post) {
+            displayBlogPost(post);
+            return;
+          } else {
+            console.log('Post not found in JSON. Looking for slug:', slug);
+            console.log('Available slugs:', allPosts.map(p => p.slug));
+          }
+        } else {
+          console.error('JSON file response not OK:', jsonResponse.status);
+        }
+      } catch (error) {
+        console.error('Error loading from JSON file:', error);
+      }
+      
+      // Show error if post not found
+      const header = document.querySelector('.blog-post-header');
+      if (header) {
+        header.innerHTML = `
+          <div class="blog-post-content">
+            <h1 class="blog-post-header__title">Post Not Found</h1>
+            <p>The requested blog post could not be found.</p>
+            <p>Slug searched: ${slug}</p>
+            <p><a href="blog.html" style="color: #fff1c9; text-decoration: underline;">← Back to Blog</a></p>
+          </div>
+        `;
+      }
+    }
+
+    function displayBlogPost(post) {
+      console.log('Displaying post:', post.title);
+      
+      // Update header
+      const header = document.querySelector('.blog-post-header');
+      if (header) {
+        const headerContent = header.querySelector('.blog-post-content');
+        if (headerContent) {
+          headerContent.innerHTML = `
+            <div class="blog-post-header__category">${post.categoryLabel || ''}</div>
+            <h1 class="blog-post-header__title">${post.title || 'Untitled'}</h1>
+            <div class="blog-post-header__meta">
+              <span>📅 ${formatDate(post.date)}</span>
+              <span>⏱️ ${post.readTime || '5'} min read</span>
+              <span>👁️ By Black Lobby Collective</span>
+            </div>
+          `;
+        }
+      }
+
+      // Update content - select the article with class blog-post-content (not the div inside header)
+      const contentArticles = document.querySelectorAll('article.blog-post-content');
+      const contentSection = contentArticles.length > 1 ? contentArticles[1] : document.querySelector('article.blog-post-content');
+      
+      if (contentSection) {
+        const image = contentSection.querySelector('.blog-post-image');
+        if (image) {
+          image.src = post.image || '';
+          image.alt = post.alt || post.title || '';
+        }
+
+        const bodyDiv = contentSection.querySelector('.blog-post-body');
+        if (bodyDiv) {
+          bodyDiv.innerHTML = post.content || '<p>No content available.</p>';
+        }
+      }
+
+      // Update page title and meta tags
+      document.title = `${post.title} - Black Lobby Collective | Luxury Art & Design Blog`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.content = post.excerpt;
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    // Load post when page loads
+    document.addEventListener('DOMContentLoaded', loadBlogPost);
+  </script>
+</body>
+
+</html>
+
