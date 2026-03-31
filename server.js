@@ -110,10 +110,24 @@ app.post('/create-checkout-session', async (req, res) => {
 
   try {
     const origin = req.headers.origin || `${req.protocol}://${req.get('host')}`;
+    const isRugFullPurchase = metadata?.purchaseType === 'rug_full_purchase';
+    const rugName = metadata?.rugName || 'Gods Collection Rug';
     
-    // Always use the deposit amount (30% of total, calculated on client side)
-    // Create a single line item for the deposit, with cart items listed in description
-    const lineItems = cartItems && cartItems.length > 0
+    // Support one-click full purchases for collector rugs.
+    // Fallback to existing deposit line-item behavior for other checkout flows.
+    const lineItems = isRugFullPurchase
+      ? [{
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: `${rugName} — Gods Collection`,
+              description: 'Collector Piece (Full Purchase)',
+            },
+            unit_amount: Math.round(amount * 100),
+          },
+          quantity: 1,
+        }]
+      : cartItems && cartItems.length > 0
       ? [{
           price_data: {
             currency: 'usd',
