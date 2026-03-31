@@ -521,3 +521,62 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// =========================
+// Gods Collection One-Click Rug Purchase
+// =========================
+document.addEventListener('DOMContentLoaded', function() {
+  const rugButtons = document.querySelectorAll('[data-rug-purchase="true"]');
+  if (!rugButtons.length) return;
+
+  const setButtonState = (button, loading) => {
+    button.disabled = loading;
+    button.style.opacity = loading ? '0.7' : '';
+    button.style.pointerEvents = loading ? 'none' : '';
+    button.textContent = loading ? 'Processing...' : `Buy ${button.dataset.rugName || 'Rug'}`;
+  };
+
+  rugButtons.forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const rugName = button.dataset.rugName || 'Gods Collection Rug';
+      const rugPrice = Number(button.dataset.rugPrice || '0');
+
+      if (!rugPrice || rugPrice <= 0) {
+        alert('Unable to process this purchase right now.');
+        return;
+      }
+
+      setButtonState(button, true);
+
+      try {
+        const response = await fetch('/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: rugPrice,
+            metadata: {
+              purchaseType: 'rug_full_purchase',
+              rugName: rugName,
+              collection: 'Gods Collection'
+            }
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || 'Checkout session creation failed');
+        }
+
+        const { url } = await response.json();
+        if (!url) throw new Error('Missing checkout URL');
+
+        window.location.href = url;
+      } catch (error) {
+        console.error('Rug checkout error:', error);
+        alert('Unable to start checkout. Please try again.');
+        setButtonState(button, false);
+      }
+    });
+  });
+});
