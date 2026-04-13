@@ -521,3 +521,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+// Gods Collection checkout (Stripe when API is available; otherwise mailto fallback)
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("[data-gods-variant]").forEach(function (btn) {
+    btn.addEventListener("click", async function () {
+      var variant = btn.getAttribute("data-gods-variant");
+      var prevText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Redirecting…";
+      try {
+        var r = await fetch("/api/checkout/gods-collection", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ variant: variant }),
+        });
+        var data = await r.json().catch(function () {
+          return {};
+        });
+        if (r.ok && data.url) {
+          window.location.href = data.url;
+          return;
+        }
+        throw new Error(data.error || "Checkout unavailable");
+      } catch (e) {
+        var subj =
+          variant === "full"
+            ? "Gods Collection — Full Set ($10,000)"
+            : "Gods Collection — Single Rug ($2,500)";
+        window.location.href =
+          "mailto:Contact@blacklobby.co?subject=" + encodeURIComponent(subj);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = prevText;
+      }
+    });
+  });
+});

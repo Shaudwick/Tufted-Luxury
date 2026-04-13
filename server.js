@@ -171,6 +171,68 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
+// Gods Collection — full-price checkout (not deposit)
+app.post('/api/checkout/gods-collection', async (req, res) => {
+  const variant = req.body?.variant;
+  const catalog = {
+    full: {
+      unit_amount: 1000000, // $10,000.00
+      name: 'Gods Collection — Complete Set (4 pieces)',
+      description: 'Full Gods Collection: all four Masterpiece works.',
+    },
+    single: {
+      unit_amount: 250000, // $2,500.00
+      name: 'Gods Collection — Single Rug',
+      description: 'One piece from the Gods Collection.',
+    },
+  };
+
+  if (!catalog[variant]) {
+    return res.status(400).json({ error: 'Invalid variant' });
+  }
+
+  try {
+    const origin = req.headers.origin || `${req.protocol}://${req.get('host')}`;
+    const item = catalog[variant];
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: item.name,
+              description: item.description,
+            },
+            unit_amount: item.unit_amount,
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      success_url: `${origin}/Checkout.html?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/Checkout.html?canceled=true`,
+      metadata: {
+        productType: 'gods-collection',
+        variant,
+        timestamp: new Date().toISOString(),
+      },
+      billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['US'],
+      },
+    });
+
+    res.json({ sessionId: session.id, url: session.url });
+  } catch (error) {
+    console.error('Stripe gods-collection error:', error);
+    res.status(500).json({
+      error: error.message || 'Failed to create checkout session',
+    });
+  }
+});
+
 // Verify payment session (optional - for confirmation page)
 app.get('/verify-session/:sessionId', async (req, res) => {
   try {
