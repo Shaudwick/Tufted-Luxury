@@ -4,8 +4,10 @@ You've been provided a Stripe verification string. This guide explains how to us
 
 ## Verification String Received
 
+Use the value exactly as shown in **Stripe Dashboard** (Settings → Branding or domain verification). Do not commit real verification tokens to the repository.
+
 ```
-stripe-verification=fef28c60997139d3c39486dce17f247c7b4cca15abb1df1e845c533ccbdb49f5
+stripe-verification=YOUR_VERIFICATION_TOKEN_FROM_STRIPE
 ```
 
 ## Option 1: DNS Domain Verification (Most Likely)
@@ -20,7 +22,7 @@ If Stripe asked you to add this to your DNS records, this is for **domain verifi
    ```
    Type: TXT
    Host/Name: @ (or blacklobby.co, or leave blank depending on provider)
-   Value: stripe-verification=fef28c60997139d3c39486dce17f247c7b4cca15abb1df1e845c533ccbdb49f5
+   Value: stripe-verification=YOUR_VERIFICATION_TOKEN_FROM_STRIPE
    TTL: 3600 (or default)
    ```
 
@@ -50,7 +52,7 @@ If this is actually a **webhook signing secret** (though unlikely given the form
 ### Add to .env File
 
 ```
-STRIPE_WEBHOOK_SECRET=whsec_fef28c60997139d3c39486dce17f247c7b4cca15abb1df1e845c533ccbdb49f5
+STRIPE_WEBHOOK_SECRET=whsec_YOUR_ACTUAL_WEBHOOK_SECRET_FROM_STRIPE
 ```
 
 **Note:** Webhook secrets typically start with `whsec_`. If your string doesn't have that prefix, it's more likely a domain verification record.

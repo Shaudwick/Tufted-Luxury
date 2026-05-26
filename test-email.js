@@ -119,9 +119,18 @@ async function sendTestEmail(ticketTier, name = "Test Customer") {
     ? "VIP Charcuterie & Wine Room Ticket ($18)" 
     : "General Networking & Art Exhibition Ticket ($12)";
 
+  const recipient =
+    process.env.TEST_EMAIL_RECIPIENT || process.env.SMTP_USER;
+  if (!recipient) {
+    console.error(
+      "\n❌ Set TEST_EMAIL_RECIPIENT or SMTP_USER in .env before running this script.\n"
+    );
+    process.exit(1);
+  }
+
   const mailOptions = {
     from: '"Black Lobby Collective" <no-reply@blacklobby.co>',
-    to: "shaud150@gmail.com",
+    to: recipient,
     subject: `[TEST] Your Arts After Dark Ticket Confirmation - ${ticketName}`,
     html,
     attachments: [],
@@ -145,7 +154,7 @@ async function sendTestEmail(ticketTier, name = "Test Customer") {
     const info = await transporter.sendMail(mailOptions);
     console.log(`\n✅ Test email sent successfully!`);
     console.log(`   Ticket Type: ${ticketName}`);
-    console.log(`   To: shaud150@gmail.com`);
+    console.log(`   To: ${recipient}`);
     console.log(`   Message ID: ${info.messageId}\n`);
   } catch (err) {
     console.error("\n❌ Error sending test email:");
@@ -173,7 +182,15 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("\n📧 Sending test emails to: shaud150@gmail.com\n");
+  const recipient =
+    process.env.TEST_EMAIL_RECIPIENT || process.env.SMTP_USER;
+  if (!recipient) {
+    console.error(
+      "\n❌ Set TEST_EMAIL_RECIPIENT or SMTP_USER in .env\n"
+    );
+    process.exit(1);
+  }
+  console.log("\n📧 Sending test emails to:", recipient, "\n");
 
   // Send General Ticket ($12) email
   console.log("1️⃣  Sending General Ticket ($12) test email...");
@@ -189,7 +206,7 @@ async function main() {
   console.log("\n" + "=".repeat(60));
   console.log("✅ All test emails sent successfully!");
   console.log("=".repeat(60));
-  console.log("\nCheck your inbox: shaud150@gmail.com\n");
+  console.log("\nCheck your inbox:", recipient, "\n");
 }
 
 // Run the test

@@ -4,7 +4,7 @@
 
 const CONFIG = {
   // Stripe Keys - Get these from https://dashboard.stripe.com/apikeys
-  STRIPE_PUBLISHABLE_KEY: 'pk_test_YOUR_PUBLISHABLE_KEY', // Replace with your key
+  STRIPE_PUBLISHABLE_KEY: 'pk_live_51SN0lqJpWM3jphuaWTrTbRdcUZcY7O5JEwIbN5UkRWtkqUiH6xPwWI8g77TH9i7hNVnVAG1d5K5SMA7XNvfRdgsP00USsKwgFz',
   // Note: Secret key should ONLY be in server.js via environment variable
   
   // Payment Settings

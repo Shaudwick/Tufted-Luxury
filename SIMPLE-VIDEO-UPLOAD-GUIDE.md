@@ -126,7 +126,7 @@ If uploading directly is too complicated, you can:
 
 1. **Upload video to YouTube** (make it unlisted if you don't want it public)
 2. **Get the YouTube video link**
-3. **I can update the blog post** to use the YouTube embed instead
+3. **I can update the page** to use the YouTube embed instead
 
 This is often easier for large video files!
 

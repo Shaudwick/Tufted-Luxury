@@ -124,7 +124,7 @@ To send a test email, run:
 node test-email.js
 ```
 
-This will send sample emails for both ticket types to `shaud150@gmail.com`.
+This will send sample emails for both ticket types to the address you configure via `TEST_EMAIL_RECIPIENT` or `SMTP_USER` in `.env`.
 
 ## Notes
 

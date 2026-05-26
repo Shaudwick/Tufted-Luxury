@@ -43,7 +43,6 @@
               <ul class="menu__list">
                 <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
                 <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
-                <li class="menu__item"><a href="blog.html" class="menu__link">Blog</a></li>
                 <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
               </ul>
             </nav>
@@ -95,7 +94,6 @@
           </div>
           <div class="contact__info">
             <div class="contact__media-row">
-              <div class="contact__image"><img src="Website-Images/Contact/IMG_0044_1.jpeg" alt="Black Lobby Contact" /></div>
               <div class="contact__text">
                 <p>
                   We’re here to collaborate. Share your vision and we’ll guide you through a tailored process—from concept and material selection to a finished piece that elevates your space.
@@ -105,116 +103,88 @@
           </div>
         </div>
       </section>
-      <!-- Commission Section -->
+      <!-- What We Offer Section (Commission + Workshops + Wedding Receptions) -->
       <section id="commission" class="contact-form-section">
+        <span id="workshops" aria-hidden="true" style="position:absolute;margin-top:-5rem;"></span>
         <div class="contact-form__container">
-          <h2 class="contact-form__title title">Commission a Custom Rug</h2>
+          <h2 class="contact-form__title title">What We Offer</h2>
           <div class="contact-form__intro">
-            <p>Work directly with our artisans to create a one-of-a-kind tufted rug tailored to your space. We guide you through material selection, sizing, design consultation, and installation. Lead time: 6-12 weeks. Starting at $1,200.</p>
+            <div class="offer-options">
+              <div class="offer-option">
+                <h4>Commission a Custom Rug</h4>
+                <p>Work directly with our artisans to create a one-of-a-kind tufted rug tailored to your space. We guide you through material selection, sizing, design consultation, and installation. <strong>Lead time:</strong> 6-12 weeks. <strong>Starting at $1,200.</strong></p>
+              </div>
+              <div class="offer-option">
+                <h4>Workshops for Colleges & Universities</h4>
+                <p>Hands-on workshops on traditional tufting techniques, contemporary design, and the intersection of craft and culture. <strong>Formats:</strong> 2-4 hour workshops, multi-day residencies. <strong>AV Needs:</strong> Projector, screen. <strong>Travel:</strong> Nationwide, included in fee. <strong>Fees:</strong> Starting at $2,500.</p>
+              </div>
+              <div class="offer-option">
+                <h4>Wedding Receptions</h4>
+                <p>Transform your wedding with handcrafted tufted rugs as centerpieces, ceremony backdrops, or floor installations. <strong>What We Offer:</strong> Custom installations, ceremony backdrops, reception centerpieces, photo backdrops. <strong>Services Include:</strong> Design consultation, professional installation and removal. Custom pricing based on your needs.</p>
+              </div>
+            </div>
           </div>
-          <form class="contact-form" id="commissionForm" action="mailto:Contact@blacklobby.co,Rashaud.d.will@gmail.com" method="post" enctype="text/plain">
-            <input type="hidden" name="Inquiry Type" value="Commission">
+          <form class="contact-form" id="offerForm" action="mailto:Contact@blacklobby.co" method="post" enctype="text/plain">
+            <input type="hidden" name="Inquiry Type" value="What We Offer">
             <div class="contact-form__row">
               <div class="contact-form__field">
-                <label for="commissionName">Name</label>
-                <input type="text" id="commissionName" name="Name" required />
+                <label for="offerName">Name</label>
+                <input type="text" id="offerName" name="Name" required />
               </div>
               <div class="contact-form__field">
-                <label for="commissionEmail">Email</label>
-                <input type="email" id="commissionEmail" name="Email" required />
+                <label for="offerEmail">Email</label>
+                <input type="email" id="offerEmail" name="Email" required />
               </div>
             </div>
             <div class="contact-form__field">
-              <label for="commissionSpace">Space Type (e.g., residential, commercial, office)</label>
-              <input type="text" id="commissionSpace" name="Space Type" required />
-            </div>
-            <div class="contact-form__field">
-              <label for="commissionSize">Desired Size (approximate)</label>
-              <input type="text" id="commissionSize" name="Size" placeholder="e.g., 8x10 feet" required />
-            </div>
-            <div class="contact-form__field">
-              <label for="commissionMessage">Project Details & Timeline</label>
-              <textarea id="commissionMessage" name="Message" rows="6" placeholder="Tell us about your vision, preferred materials, timeline, and any specific design requirements..." required></textarea>
-            </div>
-            <button type="submit" class="contact-form__button button">Request Commission Quote</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- Workshops for Colleges & Universities Section -->
-      <section id="workshops" class="contact-form-section">
-        <div class="contact-form__container">
-          <h2 class="contact-form__title title">Workshops for Colleges & Universities</h2>
-          <div class="contact-form__intro">
-            <p>We offer hands-on workshops on traditional tufting techniques, contemporary design, and the intersection of craft and culture. Our interactive workshops provide students with practical experience in artisanal craftsmanship, material selection, design process, and cultural heritage. Learning outcomes include understanding traditional techniques, contemporary applications, and the business of craft.</p>
-            <p><strong>Formats:</strong> 2-4 hour workshops, multi-day residencies</p>
-            <p><strong>AV Needs:</strong> Projector, screen (for demonstrations)</p>
-            <p><strong>Travel Policy:</strong> We travel nationwide. Travel and accommodation included in fee structure.</p>
-            <p><strong>Fees:</strong> Starting at $2,500 (varies by format, duration, and location)</p>
-          </div>
-          <form class="contact-form" id="workshopsForm" action="mailto:Contact@blacklobby.co,Rashaud.d.will@gmail.com" method="post" enctype="text/plain">
-            <input type="hidden" name="Inquiry Type" value="Workshops/Programming">
-            <div class="contact-form__row">
-              <div class="contact-form__field">
-                <label for="workshopName">Name & Title</label>
-                <input type="text" id="workshopName" name="Name" required />
-              </div>
-              <div class="contact-form__field">
-                <label for="workshopEmail">Email</label>
-                <input type="email" id="workshopEmail" name="Email" required />
-              </div>
-            </div>
-            <div class="contact-form__field">
-              <label for="workshopInstitution">Institution</label>
-              <input type="text" id="workshopInstitution" name="Institution" required />
-            </div>
-            <div class="contact-form__field">
-              <label for="workshopFormat">Preferred Format</label>
-              <select id="workshopFormat" name="Format" required>
-                <option value="">Select format...</option>
-                <option value="Workshop">Interactive Workshop (2-4 hours)</option>
-                <option value="Residency">Multi-Day Residency</option>
-                <option value="Other">Other (specify in message)</option>
+              <label for="offerService">I am interested in</label>
+              <select id="offerService" name="Service" required>
+                <option value="">Select...</option>
+                <option value="Commission a Custom Rug">Commission a Custom Rug</option>
+                <option value="Workshops for Colleges & Universities">Workshops for Colleges & Universities</option>
+                <option value="Wedding Receptions">Wedding Receptions</option>
               </select>
             </div>
             <div class="contact-form__field">
-              <label for="workshopDate">Preferred Date(s)</label>
-              <input type="text" id="workshopDate" name="Preferred Dates" placeholder="e.g., Fall 2024, Spring 2025" required />
+              <label for="offerMessage">Tell us about your needs</label>
+              <textarea id="offerMessage" name="Message" rows="6" placeholder="Include: space type & size (for commissions), institution or wedding date, venue, expected participants or guest count, timeline, budget range, vision/materials, and any specific requirements..." required></textarea>
             </div>
-            <div class="contact-form__field">
-              <label for="workshopMessage">Additional Details</label>
-              <textarea id="workshopMessage" name="Message" rows="6" placeholder="Expected number of participants, specific topics of interest, budget range, AV requirements..." required></textarea>
-            </div>
-            <button type="submit" class="contact-form__button button">Request Workshop</button>
+            <button type="submit" class="contact-form__button button">Submit Inquiry</button>
           </form>
         </div>
       </section>
 
-      <!-- Venue Partnerships Section -->
-      <section id="partnerships" class="contact-form-section">
+      <!-- Artwork Installation Rotation Package Section -->
+      <section id="partnerships" class="contact-form-section contact-form-section--highlight">
         <div class="contact-form__container">
-          <h2 class="contact-form__title title">Venue Partnerships</h2>
+          <h2 class="contact-form__title title">Artwork Installation Rotation Package</h2>
           <div class="contact-form__intro">
-            <p>Transform your space with rotating art installations of our handcrafted tufted rugs. We provide curated pieces, installation, placards with QR codes linking to story pages, and regular rotation to keep your space fresh and engaging.</p>
+            <p>Transform your space with rotating art installations of our handcrafted tufted rugs. We provide curated pieces, professional installation, placards with QR codes linking to story pages, and regular rotation to keep your space fresh and engaging.</p>
+            <div class="rotation-cta">
+              <a href="#partnershipForm" class="button button--primary rotation-cta__button">Inquire About Installation</a>
+            </div>
             <div class="partnership-tiers">
-              <h3>Partnership Tiers</h3>
-              <div class="tier">
-                <h4>Essential</h4>
-                <p>Single rug rotation every 8 weeks. Includes installation, placard, and QR story page. <strong>$900/week</strong></p>
+              <h3>Package Tiers</h3>
+              <div class="tier tier--essential">
+                <span class="tier__label">Tier 1</span>
+                <h4>Essential — $900/week</h4>
+                <p>Single rug rotation every 8 weeks. Includes installation, placard, and QR story page.</p>
               </div>
-              <div class="tier">
-                <h4>Premium</h4>
-                <p>Two rugs, bi-weekly rotation. Enhanced storytelling and social media features. <strong>$1,600/week</strong></p>
+              <div class="tier tier--premium">
+                <span class="tier__label">Tier 2</span>
+                <h4>Premium — $1,600/week</h4>
+                <p>Two rugs, bi-weekly rotation. Enhanced storytelling and social media features.</p>
               </div>
-              <div class="tier">
-                <h4>Luxury</h4>
-                <p>Three+ rugs, weekly rotation. Custom curation, dedicated account manager, and exclusive pieces. <strong>Custom pricing</strong></p>
+              <div class="tier tier--luxury">
+                <span class="tier__label">Tier 3</span>
+                <h4>Luxury — $2,500/week</h4>
+                <p>Three+ rugs, weekly rotation. Custom curation, dedicated account manager, and exclusive pieces.</p>
               </div>
             </div>
             <p><strong>Installation Requirements:</strong> Standard wall mounting or floor display. We handle all installation and removal.</p>
             <p><strong>What We Provide:</strong> Curated rugs, professional installation, custom placards, QR code story pages, rotation service, and maintenance support.</p>
           </div>
-          <form class="contact-form" id="partnershipForm" action="mailto:Contact@blacklobby.co,Rashaud.d.will@gmail.com" method="post" enctype="text/plain">
+          <form class="contact-form" id="partnershipForm" action="mailto:Contact@blacklobby.co" method="post" enctype="text/plain">
             <input type="hidden" name="Inquiry Type" value="Venue Partnership">
             <div class="contact-form__row">
               <div class="contact-form__field">
@@ -234,10 +204,10 @@
               <label for="partnershipTier">Interest Level</label>
               <select id="partnershipTier" name="Tier Interest" required>
                 <option value="">Select tier...</option>
-                <option value="Essential">Essential ($900/week)</option>
-                <option value="Premium">Premium ($1,600/week)</option>
-                <option value="Luxury">Luxury (Custom pricing)</option>
-                <option value="Not Sure">Not sure - would like to discuss</option>
+                <option value="Tier 1 - Essential ($900/week)">Tier 1 — Essential ($900/week)</option>
+                <option value="Tier 2 - Premium ($1,600/week)">Tier 2 — Premium ($1,600/week)</option>
+                <option value="Tier 3 - Luxury ($2,500/week)">Tier 3 — Luxury ($2,500/week)</option>
+                <option value="Not Sure">Not sure — would like to discuss</option>
               </select>
             </div>
             <div class="contact-form__field">
@@ -253,84 +223,11 @@
         </div>
       </section>
 
-      <!-- Wedding Receptions Section -->
-      <section id="weddings" class="contact-form-section">
-        <div class="contact-form__container">
-          <h2 class="contact-form__title title">Wedding Receptions</h2>
-          <div class="contact-form__intro">
-            <p>Transform your wedding reception into an unforgettable experience with our handcrafted tufted rugs as stunning centerpieces, ceremony backdrops, or elegant floor installations. Each piece is curated to complement your wedding theme and create a luxurious, artisanal atmosphere that your guests will remember.</p>
-            <p><strong>What We Offer:</strong> Custom rug installations, ceremony backdrops, reception centerpieces, photo backdrop installations, and curated collections tailored to your wedding aesthetic.</p>
-            <p><strong>Pricing:</strong> Custom pricing based on your specific needs, venue size, number of pieces, installation requirements, and event duration. We work with you to create a package that fits your vision and budget.</p>
-            <p><strong>Services Include:</strong> Design consultation, custom curation, professional installation and removal, maintenance during the event, and optional post-event purchase options.</p>
-          </div>
-          <form class="contact-form" id="weddingForm" action="mailto:Contact@blacklobby.co,Rashaud.d.will@gmail.com" method="post" enctype="text/plain">
-            <input type="hidden" name="Inquiry Type" value="Wedding Reception">
-            <div class="contact-form__row">
-              <div class="contact-form__field">
-                <label for="weddingName">Name</label>
-                <input type="text" id="weddingName" name="Name" required />
-              </div>
-              <div class="contact-form__field">
-                <label for="weddingEmail">Email</label>
-                <input type="email" id="weddingEmail" name="Email" required />
-              </div>
-            </div>
-            <div class="contact-form__row">
-              <div class="contact-form__field">
-                <label for="weddingDate">Wedding Date</label>
-                <input type="text" id="weddingDate" name="Wedding Date" placeholder="e.g., June 15, 2025" required />
-              </div>
-              <div class="contact-form__field">
-                <label for="weddingLocation">Venue Location</label>
-                <input type="text" id="weddingLocation" name="Venue Location" placeholder="City, State" required />
-              </div>
-            </div>
-            <div class="contact-form__field">
-              <label for="weddingVenue">Venue Name</label>
-              <input type="text" id="weddingVenue" name="Venue Name" placeholder="Name of your wedding venue" required />
-            </div>
-            <div class="contact-form__field">
-              <label for="weddingGuestCount">Expected Guest Count</label>
-              <input type="text" id="weddingGuestCount" name="Guest Count" placeholder="e.g., 150 guests" required />
-            </div>
-            <div class="contact-form__field">
-              <label for="weddingUse">Intended Use</label>
-              <select id="weddingUse" name="Intended Use" required>
-                <option value="">Select use...</option>
-                <option value="Ceremony Backdrop">Ceremony Backdrop</option>
-                <option value="Reception Centerpieces">Reception Centerpieces</option>
-                <option value="Photo Backdrop">Photo Backdrop</option>
-                <option value="Floor Installation">Floor Installation</option>
-                <option value="Multiple Uses">Multiple Uses</option>
-                <option value="Other">Other (specify in message)</option>
-              </select>
-            </div>
-            <div class="contact-form__field">
-              <label for="weddingBudget">Budget Range</label>
-              <select id="weddingBudget" name="Budget Range" required>
-                <option value="">Select range...</option>
-                <option value="Under $2,000">Under $2,000</option>
-                <option value="$2,000 - $5,000">$2,000 - $5,000</option>
-                <option value="$5,000 - $10,000">$5,000 - $10,000</option>
-                <option value="$10,000 - $20,000">$10,000 - $20,000</option>
-                <option value="Over $20,000">Over $20,000</option>
-                <option value="Prefer to discuss">Prefer to discuss</option>
-              </select>
-            </div>
-            <div class="contact-form__field">
-              <label for="weddingMessage">Wedding Details & Vision</label>
-              <textarea id="weddingMessage" name="Message" rows="6" placeholder="Tell us about your wedding theme, color palette, aesthetic preferences, specific areas where you'd like rugs installed, and any other details that will help us create the perfect installation for your special day..." required></textarea>
-            </div>
-            <button type="submit" class="contact-form__button button">Request Wedding Consultation</button>
-          </form>
-        </div>
-      </section>
-
       <!-- General Contact Section -->
       <section class="contact-form-section">
         <div class="contact-form__container">
           <h2 class="contact-form__title title">General Inquiry</h2>
-          <form class="contact-form" id="contactForm" action="mailto:Contact@blacklobby.co,Rashaud.d.will@gmail.com" method="post" enctype="text/plain">
+          <form class="contact-form" id="contactForm" action="mailto:Contact@blacklobby.co" method="post" enctype="text/plain">
             <div class="contact-form__field">
               <label for="inquiryType">I am a...</label>
               <select id="inquiryType" name="Inquiry Type" required>

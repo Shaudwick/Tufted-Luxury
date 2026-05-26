@@ -1330,7 +1330,20 @@ video {
   transform: translateY(0);
 }
 
-/* Stripe Buy Button Styling */
+/* Stripe buy-button replaced — payment links use .merchandise__button links */
+.merchandise__info > a.merchandise__button {
+  margin-top: 1rem;
+  text-decoration: none;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+a.merchandise__button {
+  display: block;
+  width: 100%;
+}
+
+/* Legacy: Stripe embedded buy button (e.g. some event pages) */
 stripe-buy-button {
   display: block;
   width: 100%;

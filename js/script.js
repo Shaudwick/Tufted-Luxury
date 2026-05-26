@@ -522,39 +522,37 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Gods Collection checkout (Stripe when API is available; otherwise mailto fallback)
+// Stripe Payment Links — URLs from js/payment-links.js (Dashboard → Payment links)
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("[data-gods-variant]").forEach(function (btn) {
-    btn.addEventListener("click", async function () {
-      var variant = btn.getAttribute("data-gods-variant");
-      var prevText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = "Redirecting…";
-      try {
-        var r = await fetch("/api/checkout/gods-collection", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ variant: variant }),
-        });
-        var data = await r.json().catch(function () {
-          return {};
-        });
-        if (r.ok && data.url) {
-          window.location.href = data.url;
-          return;
-        }
-        throw new Error(data.error || "Checkout unavailable");
-      } catch (e) {
-        var subj =
-          variant === "full"
-            ? "Gods Collection — Full Set ($10,000)"
-            : "Gods Collection — Single Rug ($2,500)";
-        window.location.href =
-          "mailto:Contact@blacklobby.co?subject=" + encodeURIComponent(subj);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = prevText;
-      }
-    });
+  const cfg =
+    typeof window.BLACK_LOBBY_PAYMENT_LINKS === "object" &&
+    window.BLACK_LOBBY_PAYMENT_LINKS !== null
+      ? window.BLACK_LOBBY_PAYMENT_LINKS
+      : {};
+
+  document.querySelectorAll("[data-pay]").forEach(function (el) {
+    const key = el.getAttribute("data-pay");
+    if (!key || !Object.prototype.hasOwnProperty.call(cfg, key)) return;
+    const url = cfg[key] == null ? "" : String(cfg[key]).trim();
+    if (url && /^https:\/\/.+/.test(url)) {
+      el.setAttribute("href", url);
+      el.setAttribute("target", "_blank");
+      el.setAttribute("rel", "noopener noreferrer");
+      return;
+    }
+    const label = (el.textContent || "").trim() || key;
+    el.setAttribute(
+      "href",
+      "mailto:Contact@blacklobby.co?subject=" +
+        encodeURIComponent("Purchase: " + label) +
+        "&body=" +
+        encodeURIComponent(
+          "Hi Black Lobby,\n\nI'd like to buy this item. Payment link not configured yet (key: " +
+            key +
+            ").\n\nThanks!",
+        ),
+    );
+    el.setAttribute("target", "_self");
+    el.removeAttribute("rel");
   });
 });

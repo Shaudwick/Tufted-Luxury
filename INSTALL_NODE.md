@@ -57,9 +57,9 @@ Once Node.js is installed, you can:
    node server.js
    ```
 
-2. Send test emails:
-   - Visit: http://localhost:4242/test-email?email=shaud150@gmail.com
-   - Or run: `curl "http://localhost:4242/test-email?email=shaud150@gmail.com"`
+2. Send test emails (development only; configure `.env` first):
+   - Visit: `http://localhost:4242/test-email?email=you@example.com`
+   - Or: `curl "http://localhost:4242/test-email?email=you@example.com"`
 
 ## Troubleshooting
 

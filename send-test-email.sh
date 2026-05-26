@@ -1,28 +1,26 @@
 #!/bin/bash
 
-# Test Email Script for Ticket Confirmations
-# This script sends test ticket confirmation emails
+# Test ticket confirmation emails (development only).
+# Usage: ./send-test-email.sh your@email.com
 
-echo "📧 Sending test ticket confirmation emails..."
-echo ""
-
-# Check if server is running
-if ! curl -s http://localhost:4242/health > /dev/null 2>&1; then
-    echo "❌ Server is not running!"
-    echo "Please start the server first:"
-    echo "   node server.js"
-    echo ""
-    exit 1
+set -e
+EMAIL="${1:-}"
+if [ -z "$EMAIL" ]; then
+  echo "Usage: ./send-test-email.sh you@example.com"
+  echo "Server must be running: node server.js"
+  exit 1
 fi
 
-# Send test email
-echo "Sending test emails to: shaud150@gmail.com"
+echo "📧 Sending test ticket confirmation emails to: $EMAIL"
 echo ""
 
-curl -s "http://localhost:4242/test-email?email=shaud150@gmail.com" | python3 -m json.tool
+if ! curl -s http://localhost:4242/health > /dev/null 2>&1; then
+  echo "❌ Server is not running! Start with: node server.js"
+  exit 1
+fi
+
+curl -s "http://localhost:4242/test-email?email=${EMAIL}" | python3 -m json.tool
 
 echo ""
-echo "✅ Test email request sent!"
-echo "Check your inbox at shaud150@gmail.com"
-echo ""
-echo "The test will send both General ($12) and VIP ($18) ticket confirmation emails."
+echo "✅ Request sent (development endpoint)."
+echo "Check inbox for: $EMAIL"

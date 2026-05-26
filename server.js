@@ -171,67 +171,6 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-// Gods Collection — full-price checkout (not deposit)
-app.post('/api/checkout/gods-collection', async (req, res) => {
-  const variant = req.body?.variant;
-  const catalog = {
-    full: {
-      unit_amount: 1000000, // $10,000.00
-      name: 'Gods Collection — Complete Set (4 pieces)',
-      description: 'Full Gods Collection: all four Masterpiece works.',
-    },
-    single: {
-      unit_amount: 250000, // $2,500.00
-      name: 'Gods Collection — Single Rug',
-      description: 'One piece from the Gods Collection.',
-    },
-  };
-
-  if (!catalog[variant]) {
-    return res.status(400).json({ error: 'Invalid variant' });
-  }
-
-  try {
-    const origin = req.headers.origin || `${req.protocol}://${req.get('host')}`;
-    const item = catalog[variant];
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: item.name,
-              description: item.description,
-            },
-            unit_amount: item.unit_amount,
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      success_url: `${origin}/Checkout.html?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/Checkout.html?canceled=true`,
-      metadata: {
-        productType: 'gods-collection',
-        variant,
-        timestamp: new Date().toISOString(),
-      },
-      billing_address_collection: 'required',
-      shipping_address_collection: {
-        allowed_countries: ['US'],
-      },
-    });
-
-    res.json({ sessionId: session.id, url: session.url });
-  } catch (error) {
-    console.error('Stripe gods-collection error:', error);
-    res.status(500).json({
-      error: error.message || 'Failed to create checkout session',
-    });
-  }
-});
 
 // Verify payment session (optional - for confirmation page)
 app.get('/verify-session/:sessionId', async (req, res) => {
@@ -951,11 +890,20 @@ async function sendAdminPurchaseNotification({ purchaseType, purchaseDetails, cu
   }
 }
 
-// ---------- TEST EMAIL ENDPOINT ----------
+// ---------- TEST EMAIL ENDPOINT (development only) ----------
 
-// Test endpoint to send sample ticket emails
+// Unauthenticated email test — disabled in production. Requires ?email=
 app.get('/test-email', async (req, res) => {
-  const testEmail = req.query.email || 'shaud150@gmail.com';
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  const testEmail = req.query.email;
+  if (!testEmail || typeof testEmail !== 'string' || !testEmail.includes('@')) {
+    return res.status(400).json({
+      error: 'Missing or invalid email',
+      hint: 'Use /test-email?email=you@example.com (development only)',
+    });
+  }
   const ticketType = req.query.type || 'both'; // 'networking', 'charcuterie', or 'both'
   
   try {
@@ -1001,174 +949,6 @@ app.get('/test-email', async (req, res) => {
   }
 });
 
-// ---------- BLOG API ENDPOINTS ----------
-
-const BLOG_POSTS_FILE = path.join(__dirname, 'blog-posts.json');
-
-// Helper function to read blog posts
-function readBlogPosts() {
-  try {
-    const data = fs.readFileSync(BLOG_POSTS_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (err) {
-    console.error('Error reading blog posts:', err);
-    return [];
-  }
-}
-
-// Helper function to write blog posts
-function writeBlogPosts(posts) {
-  try {
-    fs.writeFileSync(BLOG_POSTS_FILE, JSON.stringify(posts, null, 2), 'utf8');
-    return true;
-  } catch (err) {
-    console.error('Error writing blog posts:', err);
-    return false;
-  }
-}
-
-// Simple authentication middleware for blog admin
-function requireAuth(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  
-  const token = authHeader.substring(7);
-  const adminPassword = process.env.BLOG_ADMIN_PASSWORD || 'admin123'; // Default for development
-  
-  // Simple token comparison (in production, use proper JWT or session tokens)
-  if (token !== adminPassword) {
-    return res.status(401).json({ error: 'Invalid authentication' });
-  }
-  
-  next();
-}
-
-// GET all published blog posts
-app.get('/api/blog/posts', (req, res) => {
-  try {
-    const posts = readBlogPosts();
-    const published = posts.filter(post => post.published !== false);
-    // Sort by date (newest first)
-    published.sort((a, b) => new Date(b.date) - new Date(a.date));
-    res.json(published);
-  } catch (err) {
-    console.error('Error fetching blog posts:', err);
-    res.status(500).json({ error: 'Failed to fetch blog posts' });
-  }
-});
-
-// GET single blog post by slug
-app.get('/api/blog/post/:slug', (req, res) => {
-  try {
-    const posts = readBlogPosts();
-    const post = posts.find(p => p.slug === req.params.slug && p.published !== false);
-    
-    if (!post) {
-      return res.status(404).json({ error: 'Post not found' });
-    }
-    
-    res.json(post);
-  } catch (err) {
-    console.error('Error fetching blog post:', err);
-    res.status(500).json({ error: 'Failed to fetch blog post' });
-  }
-});
-
-// POST create new blog post (requires auth)
-app.post('/api/blog/post', requireAuth, (req, res) => {
-  try {
-    const posts = readBlogPosts();
-    const newPost = {
-      id: req.body.id || `post-${Date.now()}`,
-      title: req.body.title,
-      category: req.body.category,
-      categoryLabel: req.body.categoryLabel,
-      excerpt: req.body.excerpt,
-      image: req.body.image,
-      alt: req.body.alt || req.body.title,
-      date: req.body.date || new Date().toISOString().split('T')[0],
-      readTime: req.body.readTime || '5',
-      slug: req.body.slug || req.body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      published: req.body.published !== undefined ? req.body.published : true,
-      content: req.body.content || ''
-    };
-    
-    posts.push(newPost);
-    
-    if (writeBlogPosts(posts)) {
-      res.json({ success: true, post: newPost });
-    } else {
-      res.status(500).json({ error: 'Failed to save blog post' });
-    }
-  } catch (err) {
-    console.error('Error creating blog post:', err);
-    res.status(500).json({ error: 'Failed to create blog post' });
-  }
-});
-
-// PUT update blog post (requires auth)
-app.put('/api/blog/post/:id', requireAuth, (req, res) => {
-  try {
-    const posts = readBlogPosts();
-    const index = posts.findIndex(p => p.id === req.params.id);
-    
-    if (index === -1) {
-      return res.status(404).json({ error: 'Post not found' });
-    }
-    
-    // Update post with new data
-    posts[index] = {
-      ...posts[index],
-      ...req.body,
-      id: req.params.id // Don't allow changing the ID
-    };
-    
-    if (writeBlogPosts(posts)) {
-      res.json({ success: true, post: posts[index] });
-    } else {
-      res.status(500).json({ error: 'Failed to update blog post' });
-    }
-  } catch (err) {
-    console.error('Error updating blog post:', err);
-    res.status(500).json({ error: 'Failed to update blog post' });
-  }
-});
-
-// DELETE blog post (requires auth)
-app.delete('/api/blog/post/:id', requireAuth, (req, res) => {
-  try {
-    const posts = readBlogPosts();
-    const filtered = posts.filter(p => p.id !== req.params.id);
-    
-    if (filtered.length === posts.length) {
-      return res.status(404).json({ error: 'Post not found' });
-    }
-    
-    if (writeBlogPosts(filtered)) {
-      res.json({ success: true, message: 'Post deleted' });
-    } else {
-      res.status(500).json({ error: 'Failed to delete blog post' });
-    }
-  } catch (err) {
-    console.error('Error deleting blog post:', err);
-    res.status(500).json({ error: 'Failed to delete blog post' });
-  }
-});
-
-// GET all blog posts (including unpublished) for admin
-app.get('/api/blog/admin/posts', requireAuth, (req, res) => {
-  try {
-    const posts = readBlogPosts();
-    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-    res.json(posts);
-  } catch (err) {
-    console.error('Error fetching admin blog posts:', err);
-    res.status(500).json({ error: 'Failed to fetch blog posts' });
-  }
-});
-
 // ---------- START SERVER ----------
 
 const PORT = process.env.PORT || 4242;
@@ -1176,8 +956,8 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Visit http://localhost:${PORT} to view your site`);
   console.log(`Stripe webhook endpoint: /api/stripe/webhook`);
-  console.log(`Test email endpoint: http://localhost:${PORT}/test-email?email=shaud150@gmail.com`);
-  console.log(`Blog API endpoint: http://localhost:${PORT}/api/blog/posts`);
-  console.log(`Blog admin panel: http://localhost:${PORT}/blog-admin.html`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`DEV: Test email: GET /test-email?email=YOUR_EMAIL&type=both`);
+  }
 });
 
