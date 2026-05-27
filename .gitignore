@@ -26,6 +26,7 @@ Thumbs.db
 *.swp
 *.swo
 
-# Large media (over GitHub 100MB limit — deploy via scp/rsync; see upload-video-instructions.md)
+# Large originals (over GitHub 100MB limit); use BCLAS-compressed.mp4 in the repo
 Website-Images/BCLAS.mp4
 Website-Images/BCLAS 2.mp4
+Website-Images/BCLAS copy.mp4
