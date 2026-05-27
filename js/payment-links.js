@@ -10,11 +10,8 @@
 
 window.BLACK_LOBBY_PAYMENT_LINKS = {
   godsCollectionFull: "",
-  godsCollectionSingle: "",
-  quarterZip: "",
-  shortSleeve: "",
-  longSleeve: "",
-  cap: "",
-  mousepad: "",
-  notebook: "",
+  rugChronicles: "",
+  rugExodus: "",
+  rugPsalms: "",
+  rugQueenVashti: "",
 };

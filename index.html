@@ -5,16 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="img/favicon.png" />
-  <link rel="preload" as="image" href="Website-Images/Home/Home-About-Video-1.MP4" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>Black Lobby - Luxury Tufted Rugs & Artisanal Programming | Commission & Partnerships</title>
-  <meta name="description" content="Black Lobby creates handcrafted luxury tufted rugs and offers institutional programming for colleges, hotels, and cultural venues. Commission custom rugs, book speaking engagements, and explore venue partnerships.">
+  <title>Black Lobby | Hand Tufted Rugs · The Gods Collection</title>
+  <meta name="description" content="Black Lobby — four hand-tufted masterpieces in the Gods Collection. Commission the full collection or a single piece. Craft, process, and contact.">
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/minimal-theme.css" />
 </head>
 
-<body>
+<body class="site-minimal">
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
@@ -23,8 +23,7 @@
           <div class="header__menu menu">
             <nav class="menu__body">
               <ul class="menu__list">
-                <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
-                <li class="menu__item"><a href="services.html" class="menu__link">Collections</a></li>
+                <li class="menu__item"><a href="about.html" class="menu__link">Process</a></li>
                 <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
               </ul>
             </nav>
@@ -35,257 +34,123 @@
         </div>
       </div>
     </header>
+
     <main class="page">
-      <section class="main">
-        <div class="main__container">
-          <h3 class="main__caption">Handcrafted Excellence</h3>
-          <h1 class="main__title">Artisanal Tufted Masterpieces</h1>
-          <div class="main__text">
-            Where traditional craftsmanship meets contemporary design. Each piece is meticulously handcrafted by skilled artisans using time-honored techniques and the finest materials. Commission custom rugs for your space or book our institutional programming for colleges, hotels, and cultural venues.
-          </div>
-          <div class="main__cta-group">
-            <a href="contact.html#commission" class="button button--primary">Commission a Rug</a>
-            <a href="contact.html#partnerships" class="button button--secondary">Artwork Installation</a>
-          </div>
-          <a href="contact.html#partnerships" class="main__cta-link">Artwork Installation Rotation — $900 / $1,600 / $2,500 per week →</a>
-        </div>
-      </section>
-
-      <div class="section-separator"></div>
-
-      <section class="gods-spotlight" id="gods-collection">
-        <div class="gods-spotlight__container">
-          <div class="gods-spotlight__visual">
-            <img src="Website-Images/Home/GodsGallery1.jpg" alt="Gods Collection — gallery installation" width="800" height="1000" loading="eager" />
-            <span class="gods-spotlight__tag">The Gods Collection</span>
-          </div>
-          <div class="gods-spotlight__content">
-            <p class="gods-spotlight__eyebrow">Limited series · Four Masterpiece works</p>
-            <h2 class="gods-spotlight__title">A curated quartet of tufted rugs</h2>
-            <p class="gods-spotlight__text">
-              Silk and wool blend with contemporary palettes. Commission the complete set for your space, or select a single rug from the series.
-            </p>
-            <ul class="gods-spotlight__prices" aria-label="Pricing">
-              <li class="gods-spotlight__price-row">
-                <span class="gods-spotlight__label">Complete collection</span>
-                <span class="gods-spotlight__amount">$10,000</span>
-              </li>
-              <li class="gods-spotlight__price-row">
-                <span class="gods-spotlight__label">Single rug</span>
-                <span class="gods-spotlight__amount">$2,500</span>
-              </li>
-            </ul>
-            <div class="gods-spotlight__actions">
-              <a class="button button--primary gods-spotlight__pay" data-pay="godsCollectionFull" href="#">Purchase full collection — $10,000</a>
-              <a class="button button--secondary gods-spotlight__pay" data-pay="godsCollectionSingle" href="#">Purchase single rug — $2,500</a>
-            </div>
-            <p class="gods-spotlight__note">Checkout opens in Stripe. Add your links in <code>js/payment-links.js</code> until then you’ll reach us by email automatically.</p>
-            <a href="services.html#gods-collection" class="gods-spotlight__link">View gallery &amp; details →</a>
+      <section class="minimal-hero" id="home">
+        <div class="minimal-hero__inner">
+          <p class="minimal-hero__kicker">Hand tufted · Silk &amp; wool</p>
+          <h1 class="minimal-hero__title">The Gods Collection</h1>
+          <p class="minimal-hero__text">
+            Four conceived works, each finished as a single rug. Presented below, one at a time —
+            the same restraint we bring to making them.
+          </p>
+          <p class="minimal-hero__price">Full collection $10,000 · Each piece $2,500</p>
+          <div class="minimal-hero__actions">
+            <a href="contact.html#commission-collection" class="btn-minimal">Commission the collection</a>
+            <a href="about.html" class="btn-minimal btn-minimal--ghost">How we tuft</a>
           </div>
         </div>
       </section>
 
-      <div class="section-separator"></div>
+      <div class="collection-divider">
+        <h2 id="gods-collection">The four works</h2>
+        <p>Select a piece below. “Acquire” opens checkout when configured; otherwise your email client opens so we can complete the sale directly.</p>
+      </div>
 
-      <section class="merchandise">
-        <div class="merchandise__container">
-          <h2 class="merchandise__title title">Merchandise</h2>
-          
-          <!-- Shirts Row -->
-          <div class="merchandise__row">
-            <h3 class="merchandise__row-title">Apparel</h3>
-            <div class="merchandise__scroll-hint">← Swipe or scroll to see more →</div>
-            <div class="merchandise__carousel">
-              <div class="merchandise__carousel-row">
-                <div class="merchandise__item" data-item-id="quarter-zip" data-item-type="apparel" data-price="65">
-                  <div class="merchandise__image">
-                    <img src="Website-Images/Home/Quarter zip rehearse greatness.jpeg" alt="Quarter Zip Rehearse Greatness">
-                  </div>
-                  <div class="merchandise__info">
-                    <div class="merchandise__name">Quarter Zip Pullover</div>
-                    <div class="merchandise__price">$65</div>
-                    <a class="merchandise__button" href="#" data-pay="quarterZip"><span>Purchase — $65</span></a>
-                  </div>
-                </div>
-                <div class="merchandise__item merchandise__item--toggle" data-item-id="short-sleeve" data-item-type="apparel" data-price="45">
-                  <div class="merchandise__image merchandise__image--toggle">
-                    <img class="merchandise__image-front" src="Website-Images/Home/SHort sleeve shirt front.jpeg" alt="Short Sleeve Shirt Front">
-                    <img class="merchandise__image-back" src="Website-Images/Home/short Sleeve Shirt Back .jpeg" alt="Short Sleeve Shirt Back" style="display: none;">
-                    <div class="merchandise__view-indicator">
-                      <span class="merchandise__view-text">Front</span>
-                    </div>
-                  </div>
-                  <div class="merchandise__info">
-                    <div class="merchandise__name">Short Sleeve T-Shirt</div>
-                    <div class="merchandise__price">$45</div>
-                    <a class="merchandise__button" href="#" data-pay="shortSleeve"><span>Purchase — $45</span></a>
-                  </div>
-                </div>
-                <div class="merchandise__item merchandise__item--toggle" data-item-id="long-sleeve" data-item-type="apparel" data-price="55">
-                  <div class="merchandise__image merchandise__image--toggle">
-                    <img class="merchandise__image-front" src="Website-Images/Home/Rehearse Greatness long sleeve shirtfront.jpeg" alt="Long Sleeve Shirt Front">
-                    <img class="merchandise__image-back" src="Website-Images/Home/long sleeve shirt back .jpeg" alt="Long Sleeve Shirt Back" style="display: none;">
-                    <div class="merchandise__view-indicator">
-                      <span class="merchandise__view-text">Front</span>
-                    </div>
-                  </div>
-                  <div class="merchandise__info">
-                    <div class="merchandise__name">Long Sleeve T-Shirt</div>
-                    <div class="merchandise__price">$55</div>
-                    <a class="merchandise__button" href="#" data-pay="longSleeve"><span>Purchase — $55</span></a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Accessories Row -->
-          <div class="merchandise__row">
-            <h3 class="merchandise__row-title">Accessories</h3>
-            <div class="merchandise__scroll-hint">← Swipe or scroll to see more →</div>
-            <div class="merchandise__carousel">
-              <div class="merchandise__carousel-row">
-                <div class="merchandise__item" data-item-id="cap" data-item-type="accessory" data-price="35">
-                  <div class="merchandise__image">
-                    <img src="Website-Images/Home/Rehearse Greatness Cap.jpeg" alt="Rehearse Greatness Cap">
-                  </div>
-                  <div class="merchandise__info">
-                    <div class="merchandise__name">Baseball Cap</div>
-                    <div class="merchandise__price">$35</div>
-                    <a class="merchandise__button" href="#" data-pay="cap"><span>Purchase — $35</span></a>
-                  </div>
-                </div>
-                <div class="merchandise__item" data-item-id="mousepad" data-item-type="accessory" data-price="25">
-                  <div class="merchandise__image">
-                    <img src="Website-Images/Home/Mouse Pad.jpeg" alt="Mouse Pad">
-                  </div>
-                  <div class="merchandise__info">
-                    <div class="merchandise__name">Mouse Pad</div>
-                    <div class="merchandise__price">$25</div>
-                    <a class="merchandise__button" href="#" data-pay="mousepad"><span>Purchase — $25</span></a>
-                  </div>
-                </div>
-                <div class="merchandise__item" data-item-id="notebook" data-item-type="accessory" data-price="20">
-                  <div class="merchandise__image">
-                    <img src="Website-Images/Home/Note Book.jpeg" alt="Notepad">
-                  </div>
-                  <div class="merchandise__info">
-                    <div class="merchandise__name">Notepad</div>
-                    <div class="merchandise__price">$20</div>
-                    <a class="merchandise__button" href="#" data-pay="notebook"><span>Purchase — $20</span></a>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <section class="rug-showcase" id="rug-chronicles" aria-label="Chronicles rug">
+        <div class="rug-showcase__media">
+          <img src="Website-Images/Home/MasterpieceChronicles1.jpeg" alt="Chronicles — Gods Collection rug" loading="lazy" />
+        </div>
+        <div class="rug-showcase__copy">
+          <span class="rug-showcase__index">No. 01 · Gods Collection</span>
+          <h2 class="rug-showcase__name">Chronicles</h2>
+          <p class="rug-showcase__desc">Contemporary palette, silk and wool. A cornerstone of the series.</p>
+          <div class="rug-showcase__price">$2,500</div>
+          <div class="rug-showcase__actions">
+            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
+            <a href="#" class="btn-minimal" data-pay="rugChronicles">Acquire</a>
           </div>
         </div>
       </section>
 
-      <div class="section-separator"></div>
-
-      <section class="event-signup">
-        <div class="event-signup__container">
-          <div class="event-signup__content">
-            <h2 class="event-signup__title title">Institutional Programming & Partnerships</h2>
-            <div class="event-signup__text">
-              We offer curated programming for colleges, universities, and cultural venues. Our <strong>Artwork Installation Rotation Package</strong> brings rotating tufted rugs to your space with three tiers: $900/week, $1,600/week, or $2,500/week. From hands-on workshops to rotating art installations, we create experiences that elevate your space.
-            </div>
-            <div class="event-signup__cta-group">
-              <a href="contact.html#workshops" class="button">For Colleges & Universities</a>
-              <a href="contact.html#partnerships" class="button">Artwork Installation Package</a>
-            </div>
+      <section class="rug-showcase" id="rug-exodus" aria-label="Exodus rug">
+        <div class="rug-showcase__media">
+          <img src="Website-Images/Home/Masterpiece2.jpeg" alt="Exodus — Gods Collection rug" loading="lazy" />
+        </div>
+        <div class="rug-showcase__copy">
+          <span class="rug-showcase__index">No. 02 · Gods Collection</span>
+          <h2 class="rug-showcase__name">Exodus</h2>
+          <p class="rug-showcase__desc">Rich texture and tonal depth — designed to anchor a quiet room.</p>
+          <div class="rug-showcase__price">$2,500</div>
+          <div class="rug-showcase__actions">
+            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
+            <a href="#" class="btn-minimal" data-pay="rugExodus">Acquire</a>
           </div>
         </div>
       </section>
 
-      <div class="section-separator"></div>
-
-      <section class="about">
-        <div class="about__container">
-          <div class="about__content">
-            <h2 class="about__title">The Art of Tufting</h2>
-            <div class="about__video">
-              <video id="video1" muted playsinline webkit-playsinline preload="auto" controls loop poster="Website-Images/Home/Home-About-Video-1.MP4">
-                <source src="Website-Images/Home/Home-About-Video-1.MP4" type="video/mp4">
-                <source src="Website-Images/Home/Home-About-Video-1.MP4" type="video/quicktime">
-                Your browser does not support the video tag.
-              </video>
-              <video id="video2" muted playsinline webkit-playsinline preload="none" controls loop poster="Website-Images/Home/Home-About-Video-2.MP4" style="display: none;">
-                <source src="Website-Images/Home/Home-About-Video-2.MP4" type="video/mp4">
-                <source src="Website-Images/Home/Home-About-Video-2.MP4" type="video/quicktime">
-                Your browser does not support the video tag.
-              </video>
-            </div>
-            <a href="about.html" class="button">Our Process</a>
+      <section class="rug-showcase" id="rug-psalms" aria-label="Psalms rug">
+        <div class="rug-showcase__media">
+          <img src="Website-Images/Home/Masterpiece5.jpeg" alt="Psalms — Gods Collection rug" loading="lazy" />
+        </div>
+        <div class="rug-showcase__copy">
+          <span class="rug-showcase__index">No. 03 · Gods Collection</span>
+          <h2 class="rug-showcase__name">Psalms</h2>
+          <p class="rug-showcase__desc">Refined repetition and gesture — heirloom intent in every line.</p>
+          <div class="rug-showcase__price">$2,500</div>
+          <div class="rug-showcase__actions">
+            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
+            <a href="#" class="btn-minimal" data-pay="rugPsalms">Acquire</a>
           </div>
         </div>
       </section>
 
-      <div class="section-separator"></div>
-
-      <section class="services" id="collections">
-        <div class="services__container">
-          <h2 class="services__title">Curated Collections</h2>
-          <div class="services__row services__row--products">
-            <div class="services__column">
-              <div class="item-services item-services--product">
-                <div class="item-services__image">
-                  <video id="contemporaryPreview" muted playsinline webkit-playsinline autoplay loop preload="auto">
-                    <source src="Website-Images/Home/Masterpiece1.mov" type="video/mp4" />
-                    <source src="Website-Images/Home/Masterpiece1.mov" type="video/quicktime" />
-                  </video>
-                </div>
-                <h3 class="item-services__title">Gods Collection</h3>
-                <div class="item-services__text">
-                  A curated series of four Masterpiece works. Silk and wool blend with contemporary color palettes. Available for purchase.
-                </div>
-                <div class="item-services__products">
-                  <div class="collection-product">
-                    <span class="collection-product__name">Complete Set (All 4)</span>
-                    <span class="collection-product__price">$10,000</span>
-                    <a href="#" class="collection-product__cta" data-pay="godsCollectionFull">Purchase</a>
-                  </div>
-                  <div class="collection-product">
-                    <span class="collection-product__name">Individual Piece</span>
-                    <span class="collection-product__price">$2,500 each</span>
-                    <a href="#" class="collection-product__cta" data-pay="godsCollectionSingle">Purchase</a>
-                  </div>
-                </div>
-                <a href="services.html#gods-collection" class="button">View Collection</a>
-              </div>
-            </div>
+      <section class="rug-showcase" id="rug-queen-vashti" aria-label="Queen Vashti rug">
+        <div class="rug-showcase__media">
+          <img src="Website-Images/Home/Masterpiece4.jpeg" alt="Queen Vashti — Gods Collection rug" loading="lazy" />
+        </div>
+        <div class="rug-showcase__copy">
+          <span class="rug-showcase__index">No. 04 · Gods Collection</span>
+          <h2 class="rug-showcase__name">Queen Vashti</h2>
+          <p class="rug-showcase__desc">The fourth work — stature, restraint, and a deliberate finish.</p>
+          <div class="rug-showcase__price">$2,500</div>
+          <div class="rug-showcase__actions">
+            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
+            <a href="#" class="btn-minimal" data-pay="rugQueenVashti">Acquire</a>
           </div>
         </div>
       </section>
 
-      <section class="mission">
-        <div class="mission__container">
-          <h2 class="mission__title title">Our Mission</h2>
-          <div class="mission__text">
-            We create heirloom-quality textiles that honor tradition and embrace contemporary vision. Each piece is
-            crafted by hand, with patience and intention, to enrich the spaces where life’s most meaningful moments unfold.
-          </div>
+      <section class="minimal-strip" id="whole-collection">
+        <h2 class="minimal-strip__title">The complete set · $10,000</h2>
+        <p class="minimal-strip__text">
+          Acquire all four as one commission. We'll confirm timing and delivery with you directly.
+        </p>
+        <div class="minimal-strip__actions">
+          <a href="#" class="btn-minimal" data-pay="godsCollectionFull">Pay with Payment Link</a>
+          <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Or write us first</a>
         </div>
       </section>
 
-      <section class="outro">
-        <div class="outro__container">
-          <h2 class="outro__title">Begin Your Journey</h2>
-          <div class="outro__text">
-            Let our design experts guide you through the creation of your perfect custom tufted rug. Every piece is a collaboration between your vision and our artisans' expertise.
-          </div>
-          <a href="contact.html" class="button">Schedule Consultation</a>
+      <section class="minimal-hero minimal-hero--tight">
+        <div class="minimal-hero__inner">
+          <p class="minimal-hero__kicker">Hands on the loom</p>
+          <h2 class="minimal-hero__title">The tufting process</h2>
+          <p class="minimal-hero__text">
+            Material, pile, trimming, and finishing — spelled out step by step on the Process page.
+          </p>
+          <a href="about.html" class="btn-minimal">View process</a>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-        <div class="footer__container">
-        <a href="#" class="footer__policy">Privacy Policy – Terms & Conditions</a>
+      <div class="footer__container">
+        <a href="#" class="footer__policy">Privacy Policy – Terms &amp; Conditions</a>
         <a href="index.html" class="footer__logo logo">Black Lobby</a>
         <div class="footer__copyright">
-          <div>Copyright © 2024 Black Lobby – All Rights Reserved</div>
-          <div class="footer__brand-clarification">Black Lobby (luxury tufted rugs & institutional programming) is not affiliated with any other organization using similar names.</div>
+          <div>© Black Lobby — handcrafted tufted rugs</div>
+          <div class="footer__brand-clarification">Not affiliated with organizations using similar names.</div>
         </div>
       </div>
     </footer>
@@ -293,43 +158,6 @@
 
   <script src="js/payment-links.js"></script>
   <script src="js/script.js"></script>
-  <script>
-    // Simplified video playback for mobile compatibility
-    document.addEventListener('DOMContentLoaded', function() {
-      const video1 = document.getElementById('video1');
-      const video2 = document.getElementById('video2');
-      
-      if (video1 && video2) {
-        // Show only video1 initially, let user control playback
-        video1.style.display = 'block';
-        video2.style.display = 'none';
-        
-        // Optional: Try to play video1 on load (may be blocked on mobile)
-        const tryPlay = () => {
-          if (video1) {
-            video1.play().catch(() => {
-              // Autoplay blocked - user can manually play with controls
-              console.log('Autoplay blocked - user can play manually');
-            });
-          }
-        };
-        
-        // Try play after a short delay
-        setTimeout(tryPlay, 500);
-        
-        // Handle video errors gracefully
-        video1.addEventListener('error', function() {
-          console.log('Video 1 error - trying video 2');
-          video1.style.display = 'none';
-          video2.style.display = 'block';
-        });
-        
-        video2.addEventListener('error', function() {
-          console.log('Video 2 also failed');
-        });
-      }
-    });
-  </script>
 </body>
 
 </html>

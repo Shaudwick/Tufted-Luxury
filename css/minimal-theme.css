@@ -1,0 +1,459 @@
+/* Minimal black & white — load after css/style.css. Scope with body.site-minimal */
+
+body.site-minimal {
+  background: #fafafa !important;
+  color: #0a0a0a !important;
+}
+
+.site-minimal .wrapper {
+  background: transparent;
+}
+
+.site-minimal .header {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.site-minimal .logo,
+.site-minimal .menu__link {
+  color: #0a0a0a !important;
+}
+
+.site-minimal .menu__link:hover {
+  color: #666 !important;
+}
+
+.site-minimal .footer {
+  background: #0a0a0a !important;
+  color: rgba(250, 250, 250, 0.85);
+  border-top: none;
+}
+
+.site-minimal .footer__policy,
+.site-minimal .footer__logo,
+.site-minimal .footer__brand-clarification {
+  color: rgba(250, 250, 250, 0.7) !important;
+}
+
+.site-minimal .footer__copyright {
+  color: rgba(250, 250, 250, 0.55);
+}
+
+.site-minimal .section-separator {
+  border-color: transparent;
+}
+
+/* Hero */
+.minimal-hero {
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem 5rem;
+  background: #fff;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.minimal-hero__inner {
+  max-width: 720px;
+  text-align: center;
+}
+
+.minimal-hero__kicker {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 1.25rem;
+}
+
+.minimal-hero__title {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  color: #0a0a0a;
+  margin-bottom: 1.25rem;
+}
+
+.minimal-hero__text {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  font-size: 1.2rem;
+  line-height: 1.75;
+  color: #444;
+  max-width: 38rem;
+  margin: 0 auto 2rem;
+}
+
+.minimal-hero__price {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 1.75rem;
+}
+
+/* Buttons */
+.site-minimal .btn-minimal {
+  display: inline-block;
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border: 1px solid #0a0a0a;
+  background: #0a0a0a;
+  color: #fff !important;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.site-minimal .btn-minimal:hover {
+  background: #222;
+}
+
+.site-minimal .btn-minimal--ghost {
+  background: transparent;
+  color: #0a0a0a !important;
+  margin-left: 0.75rem;
+}
+
+.site-minimal .btn-minimal--ghost:hover {
+  background: #0a0a0a;
+  color: #fff !important;
+}
+
+@media (max-width: 640px) {
+  .site-minimal .btn-minimal--ghost {
+    margin-left: 0;
+    margin-top: 0.75rem;
+    display: block;
+  }
+}
+
+/* Collection divider */
+.collection-divider {
+  text-align: center;
+  padding: 3rem 1.5rem 1rem;
+  background: #fafafa;
+}
+
+.collection-divider h2 {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-weight: 400;
+  font-size: 1.75rem;
+  letter-spacing: 0.06em;
+  color: #0a0a0a;
+}
+
+.collection-divider p {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  color: #666;
+  margin-top: 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* Rug showcase alternating */
+.rug-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+  background: #fff;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.rug-showcase:nth-child(even) {
+  background: #fff;
+}
+
+.rug-showcase:nth-child(even) .rug-showcase__media {
+  order: 2;
+}
+
+.rug-showcase__media {
+  position: relative;
+  min-height: 420px;
+  background: #f0f0f0;
+}
+
+.rug-showcase__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rug-showcase__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem clamp(2rem, 6vw, 4rem);
+  max-width: 520px;
+}
+
+.rug-showcase__index {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 0.75rem;
+}
+
+.rug-showcase__name {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.85rem, 3vw, 2.35rem);
+  font-weight: 400;
+  color: #0a0a0a;
+  margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.rug-showcase__desc {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.rug-showcase__price {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: 1.35rem;
+  color: #0a0a0a;
+  margin-bottom: 1.75rem;
+}
+
+.rug-showcase__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.site-minimal .rug-showcase__actions .btn-minimal--ghost {
+  margin-left: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .rug-showcase {
+    grid-template-columns: 1fr;
+    min-height: unset;
+  }
+  .rug-showcase:nth-child(even) .rug-showcase__media {
+    order: 0;
+  }
+  .rug-showcase__media {
+    min-height: 320px;
+    aspect-ratio: 4 / 5;
+    max-height: 70vh;
+  }
+}
+
+/* Process strip homepage */
+.site-minimal .minimal-strip {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: #0a0a0a;
+  color: #fafafa !important;
+}
+
+.site-minimal .minimal-strip .minimal-strip__title {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+
+.site-minimal .minimal-strip .minimal-strip__text {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin-bottom: 1.25rem;
+}
+
+.site-minimal .minimal-strip .btn-minimal {
+  background: transparent;
+  color: #fff !important;
+  border-color: #fff;
+}
+
+.site-minimal .minimal-strip .btn-minimal:hover {
+  background: #fff !important;
+  color: #0a0a0a !important;
+}
+
+.site-minimal .minimal-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.site-minimal .minimal-hero__actions .btn-minimal--ghost {
+  margin-left: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .site-minimal .minimal-hero__actions .btn-minimal--ghost {
+    margin-top: 0 !important;
+  }
+}
+
+.minimal-hero--tight {
+  min-height: unset;
+  padding: 4.5rem 1.5rem;
+}
+
+.minimal-hero--tight .minimal-hero__title {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  margin-bottom: 1rem;
+}
+
+.minimal-hero--tight .minimal-hero__text {
+  margin-bottom: 1.75rem;
+}
+
+.site-minimal .minimal-strip__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.site-minimal .minimal-strip__actions .btn-minimal--ghost {
+  margin-left: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .site-minimal .minimal-strip__actions .btn-minimal--ghost {
+    margin-top: 0 !important;
+  }
+}
+
+.site-minimal .minimal-strip .btn-minimal.btn-minimal--ghost {
+  border-color: #fff !important;
+  color: #fff !important;
+  background: transparent !important;
+  margin-left: 0 !important;
+  margin-top: 0;
+}
+
+.site-minimal .minimal-strip .btn-minimal.btn-minimal--ghost:hover {
+  background: #fff !important;
+  color: #0a0a0a !important;
+}
+
+/* Neutral About / Contact hero & sections (override warm defaults in style.css) */
+.site-minimal .main_about {
+  background: #fff !important;
+}
+
+.site-minimal .about {
+  background: #fafafa !important;
+  border-top-color: #eaeaea !important;
+}
+
+.site-minimal .outro_about {
+  background: #0a0a0a !important;
+}
+
+.site-minimal .outro_about .outro__title {
+  color: #fafafa !important;
+}
+
+.site-minimal .outro_about .outro__text {
+  color: rgba(250, 250, 250, 0.75) !important;
+}
+
+.site-minimal .outro_about .outro__button {
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+}
+
+.site-minimal .outro_about .outro__button:hover {
+  background: #fff !important;
+  color: #0a0a0a !important;
+}
+
+.site-minimal .main_contact {
+  background: linear-gradient(180deg, #f5f5f5 0%, #ebebeb 100%) !important;
+  background-image: none !important;
+  min-height: 280px !important;
+}
+
+.site-minimal .main_contact::before,
+.site-minimal .main_contact::after {
+  display: none !important;
+}
+
+.site-minimal .contact-headline {
+  background: #fff !important;
+  border-bottom-color: #eaeaea !important;
+}
+
+.site-minimal .contact {
+  background: #fafafa !important;
+}
+
+.site-minimal .contact-headline__title,
+.site-minimal .main_about.main_pages .main__title {
+  color: #0a0a0a;
+}
+
+.site-minimal .contact-form-section {
+  background: #fafafa !important;
+  border-top: 1px solid #eaeaea !important;
+}
+
+.site-minimal .contact-form-section--highlight .contact-form__intro,
+.site-minimal .contact-form-section--highlight {
+  background: #fafafa !important;
+}
+
+.site-minimal .contact-form .contact-form__title {
+  color: #0a0a0a;
+}
+
+.site-minimal .page > .contact-headline:first-of-type {
+  padding-top: 7.5rem;
+}
+
+.site-minimal .commission-contact__lead {
+  max-width: 28rem;
+  line-height: 1.6;
+  color: #444;
+  margin-top: -1.5rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.site-minimal .contact-form button.contact-form__button,
+.site-minimal .contact-form__button.button {
+  background: #0a0a0a !important;
+  color: #fff !important;
+  border: 1px solid #0a0a0a !important;
+}
+
+.site-minimal .contact-form button.contact-form__button:hover,
+.site-minimal .contact-form__button.button:hover {
+  background: #222 !important;
+}
+
+.site-minimal .about .about__button.button {
+  background: #0a0a0a !important;
+  color: #fff !important;
+  border: 1px solid #0a0a0a !important;
+}
+
+.site-minimal .about .about__button.button:hover {
+  background: #222 !important;
+  color: #fff !important;
+}
