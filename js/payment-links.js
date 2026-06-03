@@ -9,10 +9,10 @@
  */
 
 window.BLACK_LOBBY_PAYMENT_LINKS = {
-  godsCollectionFull: "",
-  rugChronicles: "",
-  rugExodus: "",
-  rugPsalms: "",
-  rugBookOfRuth: "",
-  rugQueenVashti: "", // legacy key — use rugBookOfRuth for The Book of Ruth
+  godsCollectionFull: "https://buy.stripe.com/8x2eVee2J37O05s1ThafS09",
+  rugExodus: "https://buy.stripe.com/7sY5kEgaR23K05s69xafS0d",
+  rugChronicles: "https://buy.stripe.com/8x2cN6aQx4bSaK67dBafS0c",
+  rugPsalms: "https://buy.stripe.com/4gMaEYgaRgYE3hEbtRafS0b",
+  rugBookOfRuth: "https://buy.stripe.com/14A4gA4s937O8BYbtRafS0a",
+  rugQueenVashti: "https://buy.stripe.com/14A4gA4s937O8BYbtRafS0a",
 };
