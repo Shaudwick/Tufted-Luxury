@@ -7,14 +7,15 @@
   <link rel="icon" type="image/png" href="img/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>Black Lobby | Hand Tufted Rugs · The Gods Collection</title>
-  <meta name="description" content="Black Lobby — four hand-tufted masterpieces in the Gods Collection. Commission the full collection or a single piece. Craft, process, and contact.">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Black Lobby Collective | The Gods Collection</title>
+  <meta name="description" content="Black Lobby Collective — a luxury hand-tufted exhibition. The Gods Collection: four distinct works. Open for commissions and curated collections.">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/minimal-theme.css" />
+  <link rel="stylesheet" href="css/exhibition-theme.css" />
 </head>
 
-<body class="site-minimal">
+<body class="site-exhibition">
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
@@ -23,8 +24,9 @@
           <div class="header__menu menu">
             <nav class="menu__body">
               <ul class="menu__list">
+                <li class="menu__item"><a href="#gods-collection" class="menu__link">Exhibition</a></li>
                 <li class="menu__item"><a href="about.html" class="menu__link">Process</a></li>
-                <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+                <li class="menu__item"><a href="contact.html" class="menu__link">Commission</a></li>
               </ul>
             </nav>
           </div>
@@ -35,121 +37,192 @@
       </div>
     </header>
 
+    <nav class="exhibit-room-nav" aria-label="Gallery rooms">
+      <a href="#rug-exodus">Exodus</a>
+      <a href="#rug-chronicles">Chronicles</a>
+      <a href="#rug-psalms">Psalms</a>
+      <a href="#rug-book-of-ruth">Book of Ruth</a>
+    </nav>
+
     <main class="page">
-      <section class="minimal-hero" id="home">
-        <div class="minimal-hero__inner">
-          <p class="minimal-hero__kicker">Hand tufted · Silk &amp; wool</p>
-          <h1 class="minimal-hero__title">The Gods Collection</h1>
-          <p class="minimal-hero__text">
-            Four conceived works, each finished as a single rug. Presented below, one at a time —
-            the same restraint we bring to making them.
+      <section class="exhibit-hero" id="home">
+        <div class="exhibit-hero__glow" aria-hidden="true"></div>
+        <div class="exhibit-hero__inner">
+          <p class="exhibit-hero__brand">Black Lobby Collective</p>
+          <h1 class="exhibit-hero__title">The Gods Collection</h1>
+          <p class="exhibit-hero__subtitle">Luxury · Art · Entertainment · Craft</p>
+          <p class="exhibit-hero__text">
+            A living exhibition of four hand-tufted masterpieces — each distinct in color, form, and story.
+            Roam the gallery. Commission a single work, the full collection, or a curated series of your own.
           </p>
-          <p class="minimal-hero__price">Full collection $51,996 · Each piece $12,999</p>
-          <div class="minimal-hero__actions">
-            <a href="contact.html#commission-collection" class="btn-minimal">Commission the collection</a>
-            <a href="about.html" class="btn-minimal btn-minimal--ghost">How we tuft</a>
+          <div class="exhibit-hero__pricing">
+            <div class="exhibit-price-tag">
+              <span class="exhibit-price-tag__label">Each work</span>
+              <span class="exhibit-price-tag__amount">$12,999</span>
+            </div>
+            <div class="exhibit-price-tag">
+              <span class="exhibit-price-tag__label">Full collection</span>
+              <span class="exhibit-price-tag__amount">$51,996</span>
+            </div>
+          </div>
+          <div class="exhibit-hero__actions">
+            <a href="#gods-collection" class="btn-exhibit">Enter the exhibition</a>
+            <a href="contact.html#commission-collection" class="btn-exhibit btn-exhibit--ghost">Open a commission</a>
           </div>
         </div>
+        <p class="exhibit-scroll-hint" aria-hidden="true">Scroll to roam</p>
       </section>
 
-      <div class="collection-divider">
-        <h2 id="gods-collection">The four works</h2>
-        <p>Select a piece below. “Acquire” opens checkout when configured; otherwise your email client opens so we can complete the sale directly.</p>
+      <div class="exhibit-marquee" aria-hidden="true">
+        <div class="exhibit-marquee__track">
+          <span>Hand Tufted · Silk &amp; Wool ·</span>
+          <span>Open for Commissions ·</span>
+          <span>Curating Collections ·</span>
+          <span>Luxury Art ·</span>
+          <span>Black Lobby Collective ·</span>
+          <span>Hand Tufted · Silk &amp; Wool ·</span>
+          <span>Open for Commissions ·</span>
+          <span>Curating Collections ·</span>
+          <span>Luxury Art ·</span>
+          <span>Black Lobby Collective ·</span>
+        </div>
       </div>
 
-      <section class="rug-showcase" id="rug-chronicles" aria-label="Chronicles rug">
-        <div class="rug-showcase__media">
-          <img src="Website-Images/Home/MasterpieceChronicles1.jpeg" alt="Chronicles — Gods Collection rug" loading="lazy" />
-        </div>
-        <div class="rug-showcase__copy">
-          <span class="rug-showcase__index">No. 01 · Gods Collection</span>
-          <h2 class="rug-showcase__name">Chronicles</h2>
-          <p class="rug-showcase__desc">Contemporary palette, silk and wool. A cornerstone of the series.</p>
-          <div class="rug-showcase__price">$12,999</div>
-          <div class="rug-showcase__actions">
-            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
-            <a href="#" class="btn-minimal" data-pay="rugChronicles">Acquire</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="rug-showcase" id="rug-exodus" aria-label="Exodus rug">
-        <div class="rug-showcase__media">
-          <img src="Website-Images/Home/Masterpiece4.jpeg" alt="Exodus — Gods Collection rug" loading="lazy" />
-        </div>
-        <div class="rug-showcase__copy">
-          <span class="rug-showcase__index">No. 02 · Gods Collection</span>
-          <h2 class="rug-showcase__name">Exodus</h2>
-          <p class="rug-showcase__desc">Rich texture and tonal depth — designed to anchor a quiet room.</p>
-          <div class="rug-showcase__price">$12,999</div>
-          <div class="rug-showcase__actions">
-            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
-            <a href="#" class="btn-minimal" data-pay="rugExodus">Acquire</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="rug-showcase" id="rug-psalms" aria-label="Psalms rug">
-        <div class="rug-showcase__media">
-          <img src="Website-Images/Home/Psalms.jpeg" alt="Psalms — Gods Collection rug" loading="lazy" />
-        </div>
-        <div class="rug-showcase__copy">
-          <span class="rug-showcase__index">No. 03 · Gods Collection</span>
-          <h2 class="rug-showcase__name">Psalms</h2>
-          <p class="rug-showcase__desc">Refined repetition and gesture — heirloom intent in every line.</p>
-          <div class="rug-showcase__price">$12,999</div>
-          <div class="rug-showcase__actions">
-            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
-            <a href="#" class="btn-minimal" data-pay="rugPsalms">Acquire</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="rug-showcase" id="rug-queen-vashti" aria-label="Queen Vashti rug">
-        <div class="rug-showcase__media">
-          <img src="Website-Images/Home/QueenVashti.jpeg" alt="Queen Vashti — Gods Collection rug" loading="lazy" />
-        </div>
-        <div class="rug-showcase__copy">
-          <span class="rug-showcase__index">No. 04 · Gods Collection</span>
-          <h2 class="rug-showcase__name">Queen Vashti</h2>
-          <p class="rug-showcase__desc">The fourth work — stature, restraint, and a deliberate finish.</p>
-          <div class="rug-showcase__price">$12,999</div>
-          <div class="rug-showcase__actions">
-            <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Discuss this piece</a>
-            <a href="#" class="btn-minimal" data-pay="rugQueenVashti">Acquire</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="minimal-strip" id="whole-collection">
-        <h2 class="minimal-strip__title">The complete set · $51,996</h2>
-        <p class="minimal-strip__text">
-          Acquire all four as one commission. We'll confirm timing and delivery with you directly.
+      <section class="exhibit-intro" id="gods-collection">
+        <h2>Four rooms. Four worlds.</h2>
+        <p>
+          Every piece in this collection is finished as a single rug — conceived, tufted, and trimmed by hand.
+          We welcome private commissions, institutional acquisitions, and bespoke curated collections.
         </p>
-        <div class="minimal-strip__actions">
-          <a href="#" class="btn-minimal" data-pay="godsCollectionFull">Pay with Payment Link</a>
-          <a href="contact.html#commission-collection" class="btn-minimal btn-minimal--ghost">Or write us first</a>
+        <div class="exhibit-pillars">
+          <span>Commissions welcome</span>
+          <span>Curated collections</span>
+          <span>Institutional placement</span>
+          <span>Payment links coming soon</span>
         </div>
       </section>
 
-      <section class="minimal-hero minimal-hero--tight">
-        <div class="minimal-hero__inner">
-          <p class="minimal-hero__kicker">Hands on the loom</p>
-          <h2 class="minimal-hero__title">The tufting process</h2>
-          <p class="minimal-hero__text">
-            Material, pile, trimming, and finishing — spelled out step by step on the Process page.
-          </p>
-          <a href="about.html" class="btn-minimal">View process</a>
+      <div class="exhibit-hall">
+        <!-- 01 Exodus -->
+        <section class="exhibit-room" id="rug-exodus" aria-label="Exodus">
+          <article class="exhibit-piece">
+            <div class="exhibit-piece__frame">
+              <img src="Website-Images/Gods/Exodus.jpg" alt="Exodus — profile portrait with flowing color and black border" loading="lazy" width="2200" height="2750" />
+            </div>
+            <div class="exhibit-piece__placard">
+              <span class="exhibit-piece__index">No. 01 · Gods Collection</span>
+              <h2 class="exhibit-piece__name">Exodus</h2>
+              <p class="exhibit-piece__desc">
+                A profile in motion — warm pinks, oranges, and deep black in sweeping organic forms.
+                Built to anchor a room with presence and warmth.
+              </p>
+              <div class="exhibit-piece__price">$12,999</div>
+              <p class="exhibit-piece__price-note">Single work · inquire or acquire</p>
+              <div class="exhibit-piece__actions">
+                <a href="#" class="btn-exhibit" data-pay="rugExodus">Acquire</a>
+                <a href="contact.html#commission-collection" class="btn-exhibit btn-exhibit--ghost">Discuss</a>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- 02 Chronicles -->
+        <section class="exhibit-room" id="rug-chronicles" aria-label="Chronicles">
+          <article class="exhibit-piece exhibit-piece--flip">
+            <div class="exhibit-piece__frame">
+              <img src="Website-Images/Gods/Chronicles.jpg" alt="Chronicles — split-face portrait in red, teal, black, and white" loading="lazy" width="2200" height="2750" />
+            </div>
+            <div class="exhibit-piece__placard">
+              <span class="exhibit-piece__index">No. 02 · Gods Collection</span>
+              <h2 class="exhibit-piece__name">Chronicles</h2>
+              <p class="exhibit-piece__desc">
+                A divided face — red, teal, black, and white in carved concentric geometry.
+                The cornerstone of the series: bold symmetry and heirloom craft.
+              </p>
+              <div class="exhibit-piece__price">$12,999</div>
+              <p class="exhibit-piece__price-note">Single work · inquire or acquire</p>
+              <div class="exhibit-piece__actions">
+                <a href="#" class="btn-exhibit" data-pay="rugChronicles">Acquire</a>
+                <a href="contact.html#commission-collection" class="btn-exhibit btn-exhibit--ghost">Discuss</a>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- 03 Psalms -->
+        <section class="exhibit-room" id="rug-psalms" aria-label="Psalms">
+          <article class="exhibit-piece">
+            <div class="exhibit-piece__frame">
+              <img src="Website-Images/Gods/Psalms.jpg" alt="Psalms — profile with circular motif in red, teal, yellow, black, and white" loading="lazy" width="2200" height="2750" />
+            </div>
+            <div class="exhibit-piece__placard">
+              <span class="exhibit-piece__index">No. 03 · Gods Collection</span>
+              <h2 class="exhibit-piece__name">Psalms</h2>
+              <p class="exhibit-piece__desc">
+                A woman and her circle — red, teal, black, yellow, and white in layered concentric form.
+                Refined repetition with the energy of sacred geometry.
+              </p>
+              <div class="exhibit-piece__price">$12,999</div>
+              <p class="exhibit-piece__price-note">Single work · inquire or acquire</p>
+              <div class="exhibit-piece__actions">
+                <a href="#" class="btn-exhibit" data-pay="rugPsalms">Acquire</a>
+                <a href="contact.html#commission-collection" class="btn-exhibit btn-exhibit--ghost">Discuss</a>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- 04 The Book of Ruth -->
+        <section class="exhibit-room" id="rug-book-of-ruth" aria-label="The Book of Ruth">
+          <article class="exhibit-piece exhibit-piece--flip">
+            <div class="exhibit-piece__frame">
+              <img src="Website-Images/Gods/BookOfRuth.jpg" alt="The Book of Ruth — flowing portrait in purple, gold, and grey" loading="lazy" width="2200" height="2750" />
+            </div>
+            <div class="exhibit-piece__placard">
+              <span class="exhibit-piece__index">No. 04 · Gods Collection</span>
+              <h2 class="exhibit-piece__name">The Book of Ruth</h2>
+              <p class="exhibit-piece__subtitle">Queen Vashti</p>
+              <p class="exhibit-piece__desc">
+                An organic crown of purple, gold, and grey — closed eyes, red lips, and flowing form.
+                Stature, restraint, and a deliberate finish to close the exhibition.
+              </p>
+              <div class="exhibit-piece__price">$12,999</div>
+              <p class="exhibit-piece__price-note">Single work · inquire or acquire</p>
+              <div class="exhibit-piece__actions">
+                <a href="#" class="btn-exhibit" data-pay="rugBookOfRuth">Acquire</a>
+                <a href="contact.html#commission-collection" class="btn-exhibit btn-exhibit--ghost">Discuss</a>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <section class="exhibit-collection" id="whole-collection">
+        <h2>The complete Gods Collection</h2>
+        <p>
+          Acquire all four works as one commission — a full exhibition for your space.
+          We confirm timing, framing, and delivery directly with you.
+        </p>
+        <div class="exhibit-collection__price">$51,996</div>
+        <div class="exhibit-collection__actions">
+          <a href="#" class="btn-exhibit" data-pay="godsCollectionFull">Acquire the collection</a>
+          <a href="contact.html#commission-collection" class="btn-exhibit btn-exhibit--ghost">Curate with us</a>
         </div>
+      </section>
+
+      <section class="exhibit-process">
+        <h2>Behind the loom</h2>
+        <p>Material, pile, trimming, and finishing — the craft behind every work.</p>
+        <a href="about.html" class="btn-exhibit btn-exhibit--ghost">View the process</a>
       </section>
     </main>
 
     <footer class="footer">
       <div class="footer__container">
         <a href="#" class="footer__policy">Privacy Policy – Terms &amp; Conditions</a>
-        <a href="index.html" class="footer__logo logo">Black Lobby</a>
+        <a href="index.html" class="footer__logo logo">Black Lobby Collective</a>
         <div class="footer__copyright">
-          <div>© Black Lobby — handcrafted tufted rugs</div>
+          <div>© Black Lobby Collective — luxury hand-tufted art</div>
           <div class="footer__brand-clarification">Not affiliated with organizations using similar names.</div>
         </div>
       </div>
@@ -158,6 +231,7 @@
 
   <script src="js/payment-links.js"></script>
   <script src="js/script.js"></script>
+  <script src="js/exhibition.js"></script>
 </body>
 
 </html>

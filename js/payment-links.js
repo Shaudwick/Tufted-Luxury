@@ -13,5 +13,6 @@ window.BLACK_LOBBY_PAYMENT_LINKS = {
   rugChronicles: "",
   rugExodus: "",
   rugPsalms: "",
-  rugQueenVashti: "",
+  rugBookOfRuth: "",
+  rugQueenVashti: "", // legacy key — use rugBookOfRuth for The Book of Ruth
 };
