@@ -239,6 +239,16 @@ body.site-exhibition .wrapper {
   color: rgba(245, 240, 235, 0.6);
 }
 
+.exhibit-pillars__link {
+  color: inherit;
+  text-decoration: none;
+  letter-spacing: inherit;
+}
+
+.exhibit-pillars__link:hover {
+  color: #f5f0eb;
+}
+
 /* Floating room nav */
 .exhibit-room-nav {
   position: fixed;
@@ -448,6 +458,204 @@ body.site-exhibition .wrapper {
   background: rgba(245, 240, 235, 0.06);
 }
 
+/* Short Stories */
+.exhibit-stories {
+  background: #070707;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 2rem;
+}
+
+.exhibit-stories__header {
+  text-align: center;
+  padding: 5rem 1.5rem 3rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.exhibit-stories__kicker {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.62rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 235, 0.4);
+  margin-bottom: 1rem;
+}
+
+.exhibit-stories__title {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: #f5f0eb;
+}
+
+.exhibit-stories__lead {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  font-size: 1.12rem;
+  line-height: 1.75;
+  color: rgba(245, 240, 235, 0.55);
+  margin-bottom: 2rem;
+}
+
+.exhibit-stories__index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  position: sticky;
+  top: 4.5rem;
+  z-index: 50;
+  padding: 0.75rem 0;
+  background: linear-gradient(180deg, #070707 70%, transparent);
+}
+
+.exhibit-stories__index a {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(245, 240, 235, 0.45);
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.exhibit-stories__index a:hover,
+.exhibit-stories__index a.is-active {
+  color: #f5f0eb;
+  border-color: rgba(245, 240, 235, 0.35);
+  background: rgba(245, 240, 235, 0.04);
+}
+
+.exhibit-story {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 4rem clamp(1.5rem, 5vw, 2.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  scroll-margin-top: 6rem;
+}
+
+.exhibit-story.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.exhibit-story__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.exhibit-story__index {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 235, 0.38);
+}
+
+.exhibit-story__view-work {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 235, 0.45);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.exhibit-story__view-work:hover {
+  color: #f5f0eb;
+}
+
+.exhibit-story__name {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem);
+  font-weight: 400;
+  color: #f5f0eb;
+  margin-bottom: 0.35rem;
+}
+
+.exhibit-story__subtitle {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(245, 240, 235, 0.48);
+  margin-bottom: 1.75rem;
+}
+
+.exhibit-story__body {
+  font-family: var(--font-serif, "Cormorant Garamond", serif);
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: rgba(245, 240, 235, 0.62);
+}
+
+.exhibit-story__body p {
+  margin-bottom: 1.25rem;
+}
+
+.exhibit-story__body p:first-child {
+  font-size: 1.25rem;
+  color: rgba(245, 240, 235, 0.78);
+}
+
+.exhibit-story__body em {
+  font-style: italic;
+  color: rgba(245, 240, 235, 0.85);
+}
+
+.exhibit-story__body strong {
+  font-weight: 600;
+  color: rgba(245, 240, 235, 0.75);
+}
+
+.exhibit-story__closing {
+  margin: 2.25rem 0 0;
+  padding: 1.75rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-style: italic;
+  color: rgba(245, 240, 235, 0.72);
+}
+
+.exhibit-story__closing p {
+  margin-bottom: 0.85rem;
+}
+
+.exhibit-story__closing p:last-child {
+  margin-bottom: 0;
+}
+
+.exhibit-story__footer {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.exhibit-story__price {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: 1.35rem;
+  color: #f5f0eb;
+}
+
+.exhibit-story__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
 /* Collection CTA */
 .exhibit-collection {
   text-align: center;
@@ -556,7 +764,8 @@ body.site-exhibition .wrapper {
   }
 
   .exhibit-piece__placard,
-  .exhibit-piece__frame img {
+  .exhibit-piece__frame img,
+  .exhibit-story {
     transition: none;
     opacity: 1;
     transform: none;

@@ -2,9 +2,11 @@
   "use strict";
 
   var rooms = document.querySelectorAll(".exhibit-room");
+  var stories = document.querySelectorAll(".exhibit-story");
   var navLinks = document.querySelectorAll(".exhibit-room-nav a");
+  var storyIndexLinks = document.querySelectorAll(".exhibit-stories__index a");
 
-  if (!rooms.length) return;
+  if (!rooms.length && !stories.length) return;
 
   /* Reveal on scroll */
   if ("IntersectionObserver" in window) {
@@ -16,14 +18,20 @@
           }
         });
       },
-      { threshold: 0.22, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
     );
     rooms.forEach(function (room) {
       revealObs.observe(room);
     });
+    stories.forEach(function (story) {
+      revealObs.observe(story);
+    });
   } else {
     rooms.forEach(function (room) {
       room.classList.add("is-visible");
+    });
+    stories.forEach(function (story) {
+      story.classList.add("is-visible");
     });
   }
 
@@ -46,6 +54,28 @@
     );
     rooms.forEach(function (room) {
       navObs.observe(room);
+    });
+  }
+
+  /* Active story index */
+  if (storyIndexLinks.length && "IntersectionObserver" in window) {
+    var storyObs = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var id = entry.target.id;
+          storyIndexLinks.forEach(function (link) {
+            link.classList.toggle(
+              "is-active",
+              link.getAttribute("href") === "#" + id
+            );
+          });
+        });
+      },
+      { threshold: 0.35, rootMargin: "-20% 0px -55% 0px" }
+    );
+    stories.forEach(function (story) {
+      storyObs.observe(story);
     });
   }
 
