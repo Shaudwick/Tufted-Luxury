@@ -83,6 +83,24 @@ body.site-exhibition .wrapper {
     #050505;
 }
 
+.exhibit-hero--compact {
+  min-height: auto;
+  padding: 8rem 1.5rem 4rem;
+}
+
+.exhibit-collection--feature {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.exhibit-collection--feature .exhibit-stories__kicker {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(199, 169, 107, 0.85);
+  margin-bottom: 1rem;
+}
+
 .exhibit-hero__glow {
   position: absolute;
   width: 60vmax;

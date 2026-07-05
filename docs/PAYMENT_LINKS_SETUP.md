@@ -19,6 +19,7 @@ You only edit **one file**: `js/payment-links.js`.
 | `rugExodus` | Single piece |
 | `rugPsalms` | Single piece |
 | `rugQueenVashti` | Single piece |
+| `sunCard` | Sun Card — framed tufted collection |
 
 Blank URLs open **email** so customers can reach you until the link exists.
 

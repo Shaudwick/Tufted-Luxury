@@ -15,4 +15,5 @@ window.BLACK_LOBBY_PAYMENT_LINKS = {
   rugPsalms: "https://buy.stripe.com/4gMaEYgaRgYE3hEbtRafS0b",
   rugBookOfRuth: "https://buy.stripe.com/14A4gA4s937O8BYbtRafS0a",
   rugQueenVashti: "https://buy.stripe.com/14A4gA4s937O8BYbtRafS0a",
+  sunCard: "https://buy.stripe.com/8x214o9MtcIo5pM9lJafS0e",
 };
