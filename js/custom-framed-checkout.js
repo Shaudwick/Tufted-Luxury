@@ -72,7 +72,7 @@
 
     if (!quote) {
       priceSummaryEl.textContent = "Select a frame size and design type to see your total.";
-      button.textContent = "Submit Request + Pay Deposit";
+      button.textContent = "Claim your Exclusive Piece";
       return;
     }
 
@@ -100,7 +100,7 @@
         formatMoney(quote.remaining) +
         " · Full price: " +
         formatMoney(quote.fullPrice);
-      button.textContent = "Submit Request + Pay " + formatMoney(quote.deposit) + " Deposit";
+      button.textContent = "Claim your Exclusive Piece";
     }
   }
 
