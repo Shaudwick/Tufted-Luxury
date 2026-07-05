@@ -171,6 +171,133 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
+// Custom framed pieces pricing (server-side source of truth)
+const FRAMED_PIECE_PRICING = {
+  "11x14": { label: "11 × 14", deposit: 75, starting: 225, detailed: 325 },
+  "16x20": { label: "16 × 20", deposit: 100, starting: 300, detailed: 450 },
+  "20x30": { label: "20 × 30", deposit: 150, starting: 400, detailed: 575 },
+  "24x36": { label: "24 × 36", deposit: 175, starting: 500, detailed: 750 },
+};
+
+function getFramedPieceQuote({ frameSize, designType, paymentMode }) {
+  const tier = FRAMED_PIECE_PRICING[frameSize];
+  if (!tier) return null;
+  if (!["starting", "detailed"].includes(designType)) return null;
+  if (!["deposit", "full"].includes(paymentMode)) return null;
+
+  const fullPrice = designType === "detailed" ? tier.detailed : tier.starting;
+  const deposit = tier.deposit;
+  const checkoutAmount = paymentMode === "full" ? fullPrice : deposit;
+  const remainingBalance = paymentMode === "full" ? 0 : fullPrice - deposit;
+
+  return {
+    tier,
+    fullPrice,
+    deposit,
+    checkoutAmount,
+    remainingBalance,
+    designLabel: designType === "detailed" ? "Detailed design" : "Starting design",
+    paymentLabel: paymentMode === "full" ? "Paid in full" : "Deposit",
+  };
+}
+
+app.post("/api/custom-framed-checkout", async (req, res) => {
+  const {
+    name,
+    email,
+    phone,
+    frameSize,
+    designType,
+    paymentMode,
+    concept,
+    colors,
+    space,
+    deadline,
+    delivery,
+    referenceUrl,
+  } = req.body || {};
+
+  if (!name || !email || !frameSize || !designType || !paymentMode || !concept) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const quote = getFramedPieceQuote({ frameSize, designType, paymentMode });
+  if (!quote) {
+    return res.status(400).json({ error: "Invalid frame size, design type, or payment option" });
+  }
+
+  try {
+    const origin = req.headers.origin || `${req.protocol}://${req.get("host")}`;
+    const productName =
+      paymentMode === "full"
+        ? `Custom Framed Piece — ${quote.tier.label} (${quote.designLabel})`
+        : `Custom Framed Piece Deposit — ${quote.tier.label} (${quote.designLabel})`;
+
+    const descriptionParts = [
+      `Frame: ${quote.tier.label}`,
+      `Design: ${quote.designLabel}`,
+      `Payment: ${quote.paymentLabel}`,
+      `Full price: $${quote.fullPrice}`,
+    ];
+
+    if (paymentMode === "deposit") {
+      descriptionParts.push(`Remaining balance: $${quote.remainingBalance}`);
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: productName,
+              description: descriptionParts.join(" · "),
+            },
+            unit_amount: Math.round(quote.checkoutAmount * 100),
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${origin}/custom-framed-pieces.html?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/custom-framed-pieces.html?canceled=true`,
+      customer_email: email,
+      billing_address_collection: "required",
+      shipping_address_collection: {
+        allowed_countries: ["US"],
+      },
+      metadata: {
+        productType: "custom-framed",
+        customerName: String(name).slice(0, 500),
+        customerEmail: String(email).slice(0, 500),
+        phone: phone ? String(phone).slice(0, 100) : "",
+        frameSize,
+        frameLabel: quote.tier.label,
+        designType,
+        designLabel: quote.designLabel,
+        paymentMode,
+        fullPrice: String(quote.fullPrice),
+        depositAmount: String(quote.deposit),
+        remainingBalance: String(quote.remainingBalance),
+        concept: String(concept).slice(0, 500),
+        colors: colors ? String(colors).slice(0, 500) : "",
+        space: space ? String(space).slice(0, 500) : "",
+        deadline: deadline ? String(deadline).slice(0, 100) : "",
+        delivery: delivery ? String(delivery).slice(0, 100) : "",
+        referenceUrl: referenceUrl ? String(referenceUrl).slice(0, 500) : "",
+        timestamp: new Date().toISOString(),
+      },
+    });
+
+    res.json({ sessionId: session.id, url: session.url });
+  } catch (error) {
+    console.error("Custom framed checkout error:", error);
+    res.status(500).json({
+      error: error.message || "Failed to create checkout session",
+    });
+  }
+});
 
 // Verify payment session (optional - for confirmation page)
 app.get('/verify-session/:sessionId', async (req, res) => {
@@ -263,6 +390,56 @@ app.post(
       // Determine purchase type for admin notifications
       let purchaseType = "Other Purchase";
       let purchaseDetails = "";
+
+      const isCustomFramed = session.metadata?.productType === "custom-framed";
+
+      // Handle custom framed piece orders
+      if (isCustomFramed) {
+        const paidAmount = amountTotal / 100;
+        const meta = session.metadata || {};
+        purchaseType = "Custom Framed Piece";
+        purchaseDetails = [
+          `Frame: ${meta.frameLabel || meta.frameSize || "Unknown"}`,
+          `Design: ${meta.designLabel || meta.designType || "Unknown"}`,
+          `Payment: ${meta.paymentMode === "full" ? "Paid in full" : "Deposit"}`,
+          `Full price: $${meta.fullPrice || "—"}`,
+          meta.remainingBalance && meta.paymentMode !== "full"
+            ? `Remaining balance: $${meta.remainingBalance}`
+            : null,
+        ]
+          .filter(Boolean)
+          .join(" · ");
+
+        console.log("🖼 Sending custom framed piece confirmation to:", email);
+
+        await sendAdminPurchaseNotification({
+          purchaseType,
+          purchaseDetails,
+          customerName: meta.customerName || name,
+          customerEmail: email,
+          amount: paidAmount,
+          orderId,
+          phone: meta.phone || phone,
+          extraDetails: buildCustomFramedAdminDetails(meta),
+        });
+
+        setTimeout(async () => {
+          try {
+            await sendCustomFramedConfirmationEmail({
+              to: email,
+              name: meta.customerName || name,
+              orderId,
+              metadata: meta,
+              amountPaid: paidAmount,
+            });
+            console.log("✅ Custom framed piece confirmation email sent to", email);
+          } catch (err) {
+            console.error("❌ Error sending custom framed confirmation email:", err);
+          }
+        }, 5 * 1000);
+
+        return;
+      }
 
       // Handle artist submission payments
       if (isArtistSubmission) {
@@ -741,7 +918,100 @@ async function sendArtistSubmissionEmail({ to, name, amount, orderId }) {
 
 // ---------- ADMIN PURCHASE NOTIFICATION ----------
 
-function buildAdminNotificationHtml({ purchaseType, purchaseDetails, customerName, customerEmail, amount, orderId, phone }) {
+function buildCustomFramedAdminDetails(meta) {
+  const rows = [
+    ["Concept", meta.concept],
+    ["Preferred colors", meta.colors],
+    ["Where it will live", meta.space],
+    ["Preferred deadline", meta.deadline],
+    ["Delivery method", meta.delivery],
+    ["Reference link", meta.referenceUrl],
+  ].filter(([, value]) => value);
+
+  if (!rows.length) return "";
+
+  return `
+    <div style="background-color: #fafafa; padding: 30px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #c7a96b;">
+      <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px; font-family: 'Oswald', sans-serif;">
+        Commission Details
+      </h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        ${rows
+          .map(
+            ([label, value]) => `
+          <tr>
+            <td style="padding: 10px 0; font-weight: 600; color: #2c2c2c; width: 160px; vertical-align: top;">${label}:</td>
+            <td style="padding: 10px 0; color: #1a1a1a;">${value}</td>
+          </tr>`
+          )
+          .join("")}
+      </table>
+    </div>
+  `;
+}
+
+function buildCustomFramedConfirmationHtml({ name, orderId, metadata, amountPaid }) {
+  const paymentLine =
+    metadata.paymentMode === "full"
+      ? `You paid <strong>$${amountPaid.toFixed(2)}</strong> in full today.`
+      : `You paid a deposit of <strong>$${amountPaid.toFixed(2)}</strong>. Your remaining balance of <strong>$${metadata.remainingBalance}</strong> is due before pickup, delivery, or shipping.`;
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: 'Georgia', serif;">
+      <div style="max-width: 700px; margin: 0 auto; background-color: #ffffff;">
+        <div style="background-color: #0a0a0a; padding: 40px; text-align: center;">
+          <h1 style="margin: 0; font-size: 28px; font-weight: 400; color: #f7f0e6; letter-spacing: 2px;">
+            Custom Framed Piece
+          </h1>
+          <p style="margin: 12px 0 0 0; font-size: 14px; color: #c7a96b; letter-spacing: 2px; text-transform: uppercase;">
+            Payment Confirmed
+          </p>
+        </div>
+        <div style="padding: 40px; color: #2c2c2c; line-height: 1.8;">
+          <p>Dear <strong>${name}</strong>,</p>
+          <p>
+            Thank you for commissioning a custom framed piece with
+            <strong>Black Lobby Collective</strong>. ${paymentLine}
+          </p>
+          <div style="background: #fafafa; border-left: 4px solid #c7a96b; padding: 24px; margin: 28px 0;">
+            <p style="margin: 0 0 8px 0;"><strong>Frame size:</strong> ${metadata.frameLabel || metadata.frameSize}</p>
+            <p style="margin: 0 0 8px 0;"><strong>Design type:</strong> ${metadata.designLabel || metadata.designType}</p>
+            <p style="margin: 0 0 8px 0;"><strong>Full price:</strong> $${metadata.fullPrice}</p>
+            <p style="margin: 0;"><strong>Order ID:</strong> ${orderId}</p>
+          </div>
+          <p>
+            We will review your design details and follow up with next steps before studio work begins.
+            If you have reference images or updates to share, reply to this email or write to
+            <a href="mailto:Contact@blacklobby.co">Contact@blacklobby.co</a>.
+          </p>
+          <p style="margin-top: 32px;"><strong>— Black Lobby Collective</strong></p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+async function sendCustomFramedConfirmationEmail({ to, name, orderId, metadata, amountPaid }) {
+  const html = buildCustomFramedConfirmationHtml({ name, orderId, metadata, amountPaid });
+
+  const mailOptions = {
+    from: '"Black Lobby Collective" <no-reply@blacklobby.co>',
+    to,
+    subject: "Custom Framed Piece — Payment Confirmed",
+    html,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+function buildAdminNotificationHtml({ purchaseType, purchaseDetails, customerName, customerEmail, amount, orderId, phone, extraDetails = "" }) {
   const purchaseDate = new Date().toLocaleString('en-US', {
     weekday: 'long',
     year: 'numeric',
@@ -808,6 +1078,8 @@ function buildAdminNotificationHtml({ purchaseType, purchaseDetails, customerNam
             </table>
           </div>
 
+          ${extraDetails || ""}
+
           <!-- Customer Information -->
           <div style="background-color: #fafafa; padding: 30px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #fff1c9;">
             <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px; font-family: 'Oswald', sans-serif;">
@@ -859,7 +1131,7 @@ function buildAdminNotificationHtml({ purchaseType, purchaseDetails, customerNam
   `;
 }
 
-async function sendAdminPurchaseNotification({ purchaseType, purchaseDetails, customerName, customerEmail, amount, orderId, phone }) {
+async function sendAdminPurchaseNotification({ purchaseType, purchaseDetails, customerName, customerEmail, amount, orderId, phone, extraDetails }) {
   const adminEmail = "contact@blacklobby.co";
   const html = buildAdminNotificationHtml({
     purchaseType,
@@ -869,6 +1141,7 @@ async function sendAdminPurchaseNotification({ purchaseType, purchaseDetails, cu
     amount,
     orderId,
     phone,
+    extraDetails,
   });
 
   const mailOptions = {

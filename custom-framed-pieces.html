@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <title>Custom Framed Pieces · Black Lobby Collective</title>
+  <meta name="description" content="Commission a custom framed tufted piece from Black Lobby Collective. Choose your frame size, share your design, and secure your place with a deposit or pay in full.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blacklobby.co/custom-framed-pieces.html">
+  <meta property="og:title" content="Custom Framed Pieces | Black Lobby Collective">
+  <meta property="og:description" content="Choose your frame. Choose your story. Hand-tufted custom framed pieces with deposit or full payment checkout.">
+  <meta property="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://blacklobby.co/custom-framed-pieces.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/minimal-theme.css" />
+</head>
+
+<body class="site-minimal">
+  <div class="wrapper">
+    <header class="header">
+      <div class="header__container">
+        <a href="index.html" class="header__logo logo">Black Lobby</a>
+        <div class="header__navigation">
+          <div class="header__menu menu">
+            <nav class="menu__body">
+              <ul class="menu__list">
+                <li class="menu__item"><a href="index.html" class="menu__link">Exhibition</a></li>
+                <li class="menu__item"><a href="about.html" class="menu__link">Process</a></li>
+                <li class="menu__item"><a href="custom-framed-pieces.html" class="menu__link">Framed Pieces</a></li>
+                <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="header__actions actions-header">
+            <button type="button" class="menu__icon icon-menu"><span></span></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="contact-headline">
+        <div class="contact-headline__container">
+          <p class="framed-pieces__eyebrow">Black Lobby Collective</p>
+          <h1 class="contact-headline__title">Custom Framed Pieces</h1>
+        </div>
+      </section>
+
+      <section class="page__contact contact">
+        <div class="contact__container">
+          <div class="contact__contacts">
+            <p class="commission-contact__lead">
+              Choose your frame. Choose your story. Each custom framed tufted piece is created
+              by hand with texture, intention, and presence for your home, office, studio,
+              gallery wall, or sacred space.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div id="checkoutNotice" class="framed-pieces__notice" hidden></div>
+
+      <section class="framed-pieces__pricing" aria-label="Frame size pricing">
+        <div class="contact-form__container">
+          <h2 class="contact-form__title title">Frame sizes &amp; pricing</h2>
+          <div class="framed-pricing-grid">
+            <div class="framed-pricing-card">
+              <h3>11 × 14</h3>
+              <p>Deposit: $75</p>
+              <p>Starting at $225</p>
+              <p>Detailed: $325</p>
+            </div>
+            <div class="framed-pricing-card">
+              <h3>16 × 20</h3>
+              <p>Deposit: $100</p>
+              <p>Starting at $300</p>
+              <p>Detailed: $450</p>
+            </div>
+            <div class="framed-pricing-card">
+              <h3>20 × 30</h3>
+              <p>Deposit: $150</p>
+              <p>Starting at $400</p>
+              <p>Detailed: $575</p>
+            </div>
+            <div class="framed-pricing-card">
+              <h3>24 × 36</h3>
+              <p>Deposit: $175</p>
+              <p>Starting at $500</p>
+              <p>Detailed: $750</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-form-section">
+        <div class="contact-form__container">
+          <h2 class="contact-form__title title">Request your piece</h2>
+          <p class="framed-pieces__form-intro">
+            Share your design details below, then pay a deposit to secure your studio calendar
+            or pay in full today. The remaining balance (if any) is due before pickup, delivery, or shipping.
+          </p>
+
+          <div id="priceSummary" class="framed-pieces__summary" aria-live="polite">
+            Select a frame size and design type to see your total.
+          </div>
+
+          <form class="contact-form" id="commissionForm">
+            <div class="contact-form__row">
+              <div class="contact-form__field">
+                <label for="name">Full Name</label>
+                <input id="name" name="name" type="text" required autocomplete="name" />
+              </div>
+              <div class="contact-form__field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="contact-form__row">
+              <div class="contact-form__field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" />
+              </div>
+              <div class="contact-form__field">
+                <label for="frameSize">Frame Size</label>
+                <select id="frameSize" name="frameSize" required>
+                  <option value="">Choose a frame size</option>
+                  <option value="11x14">11 × 14 — $75 deposit</option>
+                  <option value="16x20">16 × 20 — $100 deposit</option>
+                  <option value="20x30">20 × 30 — $150 deposit</option>
+                  <option value="24x36">24 × 36 — $175 deposit</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="contact-form__field">
+              <label for="designType">Design Type</label>
+              <select id="designType" name="designType" required>
+                <option value="">Choose one</option>
+                <option value="starting">Starting design — simple symbol, initials, name, minimal concept</option>
+                <option value="detailed">Detailed design — more colors, layered symbols, portrait, complex concept</option>
+              </select>
+            </div>
+
+            <div class="contact-form__field">
+              <label for="paymentMode">Payment Option</label>
+              <select id="paymentMode" name="paymentMode" required>
+                <option value="deposit">Pay deposit now — balance due before delivery</option>
+                <option value="full">Pay in full today</option>
+              </select>
+            </div>
+
+            <div class="contact-form__field">
+              <label for="concept">What do you want the piece to represent?</label>
+              <textarea id="concept" name="concept" required placeholder="Tell me the story, colors, feeling, person, symbol, or room this piece is for."></textarea>
+            </div>
+
+            <div class="contact-form__row">
+              <div class="contact-form__field">
+                <label for="colors">Preferred Colors</label>
+                <input id="colors" name="colors" placeholder="Black, cream, gold, earth tones..." />
+              </div>
+              <div class="contact-form__field">
+                <label for="space">Where will it live?</label>
+                <input id="space" name="space" placeholder="Home, office, studio, gallery wall..." />
+              </div>
+            </div>
+
+            <div class="contact-form__row">
+              <div class="contact-form__field">
+                <label for="deadline">Preferred Deadline</label>
+                <input id="deadline" name="deadline" type="date" />
+              </div>
+              <div class="contact-form__field">
+                <label for="delivery">Delivery Method</label>
+                <select id="delivery" name="delivery">
+                  <option value="pickup">Pickup</option>
+                  <option value="local-delivery">Local delivery</option>
+                  <option value="shipping">Shipping</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="contact-form__field">
+              <label for="referenceUrl">Reference Image Link</label>
+              <input id="referenceUrl" name="referenceUrl" placeholder="Google Drive, Pinterest, Dropbox, etc." />
+            </div>
+
+            <p class="framed-pieces__terms">
+              The deposit secures your place in the studio calendar and is applied toward
+              your final balance. Custom work begins after design review. Questions first?
+              <a href="contact.html">Reach out before ordering</a>.
+            </p>
+
+            <button id="submitButton" type="submit" class="contact-form__button button">
+              Submit Request + Pay Deposit
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <a href="#" class="footer__policy">Privacy Policy – Terms &amp; Conditions</a>
+        <a href="index.html" class="footer__logo logo">Black Lobby</a>
+        <div class="footer__copyright">
+          <div>© Black Lobby Collective — luxury hand-tufted art</div>
+          <div class="footer__brand-clarification">Not affiliated with organizations using similar names.</div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script src="js/custom-framed-checkout.js"></script>
+</body>
+
+</html>
