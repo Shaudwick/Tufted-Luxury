@@ -119,6 +119,7 @@
             <div class="exhibit-piece__frame">
               <img
                 src="Website-Images/Magician/Magician.jpg"
+                onerror="if (!this.dataset.fallback) { this.dataset.fallback='1'; this.src='Website-Images/Magician/Magician.jpeg'; } else if (this.dataset.fallback === '1') { this.dataset.fallback='2'; this.src='Website-Images/Magician/Magician.png'; }"
                 alt="The Magician — framed tufted card piece from the Black Lobby Card Collection"
                 loading="lazy"
                 width="1600"
