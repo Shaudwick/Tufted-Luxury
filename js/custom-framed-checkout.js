@@ -13,6 +13,13 @@
     "24x36": "framedDeposit24x36",
   };
 
+  const FULL_LINK_KEYS = {
+    "11x14": "framedFull11x14",
+    "16x20": "framedFull16x20",
+    "20x30": "framedFull20x30",
+    "24x36": "framedFull24x36",
+  };
+
   const form = document.getElementById("commissionForm");
   if (!form) return;
 
@@ -27,13 +34,17 @@
     return "$" + amount.toLocaleString("en-US");
   }
 
-  function getDepositPaymentLink(frameSize) {
-    const links =
-      typeof window.BLACK_LOBBY_PAYMENT_LINKS === "object" &&
+  function getPaymentLinks() {
+    return typeof window.BLACK_LOBBY_PAYMENT_LINKS === "object" &&
       window.BLACK_LOBBY_PAYMENT_LINKS !== null
-        ? window.BLACK_LOBBY_PAYMENT_LINKS
-        : {};
-    const key = DEPOSIT_LINK_KEYS[frameSize];
+      ? window.BLACK_LOBBY_PAYMENT_LINKS
+      : {};
+  }
+
+  function getPaymentLink(frameSize, mode) {
+    const links = getPaymentLinks();
+    const keyMap = mode === "full" ? FULL_LINK_KEYS : DEPOSIT_LINK_KEYS;
+    const key = keyMap[frameSize];
     if (!key || !links[key]) return "";
     const url = String(links[key]).trim();
     return /^https:\/\/.+/.test(url) ? url : "";
@@ -63,7 +74,7 @@
       deposit,
       checkoutAmount,
       remaining,
-      depositUrl: getDepositPaymentLink(frameSize),
+      checkoutUrl: getPaymentLink(frameSize, paymentMode),
     };
   }
 
@@ -87,7 +98,6 @@
         "</strong><br>Total due today: " +
         formatMoney(quote.checkoutAmount) +
         " (paid in full)";
-      button.textContent = "Submit Request + Pay " + formatMoney(quote.checkoutAmount);
     } else {
       priceSummaryEl.innerHTML =
         "<strong>" +
@@ -100,8 +110,9 @@
         formatMoney(quote.remaining) +
         " · Full price: " +
         formatMoney(quote.fullPrice);
-      button.textContent = "Claim your Exclusive Piece";
     }
+
+    button.textContent = "Claim your Exclusive Piece";
   }
 
   function showCheckoutNotice() {
@@ -116,7 +127,7 @@
     } else if (params.get("canceled") === "true") {
       noticeEl.hidden = false;
       noticeEl.className = "framed-pieces__notice framed-pieces__notice--cancel";
-      noticeEl.textContent = "Checkout was canceled. Your details were not submitted — you can try again below.";
+      noticeEl.textContent = "Checkout was canceled. You can try again below.";
       window.history.replaceState({}, "", window.location.pathname);
     }
   }
@@ -125,7 +136,7 @@
     el.addEventListener("change", updateSummary);
   });
 
-  form.addEventListener("submit", async function (event) {
+  form.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const quote = getQuote();
@@ -134,50 +145,14 @@
       return;
     }
 
-    button.disabled = true;
-    button.textContent = "Opening Secure Checkout...";
-
-    if (quote.paymentMode === "deposit" && quote.depositUrl) {
-      window.location.href = quote.depositUrl;
+    if (!quote.checkoutUrl) {
+      alert("Checkout is not available for this selection. Please contact us.");
       return;
     }
 
-    const payload = {
-      name: document.getElementById("name").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      phone: document.getElementById("phone").value.trim(),
-      frameSize: quote.frameSize,
-      designType: quote.designType,
-      paymentMode: quote.paymentMode,
-      concept: document.getElementById("concept").value.trim(),
-      colors: document.getElementById("colors").value.trim(),
-      space: document.getElementById("space").value.trim(),
-      deadline: document.getElementById("deadline").value,
-      delivery: document.getElementById("delivery").value,
-      referenceUrl: document.getElementById("referenceUrl").value.trim(),
-    };
-
-    try {
-      const response = await fetch("/api/custom-framed-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-        return;
-      }
-
-      alert(data.error || "Unable to open checkout. Please try again.");
-    } catch (error) {
-      alert("Something went wrong. Please try again.");
-    }
-
-    button.disabled = false;
-    updateSummary();
+    button.disabled = true;
+    button.textContent = "Opening Secure Checkout...";
+    window.location.href = quote.checkoutUrl;
   });
 
   showCheckoutNotice();

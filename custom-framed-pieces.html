@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="img/favicon.png" />
   <title>Custom Framed Pieces · Black Lobby Collective</title>
-  <meta name="description" content="Commission a custom framed tufted piece from Black Lobby Collective. Choose your frame size, share your design, and secure your place with a deposit or pay in full.">
+  <meta name="description" content="Commission a custom framed tufted piece from Black Lobby Collective. Choose your frame size, share your design, and pay a deposit or pay in full.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://blacklobby.co/custom-framed-pieces.html">
   <meta property="og:title" content="Custom Framed Pieces | Black Lobby Collective">
@@ -66,129 +66,84 @@
 
       <div id="checkoutNotice" class="framed-pieces__notice" hidden></div>
 
-      <section class="framed-pieces__pricing" aria-label="Frame size pricing">
-        <div class="contact-form__container">
-          <h2 class="contact-form__title title">Frame sizes &amp; pricing</h2>
-          <div class="framed-pricing-grid">
-            <div class="framed-pricing-card">
-              <h3>11 × 14</h3>
-              <p>Deposit: $75</p>
-              <p>Starting at $225</p>
-              <p>Detailed: $325</p>
-              <a href="#" class="framed-pricing-card__deposit button" data-pay="framedDeposit11x14">Claim your Exclusive Piece</a>
-            </div>
-            <div class="framed-pricing-card">
-              <h3>16 × 20</h3>
-              <p>Deposit: $100</p>
-              <p>Starting at $300</p>
-              <p>Detailed: $450</p>
-              <a href="#" class="framed-pricing-card__deposit button" data-pay="framedDeposit16x20">Claim your Exclusive Piece</a>
-            </div>
-            <div class="framed-pricing-card">
-              <h3>20 × 30</h3>
-              <p>Deposit: $150</p>
-              <p>Starting at $400</p>
-              <p>Detailed: $575</p>
-              <a href="#" class="framed-pricing-card__deposit button" data-pay="framedDeposit20x30">Claim your Exclusive Piece</a>
-            </div>
-            <div class="framed-pricing-card">
-              <h3>24 × 36</h3>
-              <p>Deposit: $175</p>
-              <p>Starting at $500</p>
-              <p>Detailed: $750</p>
-              <a href="#" class="framed-pricing-card__deposit button" data-pay="framedDeposit24x36">Claim your Exclusive Piece</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="contact-form-section">
         <div class="contact-form__container">
           <h2 class="contact-form__title title">Request your piece</h2>
           <p class="framed-pieces__form-intro">
-            Share your design details below, then pay a deposit to secure your studio calendar
-            or pay in full today. The remaining balance (if any) is due before pickup, delivery, or shipping.
+            Share your design details below, then claim your exclusive piece with a deposit
+            or pay in full today.
           </p>
+
+          <div class="framed-pricing-grid framed-pricing-grid--compact" aria-label="Frame size pricing">
+            <div class="framed-pricing-card">
+              <h3>11 × 14</h3>
+              <p>Deposit $75 · from $225</p>
+              <p>Detailed $325</p>
+            </div>
+            <div class="framed-pricing-card">
+              <h3>16 × 20</h3>
+              <p>Deposit $100 · from $300</p>
+              <p>Detailed $450</p>
+            </div>
+            <div class="framed-pricing-card">
+              <h3>20 × 30</h3>
+              <p>Deposit $150 · from $400</p>
+              <p>Detailed $575</p>
+            </div>
+            <div class="framed-pricing-card">
+              <h3>24 × 36</h3>
+              <p>Deposit $175 · from $500</p>
+              <p>Detailed $750</p>
+            </div>
+          </div>
 
           <div id="priceSummary" class="framed-pieces__summary" aria-live="polite">
             Select a frame size and design type to see your total.
           </div>
 
           <form class="contact-form" id="commissionForm">
-            <div class="contact-form__row">
-              <div class="contact-form__field">
-                <label for="name">Full Name</label>
-                <input id="name" name="name" type="text" required autocomplete="name" />
-              </div>
-              <div class="contact-form__field">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" required autocomplete="email" />
-              </div>
+            <div class="contact-form__field">
+              <label for="name">Full Name</label>
+              <input id="name" name="name" type="text" required autocomplete="name" />
             </div>
 
             <div class="contact-form__row">
               <div class="contact-form__field">
-                <label for="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" autocomplete="tel" />
-              </div>
-              <div class="contact-form__field">
                 <label for="frameSize">Frame Size</label>
                 <select id="frameSize" name="frameSize" required>
                   <option value="">Choose a frame size</option>
-                  <option value="11x14">11 × 14 — $75 deposit</option>
-                  <option value="16x20">16 × 20 — $100 deposit</option>
-                  <option value="20x30">20 × 30 — $150 deposit</option>
-                  <option value="24x36">24 × 36 — $175 deposit</option>
+                  <option value="11x14">11 × 14</option>
+                  <option value="16x20">16 × 20</option>
+                  <option value="20x30">20 × 30</option>
+                  <option value="24x36">24 × 36</option>
+                </select>
+              </div>
+              <div class="contact-form__field">
+                <label for="designType">Design Type</label>
+                <select id="designType" name="designType" required>
+                  <option value="">Choose one</option>
+                  <option value="starting">Starting design — simple symbol, initials, name, minimal concept</option>
+                  <option value="detailed">Detailed design — more colors, layered symbols, portrait, complex concept</option>
                 </select>
               </div>
             </div>
 
             <div class="contact-form__field">
-              <label for="designType">Design Type</label>
-              <select id="designType" name="designType" required>
-                <option value="">Choose one</option>
-                <option value="starting">Starting design — simple symbol, initials, name, minimal concept</option>
-                <option value="detailed">Detailed design — more colors, layered symbols, portrait, complex concept</option>
-              </select>
-            </div>
-
-            <div class="contact-form__field">
               <label for="paymentMode">Payment Option</label>
               <select id="paymentMode" name="paymentMode" required>
-                <option value="deposit">Pay deposit now — balance due before delivery</option>
+                <option value="deposit">Deposit — balance due before delivery</option>
                 <option value="full">Pay in full today</option>
               </select>
             </div>
 
             <div class="contact-form__field">
               <label for="concept">What do you want the piece to represent?</label>
-              <textarea id="concept" name="concept" required placeholder="Tell me the story, colors, feeling, person, symbol, or room this piece is for."></textarea>
+              <textarea id="concept" name="concept" required placeholder="Tell me the story, feeling, person, symbol, or room this piece is for."></textarea>
             </div>
 
-            <div class="contact-form__row">
-              <div class="contact-form__field">
-                <label for="colors">Preferred Colors</label>
-                <input id="colors" name="colors" placeholder="Black, cream, gold, earth tones..." />
-              </div>
-              <div class="contact-form__field">
-                <label for="space">Where will it live?</label>
-                <input id="space" name="space" placeholder="Home, office, studio, gallery wall..." />
-              </div>
-            </div>
-
-            <div class="contact-form__row">
-              <div class="contact-form__field">
-                <label for="deadline">Preferred Deadline</label>
-                <input id="deadline" name="deadline" type="date" />
-              </div>
-              <div class="contact-form__field">
-                <label for="delivery">Delivery Method</label>
-                <select id="delivery" name="delivery">
-                  <option value="pickup">Pickup</option>
-                  <option value="local-delivery">Local delivery</option>
-                  <option value="shipping">Shipping</option>
-                </select>
-              </div>
+            <div class="contact-form__field">
+              <label for="colors">Preferred Colors</label>
+              <input id="colors" name="colors" placeholder="Black, cream, gold, earth tones..." />
             </div>
 
             <div class="contact-form__field">
@@ -197,8 +152,7 @@
             </div>
 
             <p class="framed-pieces__terms">
-              The deposit secures your place in the studio calendar and is applied toward
-              your final balance. Custom work begins after design review. Questions first?
+              Custom work begins after design review. Questions first?
               <a href="contact.html">Reach out before ordering</a>.
             </p>
 

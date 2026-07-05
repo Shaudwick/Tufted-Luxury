@@ -25,6 +25,10 @@ You only edit **one file**: `js/payment-links.js`.
 | `framedDeposit16x20` | Custom framed piece — 16 × 20 deposit ($100) |
 | `framedDeposit20x30` | Custom framed piece — 20 × 30 deposit ($150) |
 | `framedDeposit24x36` | Custom framed piece — 24 × 36 deposit ($175) |
+| `framedFull11x14` | Custom framed piece — 11 × 14 pay in full |
+| `framedFull16x20` | Custom framed piece — 16 × 20 pay in full |
+| `framedFull20x30` | Custom framed piece — 20 × 30 pay in full |
+| `framedFull24x36` | Custom framed piece — 24 × 36 pay in full |
 
 Blank URLs open **email** so customers can reach you until the link exists.
 

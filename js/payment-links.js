@@ -21,4 +21,8 @@ window.BLACK_LOBBY_PAYMENT_LINKS = {
   framedDeposit16x20: "https://buy.stripe.com/00w28s3o56k03hE8hFafS0i",
   framedDeposit20x30: "https://buy.stripe.com/28E14oe2J7o44lIeG3afS0h",
   framedDeposit24x36: "https://buy.stripe.com/3cIbJ29Mt37OcSecxVafS0g",
+  framedFull11x14: "https://buy.stripe.com/6oU3cwaQxfUA8BYfK7afS0k",
+  framedFull16x20: "https://buy.stripe.com/7sY8wQcYF9wccSecxVafS0l",
+  framedFull20x30: "https://buy.stripe.com/bJedRaaQxfUA6tQbtRafS0m",
+  framedFull24x36: "https://buy.stripe.com/fZu5kEgaR8s84lIbtRafS0n",
 };
