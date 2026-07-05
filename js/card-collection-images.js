@@ -1,24 +1,20 @@
 (function () {
   window.CARD_COLLECTION_IMAGES = {
-    sunCard: [
-      "Website-Images/Sun Card.jpg",
-      "Website-Images/Sun Card.jpeg",
-      "Website-Images/Sun Card.png",
+    theSun: [
       "Website-Images/The Sun.jpg",
       "Website-Images/The Sun.jpeg",
-      "Website-Images/sun-card.jpg",
-      "Website-Images/sun-card.jpeg",
+      "Website-Images/The Sun.png",
+      "Website-Images/Sun Card.jpg",
+      "Website-Images/Sun Card.jpeg",
       "Website-Images/SunCard.jpg",
       "Website-Images/SunCard.jpeg",
     ],
-    magician: [
+    theMagician: [
       "Website-Images/The Magician.jpg",
       "Website-Images/The Magician.jpeg",
       "Website-Images/The Magician.png",
       "Website-Images/Magician.jpg",
       "Website-Images/Magician.jpeg",
-      "Website-Images/the-magician.jpg",
-      "Website-Images/the-magician.jpeg",
     ],
   };
 
