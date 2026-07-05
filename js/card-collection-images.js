@@ -2,12 +2,14 @@
   window.CARD_COLLECTION_IMAGES = {
     sunCard: [
       "Website-Images/suncard.jpeg",
+      "Website-Images/IMG_5052.jpeg",
       "Website-Images/suncard.jpg",
       "Website-Images/SunCard.jpeg",
       "Website-Images/SunCard.jpg",
     ],
     magician: [
       "Website-Images/themagician.jpeg",
+      "Website-Images/IMG_5053.jpeg",
       "Website-Images/themagician.jpg",
       "Website-Images/TheMagician.jpeg",
       "Website-Images/TheMagician.jpg",
