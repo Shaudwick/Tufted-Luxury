@@ -101,6 +101,41 @@ body.site-exhibition .wrapper {
   margin-bottom: 1rem;
 }
 
+.card-collection-preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 180px));
+  gap: 1.25rem;
+  justify-content: center;
+  margin: 0 auto 2rem;
+}
+
+.card-collection-preview__item {
+  display: block;
+  text-decoration: none;
+  color: rgba(245, 240, 235, 0.75);
+  transition: color 0.2s ease;
+}
+
+.card-collection-preview__item:hover {
+  color: #f5f0eb;
+}
+
+.card-collection-preview__item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 0.65rem;
+}
+
+.card-collection-preview__item span {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .exhibit-hero__glow {
   position: absolute;
   width: 60vmax;
