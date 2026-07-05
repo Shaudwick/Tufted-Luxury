@@ -1,20 +1,24 @@
 (function () {
   window.CARD_COLLECTION_IMAGES = {
     sunCard: [
-      "Website-Images/SunCard/Sun Card.jpg",
-      "Website-Images/SunCard/Sun Card.jpeg",
-      "Website-Images/SunCard/sun-card.jpg",
-      "Website-Images/SunCard/sun-card.jpeg",
       "Website-Images/Sun Card.jpg",
       "Website-Images/Sun Card.jpeg",
+      "Website-Images/Sun Card.png",
+      "Website-Images/The Sun.jpg",
+      "Website-Images/The Sun.jpeg",
+      "Website-Images/sun-card.jpg",
+      "Website-Images/sun-card.jpeg",
+      "Website-Images/SunCard.jpg",
+      "Website-Images/SunCard.jpeg",
     ],
     magician: [
-      "Website-Images/Magician/The Magician.jpg",
-      "Website-Images/Magician/The Magician.jpeg",
-      "Website-Images/Magician/the-magician.jpg",
-      "Website-Images/Magician/the-magician.jpeg",
       "Website-Images/The Magician.jpg",
       "Website-Images/The Magician.jpeg",
+      "Website-Images/The Magician.png",
+      "Website-Images/Magician.jpg",
+      "Website-Images/Magician.jpeg",
+      "Website-Images/the-magician.jpg",
+      "Website-Images/the-magician.jpeg",
     ],
   };
 
