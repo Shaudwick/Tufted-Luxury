@@ -17,4 +17,8 @@ window.BLACK_LOBBY_PAYMENT_LINKS = {
   rugQueenVashti: "https://buy.stripe.com/14A4gA4s937O8BYbtRafS0a",
   sunCard: "https://buy.stripe.com/8x214o9MtcIo5pM9lJafS0e",
   magician: "https://buy.stripe.com/cNi00kaQx37OcSefK7afS0f",
+  framedDeposit11x14: "https://buy.stripe.com/fZu7sMaQxeQw19w9lJafS0j",
+  framedDeposit16x20: "https://buy.stripe.com/00w28s3o56k03hE8hFafS0i",
+  framedDeposit20x30: "https://buy.stripe.com/28E14oe2J7o44lIeG3afS0h",
+  framedDeposit24x36: "https://buy.stripe.com/3cIbJ29Mt37OcSecxVafS0g",
 };

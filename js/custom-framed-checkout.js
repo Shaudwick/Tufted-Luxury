@@ -6,6 +6,13 @@
     "24x36": { label: "24 × 36", deposit: 175, starting: 500, detailed: 750 },
   };
 
+  const DEPOSIT_LINK_KEYS = {
+    "11x14": "framedDeposit11x14",
+    "16x20": "framedDeposit16x20",
+    "20x30": "framedDeposit20x30",
+    "24x36": "framedDeposit24x36",
+  };
+
   const form = document.getElementById("commissionForm");
   if (!form) return;
 
@@ -18,6 +25,18 @@
 
   function formatMoney(amount) {
     return "$" + amount.toLocaleString("en-US");
+  }
+
+  function getDepositPaymentLink(frameSize) {
+    const links =
+      typeof window.BLACK_LOBBY_PAYMENT_LINKS === "object" &&
+      window.BLACK_LOBBY_PAYMENT_LINKS !== null
+        ? window.BLACK_LOBBY_PAYMENT_LINKS
+        : {};
+    const key = DEPOSIT_LINK_KEYS[frameSize];
+    if (!key || !links[key]) return "";
+    const url = String(links[key]).trim();
+    return /^https:\/\/.+/.test(url) ? url : "";
   }
 
   function getQuote() {
@@ -44,6 +63,7 @@
       deposit,
       checkoutAmount,
       remaining,
+      depositUrl: getDepositPaymentLink(frameSize),
     };
   }
 
@@ -116,6 +136,11 @@
 
     button.disabled = true;
     button.textContent = "Opening Secure Checkout...";
+
+    if (quote.paymentMode === "deposit" && quote.depositUrl) {
+      window.location.href = quote.depositUrl;
+      return;
+    }
 
     const payload = {
       name: document.getElementById("name").value.trim(),

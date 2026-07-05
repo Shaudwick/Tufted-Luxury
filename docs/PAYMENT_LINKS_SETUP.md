@@ -21,6 +21,10 @@ You only edit **one file**: `js/payment-links.js`.
 | `rugQueenVashti` | Single piece |
 | `sunCard` | Sun Card — framed tufted collection |
 | `magician` | The Magician — framed tufted collection |
+| `framedDeposit11x14` | Custom framed piece — 11 × 14 deposit ($75) |
+| `framedDeposit16x20` | Custom framed piece — 16 × 20 deposit ($100) |
+| `framedDeposit20x30` | Custom framed piece — 20 × 30 deposit ($150) |
+| `framedDeposit24x36` | Custom framed piece — 24 × 36 deposit ($175) |
 
 Blank URLs open **email** so customers can reach you until the link exists.
 
