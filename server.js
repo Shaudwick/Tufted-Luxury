@@ -8,6 +8,7 @@ const nodemailer = require("nodemailer");
 const twilio = require("twilio");
 const path = require("path");
 const fs = require("fs");
+const { createCustomFramedCheckoutSession } = require("./lib/framed-piece-checkout");
 
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -171,129 +172,14 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-// Custom framed pieces pricing (server-side source of truth)
-const FRAMED_PIECE_PRICING = {
-  "11x14": { label: "11 × 14", deposit: 75, starting: 225, detailed: 325 },
-  "16x20": { label: "16 × 20", deposit: 100, starting: 300, detailed: 450 },
-  "20x30": { label: "20 × 30", deposit: 150, starting: 400, detailed: 575 },
-  "24x36": { label: "24 × 36", deposit: 175, starting: 500, detailed: 750 },
-};
-
-function getFramedPieceQuote({ frameSize, designType, paymentMode }) {
-  const tier = FRAMED_PIECE_PRICING[frameSize];
-  if (!tier) return null;
-  if (!["starting", "detailed"].includes(designType)) return null;
-  if (!["deposit", "full"].includes(paymentMode)) return null;
-
-  const fullPrice = designType === "detailed" ? tier.detailed : tier.starting;
-  const deposit = tier.deposit;
-  const checkoutAmount = paymentMode === "full" ? fullPrice : deposit;
-  const remainingBalance = paymentMode === "full" ? 0 : fullPrice - deposit;
-
-  return {
-    tier,
-    fullPrice,
-    deposit,
-    checkoutAmount,
-    remainingBalance,
-    designLabel: designType === "detailed" ? "Detailed design" : "Starting design",
-    paymentLabel: paymentMode === "full" ? "Paid in full" : "Deposit",
-  };
-}
-
 app.post("/api/custom-framed-checkout", async (req, res) => {
-  const {
-    name,
-    email,
-    phone,
-    frameSize,
-    designType,
-    paymentMode,
-    concept,
-    colors,
-    space,
-    deadline,
-    delivery,
-    referenceUrl,
-  } = req.body || {};
-
-  if (!name || !email || !frameSize || !designType || !paymentMode || !concept) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
-  const quote = getFramedPieceQuote({ frameSize, designType, paymentMode });
-  if (!quote) {
-    return res.status(400).json({ error: "Invalid frame size, design type, or payment option" });
-  }
-
   try {
     const origin = req.headers.origin || `${req.protocol}://${req.get("host")}`;
-    const productName =
-      paymentMode === "full"
-        ? `Custom Framed Piece — ${quote.tier.label} (${quote.designLabel})`
-        : `Custom Framed Piece Deposit — ${quote.tier.label} (${quote.designLabel})`;
-
-    const descriptionParts = [
-      `Frame: ${quote.tier.label}`,
-      `Design: ${quote.designLabel}`,
-      `Payment: ${quote.paymentLabel}`,
-      `Full price: $${quote.fullPrice}`,
-    ];
-
-    if (paymentMode === "deposit") {
-      descriptionParts.push(`Remaining balance: $${quote.remainingBalance}`);
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: productName,
-              description: descriptionParts.join(" · "),
-            },
-            unit_amount: Math.round(quote.checkoutAmount * 100),
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${origin}/custom-framed-pieces.html?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/custom-framed-pieces.html?canceled=true`,
-      customer_email: email,
-      billing_address_collection: "required",
-      shipping_address_collection: {
-        allowed_countries: ["US"],
-      },
-      metadata: {
-        productType: "custom-framed",
-        customerName: String(name).slice(0, 500),
-        customerEmail: String(email).slice(0, 500),
-        phone: phone ? String(phone).slice(0, 100) : "",
-        frameSize,
-        frameLabel: quote.tier.label,
-        designType,
-        designLabel: quote.designLabel,
-        paymentMode,
-        fullPrice: String(quote.fullPrice),
-        depositAmount: String(quote.deposit),
-        remainingBalance: String(quote.remainingBalance),
-        concept: String(concept).slice(0, 500),
-        colors: colors ? String(colors).slice(0, 500) : "",
-        space: space ? String(space).slice(0, 500) : "",
-        deadline: deadline ? String(deadline).slice(0, 100) : "",
-        delivery: delivery ? String(delivery).slice(0, 100) : "",
-        referenceUrl: referenceUrl ? String(referenceUrl).slice(0, 500) : "",
-        timestamp: new Date().toISOString(),
-      },
-    });
-
-    res.json({ sessionId: session.id, url: session.url });
+    const result = await createCustomFramedCheckoutSession(req.body, origin);
+    res.json(result);
   } catch (error) {
     console.error("Custom framed checkout error:", error);
-    res.status(500).json({
+    res.status(error.statusCode || 500).json({
       error: error.message || "Failed to create checkout session",
     });
   }
