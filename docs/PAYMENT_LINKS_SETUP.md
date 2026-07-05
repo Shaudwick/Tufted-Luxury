@@ -20,6 +20,7 @@ You only edit **one file**: `js/payment-links.js`.
 | `rugPsalms` | Single piece |
 | `rugQueenVashti` | Single piece |
 | `sunCard` | Sun Card — framed tufted collection |
+| `magician` | The Magician — framed tufted collection |
 
 Blank URLs open **email** so customers can reach you until the link exists.
 
