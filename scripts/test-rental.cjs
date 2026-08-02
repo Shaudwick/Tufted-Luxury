@@ -19,7 +19,11 @@ const {
 } = require("../lib/rental-bookings");
 
 const pieces = listRentalPieces();
-assert.ok(pieces.length >= 6, "catalog should list rentable pieces");
+assert.ok(pieces.length >= 5, "catalog should list Gods Collection rentals");
+assert.ok(
+  !pieces.some((p) => p.id === "sunCard" || p.id === "magician"),
+  "card pieces should not be rentable"
+);
 
 const tooShort = getRentalQuote({ pieceId: "rugExodus", hours: 1 });
 assert.strictEqual(tooShort, null, "1 hour should fail (2 hr minimum)");

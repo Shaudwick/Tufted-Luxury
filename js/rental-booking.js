@@ -49,24 +49,6 @@
         description:
           "All four Gods Collection works for a full gallery presence at your event.",
       },
-      {
-        id: "sunCard",
-        title: "Sun Card",
-        collection: "Card Collection",
-        hourlyRate: 65,
-        image: "Website-Images/suncard.jpeg",
-        description:
-          "Framed hand-tufted Sun Card — smaller scale, same studio craft for intimate spaces.",
-      },
-      {
-        id: "magician",
-        title: "The Magician",
-        collection: "Card Collection",
-        hourlyRate: 65,
-        image: "Website-Images/themagician.jpeg",
-        description:
-          "Framed hand-tufted Magician — a focused accent piece for tablescapes and lounges.",
-      },
     ],
   };
 
