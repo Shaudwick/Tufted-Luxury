@@ -9,6 +9,12 @@ const twilio = require("twilio");
 const path = require("path");
 const fs = require("fs");
 const { createCustomFramedCheckoutSession } = require("./lib/framed-piece-checkout");
+const {
+  getCatalogPayload,
+  getAvailabilityPayload,
+  createRentalCheckoutSession,
+} = require("./lib/rental-checkout");
+const { confirmBookingBySession, cancelBookingBySession } = require("./lib/rental-bookings");
 
 const app = express();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -185,6 +191,34 @@ app.post("/api/custom-framed-checkout", async (req, res) => {
   }
 });
 
+app.get("/api/rental/catalog", (req, res) => {
+  res.json(getCatalogPayload());
+});
+
+app.get("/api/rental/availability", (req, res) => {
+  try {
+    const payload = getAvailabilityPayload(req.query.pieceId, req.query.date);
+    res.json(payload);
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      error: error.message || "Failed to load availability",
+    });
+  }
+});
+
+app.post("/api/rental-checkout", async (req, res) => {
+  try {
+    const origin = req.headers.origin || `${req.protocol}://${req.get("host")}`;
+    const result = await createRentalCheckoutSession(req.body, origin);
+    res.json(result);
+  } catch (error) {
+    console.error("Rental checkout error:", error);
+    res.status(error.statusCode || 500).json({
+      error: error.message || "Failed to create rental checkout session",
+    });
+  }
+});
+
 // Verify payment session (optional - for confirmation page)
 app.get('/verify-session/:sessionId', async (req, res) => {
   try {
@@ -278,6 +312,53 @@ app.post(
       let purchaseDetails = "";
 
       const isCustomFramed = session.metadata?.productType === "custom-framed";
+      const isHourlyRental = session.metadata?.productType === "hourly-rental";
+
+      // Handle hourly art rental bookings
+      if (isHourlyRental) {
+        const paidAmount = amountTotal / 100;
+        const meta = session.metadata || {};
+        const booking = confirmBookingBySession(session.id);
+        purchaseType = "Hourly Art Rental";
+        purchaseDetails = [
+          meta.pieceTitle || meta.pieceId || "Artwork",
+          meta.hours ? `${meta.hours} hours` : null,
+          meta.displayRange || null,
+          meta.eventName ? `Event: ${meta.eventName}` : null,
+        ]
+          .filter(Boolean)
+          .join(" · ");
+
+        console.log("🎨 Sending hourly rental confirmation to:", email);
+
+        await sendAdminPurchaseNotification({
+          purchaseType,
+          purchaseDetails,
+          customerName: meta.customerName || name,
+          customerEmail: email,
+          amount: paidAmount,
+          orderId,
+          phone: meta.phone || phone,
+          extraDetails: buildRentalAdminDetails(meta, booking),
+        });
+
+        setTimeout(async () => {
+          try {
+            await sendRentalConfirmationEmail({
+              to: email,
+              name: meta.customerName || name,
+              orderId,
+              metadata: meta,
+              amountPaid: paidAmount,
+            });
+            console.log("✅ Hourly rental confirmation email sent to", email);
+          } catch (err) {
+            console.error("❌ Error sending rental confirmation email:", err);
+          }
+        }, 5 * 1000);
+
+        return;
+      }
 
       // Handle custom framed piece orders
       if (isCustomFramed) {
@@ -422,6 +503,13 @@ app.post(
       console.log("   Amount:", amountTotal, "cents ($", amountTotal / 100, ")");
       console.log("   This might be a rug deposit or other purchase");
 
+    } else if (event.type === "checkout.session.expired") {
+      const session = event.data.object;
+      if (session.metadata?.productType === "hourly-rental") {
+        cancelBookingBySession(session.id);
+        console.log("🕒 Released pending rental hold for expired session:", session.id);
+      }
+      res.json({ received: true });
     } else {
       // For other events, just acknowledge
       res.json({ received: true });
@@ -803,6 +891,97 @@ async function sendArtistSubmissionEmail({ to, name, amount, orderId }) {
 }
 
 // ---------- ADMIN PURCHASE NOTIFICATION ----------
+
+function buildRentalAdminDetails(meta, booking) {
+  const rows = [
+    ["Artwork", meta.pieceTitle || meta.pieceId],
+    ["Schedule", meta.displayRange],
+    ["Duration", meta.hours ? `${meta.hours} hours` : ""],
+    ["Hourly rate", meta.hourlyRate ? `$${meta.hourlyRate}/hr` : ""],
+    ["Event", meta.eventName],
+    ["Venue / address", meta.venue],
+    ["Notes", meta.notes],
+    ["Booking ID", booking?.id || meta.bookingId],
+    ["Status", booking?.status || "confirmed"],
+  ].filter(([, value]) => value);
+
+  if (!rows.length) return "";
+
+  return `
+    <div style="background-color: #fafafa; padding: 30px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #c7a96b;">
+      <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #1a1a1a; text-transform: uppercase; letter-spacing: 1px; font-family: 'Oswald', sans-serif;">
+        Rental Details
+      </h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        ${rows
+          .map(
+            ([label, value]) => `
+          <tr>
+            <td style="padding: 10px 0; font-weight: 600; color: #2c2c2c; width: 160px; vertical-align: top;">${label}:</td>
+            <td style="padding: 10px 0; color: #1a1a1a;">${value}</td>
+          </tr>`
+          )
+          .join("")}
+      </table>
+    </div>
+  `;
+}
+
+function buildRentalConfirmationHtml({ name, orderId, metadata, amountPaid }) {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #f5f5f5; font-family: 'Georgia', serif;">
+      <div style="max-width: 700px; margin: 0 auto; background-color: #ffffff;">
+        <div style="background-color: #0a0a0a; padding: 40px; text-align: center;">
+          <h1 style="margin: 0; font-size: 28px; font-weight: 400; color: #f7f0e6; letter-spacing: 2px;">
+            Art Rental Confirmed
+          </h1>
+          <p style="margin: 12px 0 0 0; font-size: 14px; color: #c7a96b; letter-spacing: 2px; text-transform: uppercase;">
+            Schedule &amp; Payment Locked In
+          </p>
+        </div>
+        <div style="padding: 40px; color: #2c2c2c; line-height: 1.8;">
+          <p>Dear <strong>${name}</strong>,</p>
+          <p>
+            Thank you for renting with <strong>Black Lobby Collective</strong>.
+            Your artwork is reserved and your payment of <strong>$${Number(amountPaid).toFixed(2)}</strong> is confirmed.
+          </p>
+          <div style="background: #fafafa; border-left: 4px solid #c7a96b; padding: 24px; margin: 28px 0;">
+            <p style="margin: 0 0 8px 0;"><strong>Artwork:</strong> ${metadata.pieceTitle || metadata.pieceId}</p>
+            <p style="margin: 0 0 8px 0;"><strong>When:</strong> ${metadata.displayRange || "See booking details"}</p>
+            <p style="margin: 0 0 8px 0;"><strong>Duration:</strong> ${metadata.hours || "—"} hours (2-hour minimum)</p>
+            ${metadata.eventName ? `<p style="margin: 0 0 8px 0;"><strong>Event:</strong> ${metadata.eventName}</p>` : ""}
+            ${metadata.venue ? `<p style="margin: 0 0 8px 0;"><strong>Venue:</strong> ${metadata.venue}</p>` : ""}
+            <p style="margin: 0;"><strong>Order ID:</strong> ${orderId}</p>
+          </div>
+          <p>
+            We will follow up shortly with delivery, install, and pickup timing for your window.
+            Questions? Reply to this email or write
+            <a href="mailto:Contact@blacklobby.co">Contact@blacklobby.co</a>.
+          </p>
+          <p style="margin-top: 32px;"><strong>— Black Lobby Collective</strong></p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+async function sendRentalConfirmationEmail({ to, name, orderId, metadata, amountPaid }) {
+  const html = buildRentalConfirmationHtml({ name, orderId, metadata, amountPaid });
+
+  await transporter.sendMail({
+    from: '"Black Lobby Collective" <no-reply@blacklobby.co>',
+    to,
+    subject: "Art Rental Confirmed — Black Lobby Collective",
+    html,
+  });
+}
 
 function buildCustomFramedAdminDetails(meta) {
   const rows = [
