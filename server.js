@@ -197,7 +197,8 @@ app.get("/api/rental/catalog", (req, res) => {
 
 app.get("/api/rental/availability", (req, res) => {
   try {
-    const payload = getAvailabilityPayload(req.query.pieceId, req.query.date);
+    const pieceKey = req.query.pieceIds || req.query.pieceId;
+    const payload = getAvailabilityPayload(pieceKey, req.query.date);
     res.json(payload);
   } catch (error) {
     res.status(error.statusCode || 500).json({

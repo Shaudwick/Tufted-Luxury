@@ -2,6 +2,7 @@
   const FALLBACK_CATALOG = {
     minHours: 2,
     maxHours: 12,
+    maxPieces: 2,
     businessHours: { start: 8, end: 22 },
     pieces: [
       {
@@ -55,7 +56,7 @@
   const form = document.getElementById("rentalForm");
   if (!form) return;
 
-  const pieceSelect = document.getElementById("pieceId");
+  const selectedListEl = document.getElementById("selectedPieces");
   const hoursSelect = document.getElementById("hours");
   const dateInput = document.getElementById("date");
   const startTimeSelect = document.getElementById("startTime");
@@ -66,13 +67,20 @@
   const pieceGridEl = document.getElementById("rentalPieceGrid");
 
   let catalog = FALLBACK_CATALOG;
+  let selectedIds = [];
+
+  function maxPieces() {
+    return catalog.maxPieces || 2;
+  }
 
   function money(amount) {
     return "$" + Number(amount).toLocaleString("en-US");
   }
 
-  function getSelectedPiece() {
-    return catalog.pieces.find((p) => p.id === pieceSelect.value) || null;
+  function getSelectedPieces() {
+    return selectedIds
+      .map((id) => catalog.pieces.find((p) => p.id === id))
+      .filter(Boolean);
   }
 
   function buildHourOptions() {
@@ -85,11 +93,7 @@
       const option = document.createElement("option");
       option.value = String(h);
       option.textContent =
-        h === min
-          ? h + " hours (minimum)"
-          : h % 1 === 0
-            ? h + " hours"
-            : h + " hours";
+        h === min ? h + " hours (minimum)" : h + " hours";
       hoursSelect.appendChild(option);
     }
 
@@ -125,21 +129,67 @@
     if (previous) startTimeSelect.value = previous;
   }
 
-  function populatePieceSelect(preferredId) {
-    pieceSelect.innerHTML = '<option value="">Choose an artwork</option>';
-    catalog.pieces.forEach((piece) => {
-      const option = document.createElement("option");
-      option.value = piece.id;
-      option.textContent =
-        piece.title + " — " + money(piece.hourlyRate) + "/hr";
-      pieceSelect.appendChild(option);
-    });
-
-    const params = new URLSearchParams(window.location.search);
-    const fromUrl = preferredId || params.get("piece");
-    if (fromUrl && catalog.pieces.some((p) => p.id === fromUrl)) {
-      pieceSelect.value = fromUrl;
+  function togglePiece(pieceId) {
+    const idx = selectedIds.indexOf(pieceId);
+    if (idx >= 0) {
+      selectedIds.splice(idx, 1);
+      syncSelectionUi();
+      updateSummary();
+      refreshAvailability();
+      return;
     }
+
+    if (pieceId === "godsCollectionFull") {
+      if (selectedIds.length && selectedIds[0] !== "godsCollectionFull") {
+        alert(
+          "The full Gods Collection already includes all four works. Clear your other selection first, or keep individual pieces only."
+        );
+        return;
+      }
+      selectedIds = ["godsCollectionFull"];
+      syncSelectionUi();
+      updateSummary();
+      refreshAvailability();
+      return;
+    }
+
+    if (selectedIds.includes("godsCollectionFull")) {
+      alert(
+        "The full Gods Collection is already selected. Deselect it to choose individual works (up to " +
+          maxPieces() +
+          ")."
+      );
+      return;
+    }
+
+    if (selectedIds.length >= maxPieces()) {
+      alert("You can select up to " + maxPieces() + " pieces.");
+      return;
+    }
+
+    selectedIds.push(pieceId);
+    syncSelectionUi();
+    updateSummary();
+    refreshAvailability();
+  }
+
+  function renderSelectedList() {
+    if (!selectedListEl) return;
+    const pieces = getSelectedPieces();
+    if (!pieces.length) {
+      selectedListEl.textContent = "None selected yet — tap up to " + maxPieces() + " works above.";
+      return;
+    }
+    selectedListEl.innerHTML = pieces
+      .map(
+        (piece) =>
+          "<strong>" +
+          piece.title +
+          "</strong> · " +
+          money(piece.hourlyRate) +
+          "/hr"
+      )
+      .join("<br>");
   }
 
   function renderPieceCards() {
@@ -149,9 +199,7 @@
         (piece) =>
           '<button type="button" class="rental-piece-card" data-piece-id="' +
           piece.id +
-          '" aria-pressed="' +
-          (pieceSelect.value === piece.id ? "true" : "false") +
-          '">' +
+          '" aria-pressed="false">' +
           '<img src="' +
           piece.image +
           '" alt="' +
@@ -174,37 +222,42 @@
 
     pieceGridEl.querySelectorAll(".rental-piece-card").forEach((card) => {
       card.addEventListener("click", function () {
-        pieceSelect.value = card.getAttribute("data-piece-id");
-        syncPieceSelection();
-        updateSummary();
-        refreshAvailability();
+        togglePiece(card.getAttribute("data-piece-id"));
       });
     });
   }
 
-  function syncPieceSelection() {
-    if (!pieceGridEl) return;
-    pieceGridEl.querySelectorAll(".rental-piece-card").forEach((card) => {
-      const selected = card.getAttribute("data-piece-id") === pieceSelect.value;
-      card.setAttribute("aria-pressed", selected ? "true" : "false");
-      card.classList.toggle("is-selected", selected);
-    });
+  function syncSelectionUi() {
+    if (pieceGridEl) {
+      pieceGridEl.querySelectorAll(".rental-piece-card").forEach((card) => {
+        const selected = selectedIds.includes(
+          card.getAttribute("data-piece-id")
+        );
+        card.setAttribute("aria-pressed", selected ? "true" : "false");
+        card.classList.toggle("is-selected", selected);
+      });
+    }
+    renderSelectedList();
   }
 
   function updateSummary() {
-    const piece = getSelectedPiece();
+    const pieces = getSelectedPieces();
     const hours = Number(hoursSelect.value);
     const startTime = startTimeSelect.value;
     const date = dateInput.value;
 
-    if (!piece || !hours) {
+    if (!pieces.length || !hours) {
       priceSummaryEl.textContent =
-        "Select an artwork and duration (2-hour minimum) to see your total.";
+        "Select up to " +
+        maxPieces() +
+        " artworks and a duration (2-hour minimum) to see your total.";
       submitButton.textContent = "Schedule & pay";
       return;
     }
 
-    const total = piece.hourlyRate * hours;
+    const hourlyRate = pieces.reduce((sum, p) => sum + p.hourlyRate, 0);
+    const total = hourlyRate * hours;
+    const titles = pieces.map((p) => p.title).join(" + ");
     let scheduleLine = "";
     if (date && startTime) {
       const start = new Date(date + "T" + startTime + ":00");
@@ -224,12 +277,15 @@
 
     priceSummaryEl.innerHTML =
       "<strong>" +
-      piece.title +
+      titles +
       "</strong> · " +
+      pieces.length +
+      (pieces.length === 1 ? " piece" : " pieces") +
+      " · " +
       hours +
       " hours @ " +
-      money(piece.hourlyRate) +
-      "/hr" +
+      money(hourlyRate) +
+      "/hr combined" +
       scheduleLine +
       "<br><strong>Total due today: " +
       money(total) +
@@ -239,13 +295,12 @@
   }
 
   async function refreshAvailability() {
-    const pieceId = pieceSelect.value;
     const date = dateInput.value;
     if (!availabilityEl) return;
 
-    if (!pieceId || !date) {
+    if (!selectedIds.length || !date) {
       availabilityEl.textContent =
-        "Choose a piece and date to check open windows.";
+        "Choose up to " + maxPieces() + " pieces and a date to check open windows.";
       return;
     }
 
@@ -253,8 +308,8 @@
 
     try {
       const res = await fetch(
-        "/api/rental/availability?pieceId=" +
-          encodeURIComponent(pieceId) +
+        "/api/rental/availability?pieceIds=" +
+          encodeURIComponent(selectedIds.join(",")) +
           "&date=" +
           encodeURIComponent(date)
       );
@@ -263,7 +318,9 @@
 
       if (!data.unavailable || !data.unavailable.length) {
         availabilityEl.textContent =
-          "Open for booking that day — 2-hour minimum, hassle-free checkout.";
+          "Open for booking that day — up to " +
+          maxPieces() +
+          " pieces, 2-hour minimum.";
         return;
       }
 
@@ -286,7 +343,9 @@
         .join(", ");
 
       availabilityEl.textContent =
-        "Already reserved: " + windows + ". Pick another start time.";
+        "Already reserved for a selected piece: " +
+        windows +
+        ". Pick another start time.";
     } catch (err) {
       availabilityEl.textContent =
         err.message || "Availability check unavailable — you can still book.";
@@ -321,6 +380,14 @@
     dateInput.min = tomorrow.toISOString().slice(0, 10);
   }
 
+  function seedFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("piece");
+    if (fromUrl && catalog.pieces.some((p) => p.id === fromUrl)) {
+      selectedIds = [fromUrl];
+    }
+  }
+
   async function loadCatalog() {
     try {
       const res = await fetch("/api/rental/catalog");
@@ -333,9 +400,9 @@
 
     buildHourOptions();
     buildTimeOptions();
-    populatePieceSelect();
+    seedFromUrl();
     renderPieceCards();
-    syncPieceSelection();
+    syncSelectionUi();
     updateSummary();
   }
 
@@ -346,7 +413,7 @@
       name: form.name.value.trim(),
       email: form.email.value.trim(),
       phone: form.phone.value.trim(),
-      pieceId: pieceSelect.value,
+      pieceIds: selectedIds.slice(),
       date: dateInput.value,
       startTime: startTimeSelect.value,
       hours: Number(hoursSelect.value),
@@ -355,8 +422,13 @@
       notes: form.notes.value.trim(),
     };
 
-    if (!payload.pieceId || !payload.date || !payload.startTime) {
-      alert("Please choose an artwork, date, and start time.");
+    if (!payload.pieceIds.length || !payload.date || !payload.startTime) {
+      alert("Please choose up to " + maxPieces() + " artworks, a date, and a start time.");
+      return;
+    }
+
+    if (payload.pieceIds.length > maxPieces()) {
+      alert("You can select up to " + maxPieces() + " pieces.");
       return;
     }
 
@@ -387,11 +459,6 @@
     }
   });
 
-  pieceSelect.addEventListener("change", function () {
-    syncPieceSelection();
-    updateSummary();
-    refreshAvailability();
-  });
   hoursSelect.addEventListener("change", updateSummary);
   dateInput.addEventListener("change", function () {
     updateSummary();
