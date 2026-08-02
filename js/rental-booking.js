@@ -453,9 +453,11 @@
       }
       window.location.href = data.url;
     } catch (err) {
-      alert(err.message || "Something went wrong. Please try again.");
+      const message = err.message || "Something went wrong. Please try again.";
+      alert(message);
       submitButton.disabled = false;
       submitButton.textContent = originalLabel;
+      console.error("Rental checkout failed:", err);
     }
   });
 
