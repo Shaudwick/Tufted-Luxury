@@ -13,6 +13,7 @@ if (fs.existsSync(bookingsPath)) {
 const {
   getRentalQuote,
   MIN_HOURS,
+  MAX_HOURS,
   MAX_PIECES,
   listRentalPieces,
   validatePieceSelection,
@@ -31,6 +32,7 @@ assert.ok(
   "card pieces should not be rentable"
 );
 assert.strictEqual(MAX_PIECES, 2);
+assert.strictEqual(MAX_HOURS, 6);
 
 assert.strictEqual(validatePieceSelection([]).ok, false);
 assert.strictEqual(
@@ -65,6 +67,13 @@ assert.strictEqual(duo.pieceTitle, "Exodus + Chronicles");
 const half = getRentalQuote({ pieceId: "rugExodus", hours: 2.5 });
 assert.ok(half);
 assert.strictEqual(half.total, 437.5);
+
+const sixHour = getRentalQuote({ pieceId: "rugExodus", hours: 6 });
+assert.ok(sixHour, "6 hour max should succeed");
+assert.strictEqual(sixHour.total, 1050);
+
+const tooLong = getRentalQuote({ pieceId: "rugExodus", hours: 6.5 });
+assert.strictEqual(tooLong, null, "over 6 hours should fail");
 
 const day = new Date();
 day.setDate(day.getDate() + 7);
