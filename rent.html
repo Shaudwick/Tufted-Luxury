@@ -68,30 +68,32 @@
         <div class="contact-form__container">
           <h2 class="contact-form__title title">Schedule &amp; pay</h2>
           <p class="framed-pieces__form-intro">
-            Pick the piece, choose your window (2 hours or more), share where it’s going,
+            Select up to two works, choose your window (2 hours or more), share where it’s going,
             and check out securely. We’ll confirm delivery and setup after payment.
           </p>
           <div class="rental-rate-strip" aria-label="Hourly rates">
-            <span>Gods works · $175/hr</span>
+            <span>Gods works · $175/hr each</span>
             <span>Full Gods set · $550/hr</span>
+            <span>Up to 2 pieces</span>
           </div>
 
           <div id="rentalPieceGrid" class="rental-piece-grid" aria-label="Rentable artworks"></div>
 
+          <div class="rental-selected">
+            <span class="rental-selected__label">Selected (up to 2)</span>
+            <div id="selectedPieces" class="rental-selected__list">
+              None selected yet — tap up to 2 works above.
+            </div>
+          </div>
+
           <div id="priceSummary" class="framed-pieces__summary" aria-live="polite">
-            Select an artwork and duration (2-hour minimum) to see your total.
+            Select up to 2 artworks and a duration (2-hour minimum) to see your total.
           </div>
           <p id="availabilityNote" class="rental-availability">
-            Choose a piece and date to check open windows.
+            Choose up to 2 pieces and a date to check open windows.
           </p>
 
           <form class="contact-form" id="rentalForm">
-            <div class="contact-form__field">
-              <label for="pieceId">Artwork</label>
-              <select id="pieceId" name="pieceId" required>
-                <option value="">Choose an artwork</option>
-              </select>
-            </div>
 
             <div class="contact-form__row">
               <div class="contact-form__field">
@@ -144,7 +146,8 @@
             </div>
 
             <p class="framed-pieces__terms">
-              2-hour minimum. Prepaid reservation holds the piece for your window.
+              2-hour minimum. Select up to 2 pieces (or the full set alone).
+              Prepaid reservation holds your works for the window.
               Delivery and install timing confirmed after checkout.
               Questions first? <a href="contact.html">Reach out</a>.
             </p>
