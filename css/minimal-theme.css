@@ -705,6 +705,28 @@ body.site-minimal {
   color: #555;
 }
 
+.site-minimal .rental-selected {
+  border: 1px solid #ddd;
+  background: #fafafa;
+  padding: 1rem 1.15rem;
+  margin: 0 0 1.25rem;
+}
+
+.site-minimal .rental-selected__label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 0.45rem;
+}
+
+.site-minimal .rental-selected__list {
+  color: #222;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
 .site-minimal .rental-availability {
   margin: -0.75rem 0 1.5rem;
   color: #666;
