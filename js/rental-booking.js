@@ -1,7 +1,7 @@
 (function () {
   const FALLBACK_CATALOG = {
     minHours: 2,
-    maxHours: 12,
+    maxHours: 6,
     maxPieces: 2,
     businessHours: { start: 8, end: 22 },
     pieces: [
@@ -85,7 +85,7 @@
 
   function buildHourOptions() {
     const min = catalog.minHours || 2;
-    const max = catalog.maxHours || 12;
+    const max = catalog.maxHours || 6;
     const previous = hoursSelect.value;
     hoursSelect.innerHTML = "";
 

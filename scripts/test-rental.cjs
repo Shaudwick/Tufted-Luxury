@@ -13,6 +13,7 @@ if (fs.existsSync(bookingsPath)) {
 const {
   getRentalQuote,
   MIN_HOURS,
+  MAX_HOURS,
   MAX_PIECES,
   listRentalPieces,
   validatePieceSelection,
