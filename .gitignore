@@ -7,6 +7,9 @@ node_modules/
 .env.*.local
 !.env.example
 
+# Runtime rental booking store (keep directory via .gitkeep)
+data/rental-bookings.json
+
 # Secrets & keys (never commit)
 *.pem
 credentials.json

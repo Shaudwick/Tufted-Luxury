@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "check-env": "node scripts/check-env.cjs"
+    "check-env": "node scripts/check-env.cjs",
+    "test:rental": "node scripts/test-rental.cjs"
   },
   "keywords": [
     "ecommerce",
